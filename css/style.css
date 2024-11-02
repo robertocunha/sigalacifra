@@ -13,3 +13,8 @@ h1 {
 pre {
     line-height: 1.8; /* Aumenta o espaçamento entre as linhas */
 }
+
+pre b {
+    color: orange;
+    font-weight: bold;
+}
