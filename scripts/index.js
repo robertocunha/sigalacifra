@@ -1,3 +1,5 @@
+localStorage.clear();
+
 const preElement = document.querySelector("pre");
 const editButton = document.getElementById("editButtonId");
 const saveButton = document.getElementById("saveButtonId");
