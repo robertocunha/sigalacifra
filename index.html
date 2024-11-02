@@ -5,11 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <title>Siga La Cifra!</title>
+    <style>
+        /* CSS para impressão */
+        @media print {
+            body * {
+                visibility: hidden; /* Oculta todos os elementos */
+            }
+            pre, pre * {
+                visibility: visible; /* Torna visível o conteúdo do 'pre' e seus filhos */
+                font-weight: bold; /* Garante que as cifras fiquem em negrito */
+            }
+            pre {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                font-family: monospace; /* Estilo para manter o alinhamento das cifras */
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Siga La Cifra!</h1>  
     <button id="editButtonId">Editar</button>
     <button id="saveButtonId">Salvar</button>
+    <button id="exportButtonId">Exportar</button> 
     
     <div>
         <pre>
@@ -69,7 +89,7 @@
             Como querer  Caetanear o que há de bom
             
             ( <b>A</b>  <b>D/A</b>  <b>A</b>  <b>D/A</b> )
-            </pre>
+        </pre>
     </div>
 
     <script src="scripts/index.js"></script>
