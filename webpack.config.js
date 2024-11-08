@@ -19,6 +19,13 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, 'dist'),  // Define o diretório onde os arquivos estáticos ficam
+    },
+    open: true,           // Para abrir automaticamente no navegador
+    hot: true,            // Ativa o Hot Module Replacement
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',  // O Webpack usará este arquivo como modelo
