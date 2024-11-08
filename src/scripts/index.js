@@ -1,3 +1,7 @@
+import '../css/reset.css';
+import '../css/print.css';
+import '../css/style.css';
+
 import { app, analytics } from './firebaseConfig.js';
 
 localStorage.clear();

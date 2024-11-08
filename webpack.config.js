@@ -1,14 +1,32 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  // The entry point file described above
   entry: './src/scripts/index.js',
-  // The location of the build folder described above
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-  // Optional and for development only. This provides the ability to
-  // map the built code back to the original source format when debugging.
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,  // Extrai CSS em arquivos separados
+          'css-loader'                  // Carrega o CSS
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',  // O Webpack usará este arquivo como modelo
+      inject: 'body',                // Injeta o script bundle.js no <body>
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'main.css'           // O CSS gerado será nomeado como main.css
+    })
+  ],
   devtool: 'eval-source-map',
 };
