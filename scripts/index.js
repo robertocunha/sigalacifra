@@ -1,3 +1,5 @@
+import { app, analytics } from './firebaseConfig.js';
+
 localStorage.clear();
 
 const preElement = document.querySelector("pre");
