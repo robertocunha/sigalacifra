@@ -3,7 +3,19 @@ import '../css/reset.css';
 import '../css/print.css';
 import '../css/style.css';
 
-import { app, analytics } from './firebaseConfig.js';
+import { app, analytics, db } from './firebaseConfig.js';
+import { doc, getDoc } from "firebase/firestore";
+
+const docRef = doc(db, "musicas", "evSBZkVYT2gpDywQHqCN");
+const docSnap = await getDoc(docRef);
+
+if (docSnap.exists()) {
+  console.log("Document data:", docSnap.data());
+  console.log("letra:", docSnap.data().letra);
+} else {
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
+}
 
 localStorage.clear();
 
