@@ -12,8 +12,8 @@ const saveButton = document.getElementById("saveButtonId");
 const exportButton = document.getElementById("exportButtonId");
 
 const docRef = doc(db, "musicas", "evSBZkVYT2gpDywQHqCN");
-// As duas linhas abaixo foram usadas apenas para enviar 
-// a primeira versão da música para o Firestore
+
+// As duas linhas abaixo foram usadas apenas para enviar a primeira versão da música para o Firestore. O HTML naquele momento estava posicionado estaticamente no src/index.html.
 // const letraComQuebras = preElement.innerHTML;
 // await setDoc(docRef, { letra: letraComQuebras });
 
