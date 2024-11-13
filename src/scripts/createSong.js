@@ -1,3 +1,8 @@
+// imports de css para uso do Webpack 
+import '../css/reset.css';
+import '../css/print.css';
+import '../css/style.css';
+
 import { app, db } from './firebaseConfig.js';
 import { doc, setDoc } from "firebase/firestore";
 
