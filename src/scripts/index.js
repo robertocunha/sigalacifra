@@ -4,33 +4,28 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { app, analytics, db } from './firebaseConfig.js';
-import { doc, getDoc } from "firebase/firestore";
-
-const docRef = doc(db, "musicas", "evSBZkVYT2gpDywQHqCN");
-const docSnap = await getDoc(docRef);
-
-if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
-  console.log("letra:", docSnap.data().letra);
-} else {
-  // docSnap.data() will be undefined in this case
-  console.log("No such document!");
-}
-
-localStorage.clear();
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const preElement = document.querySelector("pre");
 const editButton = document.getElementById("editButtonId");
 const saveButton = document.getElementById("saveButtonId");
 const exportButton = document.getElementById("exportButtonId");
 
-let key = 'song';
-let songContent = localStorage.getItem(key);
+const docRef = doc(db, "musicas", "evSBZkVYT2gpDywQHqCN");
+// As duas linhas abaixo foram usadas apenas para enviar 
+// a primeira versão da música para o Firestore
+// const letraComQuebras = preElement.innerHTML;
+// await setDoc(docRef, { letra: letraComQuebras });
 
-if (songContent && songContent.length > 0) {
-    preElement.innerHTML = songContent;
+const docSnap = await getDoc(docRef);
+
+if (docSnap.exists()) {
+  console.log("Document data:", docSnap.data());
+  console.log("letra:", docSnap.data().letra);
+  preElement.innerHTML = docSnap.data().letra;
 } else {
-    console.log("local storage is empty");
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
 }
 
 preElement.contentEditable = "false";
@@ -40,12 +35,15 @@ editButton.addEventListener("click", () => {
     preElement.contentEditable = newEditableState ? "true" : "false";
 });
 
-saveButton.addEventListener("click", () => {
-    songContent = preElement.innerHTML;
-    localStorage.setItem(key, songContent);
-
-    console.clear();
-    console.log(localStorage.getItem(key));
+saveButton.addEventListener("click", async () => {
+    const updatedContent = preElement.innerHTML; // pega o conteúdo atualizado do <pre>
+    
+    try {
+        await setDoc(docRef, { letra: updatedContent }); // salva o conteúdo atualizado no Firestore
+        console.log("Documento atualizado com sucesso!");
+    } catch (error) {
+        console.error("Erro ao salvar documento:", error);
+    }
 });
 
 exportButton.addEventListener("click", () => {
