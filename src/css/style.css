@@ -10,6 +10,10 @@ h1 {
     font-size: 2rem;
 }
 
+a {
+    color: #ccc;
+}
+
 pre {
     line-height: 1.8; /* Aumenta o espaçamento entre as linhas */
 }
