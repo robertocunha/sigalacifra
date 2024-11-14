@@ -39,7 +39,7 @@ saveButton.addEventListener("click", async () => {
     const updatedContent = preElement.innerHTML; // pega o conteúdo atualizado do <pre>
     
     try {
-        await setDoc(docRef, { letra: updatedContent }); // salva o conteúdo atualizado no Firestore
+        await setDoc(docRef, { letra: updatedContent }, { merge: true }); // salva o conteúdo atualizado no Firestore
         console.log("Documento atualizado com sucesso!");
     } catch (error) {
         console.error("Erro ao salvar documento:", error);
