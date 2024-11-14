@@ -6,7 +6,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');  // Adicione est
 module.exports = {
   entry: {
     index: './src/scripts/index.js',
-    createSong: './src/scripts/createSong.js'
+    createSong: './src/scripts/createSong.js',
+    song: './src/scripts/song.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -43,6 +44,12 @@ module.exports = {
       filename: 'createSong.html',
       inject: 'body',
       chunks: ['createSong']
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/song.html',
+      filename: 'song.html',
+      inject: 'body',
+      chunks: ['song']
     }),
     new MiniCssExtractPlugin({
       filename: 'main.css'
