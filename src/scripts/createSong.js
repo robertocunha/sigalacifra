@@ -4,25 +4,43 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { app, db } from './firebaseConfig.js';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection } from "firebase/firestore";
 
-const saveButton = document.getElementById("saveSongButton");
+// Referências aos elementos
+const form = document.getElementById("formId");
+const saveButton = document.getElementById("saveButtonId");
+const titleInput = document.getElementById("titleId");
+const artistInput = document.getElementById("artistId");
+const toneInput = document.getElementById("toneId");
+const positionInput = document.getElementById("positionId");
+const activeInput = document.getElementById("activeId");
+const lyricsInput = document.getElementById("lyricsId");
 
 saveButton.addEventListener("click", async () => {
-    const title = document.getElementById("songTitle").value;
-    const artist = document.getElementById("artistName").value;
-    const content = document.getElementById("songContent").value;
+    // Obtenção dos valores dos inputs
+    const title = titleInput.value;
+    const artist = artistInput.value;
+    const tone = toneInput.value;
+    const position = Number(positionInput.value);
+    const active = activeInput.checked;
+    const lyrics = lyricsInput.value;
 
-    // Aqui você pode gerar um ID ou deixar o Firestore criar automaticamente
-    const docRef = doc(db, "musicas", title); // usando o título como ID, ou gere outro ID único
+    console.log("formData: ", title, artist, tone, position, active, lyrics);
+
+    // Referência para o documento, deixando o Firestore gerar o ID automaticamente
+    const docRef = doc(collection(db, "musicas"));
 
     try {
         await setDoc(docRef, {
             title: title,
             artist: artist,
-            letra: content
+            tone: tone,
+            position: position,
+            active: active,
+            letra: lyrics
         });
         alert("Canção salva com sucesso!");
+        form.reset(); // Limpa o formulário após o salvamento
     } catch (e) {
         console.error("Erro ao salvar canção: ", e);
     }

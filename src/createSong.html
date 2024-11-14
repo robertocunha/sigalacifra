@@ -8,17 +8,26 @@
 <body>
     <a href="index.html">Início</a>
     <h1>Inserir Canção</h1>
-    <label for="songTitle">Título:</label>
-    <input type="text" id="songTitle">
+    <form id="formId">
+        <label for="titleId">Título:</label>
+        <input type="text" id="titleId">
 
-    <label for="artistName">Artista:</label>
-    <input type="text" id="artistName">
+        <label for="artistId">Artista:</label>
+        <input type="text" id="artistId">
 
-    <label for="songContent">Letra (HTML):</label>
-    <textarea id="songContent"></textarea>
+        <label for="toneId">Tom:</label>
+        <input type="text" id="toneId">
 
-    <button id="saveSongButton">Salvar</button>
+        <label for="positionId">Posição:</label>
+        <input type="number" id="positionId">
 
-    <script type="module" src="createSong.js"></script>
+        <label for="activeId">Ativo</label>
+        <input type="checkbox" id="activeId" checked>
+
+        <label for="lyricsId">Letra (HTML):</label>
+        <textarea id="lyricsId"></textarea>
+
+        <button type="button" id="saveButtonId">Salvar</button>
+    </form>
 </body>
 </html>
