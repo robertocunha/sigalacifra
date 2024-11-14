@@ -6,7 +6,11 @@ import '../css/style.css';
 import { app, analytics, db } from './firebaseConfig.js';
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
+const titulo = document.getElementById("tituloId");
+const artista = document.getElementById("artistaId");
+const tom = document.getElementById("tomId");
 const preElement = document.querySelector("pre");
+
 const editButton = document.getElementById("editButtonId");
 const saveButton = document.getElementById("saveButtonId");
 const exportButton = document.getElementById("exportButtonId");
@@ -20,8 +24,9 @@ const docRef = doc(db, "musicas", "evSBZkVYT2gpDywQHqCN");
 const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
-  console.log("letra:", docSnap.data().letra);
+  titulo.innerHTML = docSnap.data().titulo;
+  artista.innerHTML = docSnap.data().artista;
+  tom.innerHTML = docSnap.data().tom;
   preElement.innerHTML = docSnap.data().letra;
 } else {
   // docSnap.data() will be undefined in this case

@@ -18,7 +18,7 @@ pre {
     line-height: 1.8; /* Aumenta o espaçamento entre as linhas */
 }
 
-pre b {
+b {
     color: orange;
     font-weight: bold;
 }
