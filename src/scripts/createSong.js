@@ -4,7 +4,7 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { app, db } from './firebaseConfig.js';
-import { doc, setDoc, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { doc, setDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
 
 // Referências aos elementos
 const form = document.getElementById("formId");
@@ -27,25 +27,15 @@ saveButton.addEventListener("click", async () => {
 
     console.log("formData: ", title, artist, tone, position, active, lyrics);
 
-    // Caso o campo posição esteja vazio, definimos a posição como a última
-    if (isNaN(position) || position === 0) {
-        try {
-            // Query para buscar o maior valor de posição existente
-            const q = query(collection(db, "musicas"), orderBy("position", "desc"));
-            const querySnapshot = await getDocs(q);
-            
-            // Se existirem músicas, pegamos o maior valor e somamos 10
-            if (!querySnapshot.empty) {
-                const lastDoc = querySnapshot.docs[0];
-                const lastPosition = lastDoc.data().position;
-                position = lastPosition + 10; // Espaçamento de 10
-            } else {
-                // Se não houver músicas, a posição será 10 (início da lista)
-                position = 10;
-            }
-        } catch (e) {
-            console.error("Erro ao buscar a última posição: ", e);
-            position = 10; // Definir posição padrão em caso de erro
+    // Se a posição estiver em branco, define como a última
+    if (!position) {
+        position = await getLastPosition() + 10; // Definir a última posição + 10
+    } else {
+        // Verificar se a posição já está em uso
+        const positionConflict = await checkPositionConflict(position);
+        if (positionConflict) {
+            // Se houver conflito, encontra a próxima posição livre
+            position = await getNextFreePosition(position);
         }
     }
 
@@ -67,3 +57,32 @@ saveButton.addEventListener("click", async () => {
         console.error("Erro ao salvar canção: ", e);
     }
 });
+
+// Função para obter a última posição
+async function getLastPosition() {
+    const q = query(collection(db, "musicas"), orderBy("position", "desc"));
+    const querySnapshot = await getDocs(q);
+    const lastDoc = querySnapshot.docs[0];
+    return lastDoc ? lastDoc.data().position : 0;
+}
+
+// Função para verificar se a posição já está em uso
+async function checkPositionConflict(position) {
+    const q = query(collection(db, "musicas"), where("position", "==", position));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.size > 0; // Retorna true se a posição já estiver em uso
+}
+
+// Função para encontrar a próxima posição livre
+async function getNextFreePosition(position) {
+    let newPosition = position;
+    let positionConflict = await checkPositionConflict(newPosition);
+    
+    // Se houver conflito, procura a próxima posição livre
+    while (positionConflict) {
+        newPosition += 10; // Aumenta a posição em 10
+        positionConflict = await checkPositionConflict(newPosition);
+    }
+    
+    return newPosition;
+}
