@@ -1,56 +1,71 @@
-// imports de css para uso do Webpack 
+// Imports de CSS para uso do Webpack 
 import '../css/reset.css';
 import '../css/print.css';
 import '../css/style.css';
 
-import { app, analytics, db } from './firebaseConfig.js';
+import { db } from './firebaseConfig.js';
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-const title = document.getElementById("titleId");
-const artist = document.getElementById("artistId");
-const tone = document.getElementById("toneId");
-const preElement = document.querySelector("pre");
+// Captura o ID da música do parâmetro "id" no URL
+const urlParams = new URLSearchParams(window.location.search);
+const songId = urlParams.get('id');
 
-const editButton = document.getElementById("editButtonId");
-const saveButton = document.getElementById("saveButtonId");
-const exportButton = document.getElementById("exportButtonId");
+if (songId) {
+  const title = document.getElementById("titleId");
+  const artist = document.getElementById("artistId");
+  const tone = document.getElementById("toneId");
+  const preElement = document.querySelector("pre");
 
-const docRef = doc(db, "musicas", "evSBZkVYT2gpDywQHqCN");
+  const editButton = document.getElementById("editButtonId");
+  const saveButton = document.getElementById("saveButtonId");
+  const exportButton = document.getElementById("exportButtonId");
 
-// As duas linhas abaixo foram usadas apenas para enviar a primeira versão da música para o Firestore. O HTML naquele momento estava posicionado estaticamente no src/index.html.
-// const letraComQuebras = preElement.innerHTML;
-// await setDoc(docRef, { letra: letraComQuebras });
+  // Referência ao documento do Firestore com base no ID capturado
+  const docRef = doc(db, "musicas", songId);
 
-const docSnap = await getDoc(docRef);
+  // Busca e exibe os dados da música
+  const fetchSongData = async () => {
+    try {
+      const docSnap = await getDoc(docRef);
 
-if (docSnap.exists()) {
-  title.innerHTML = docSnap.data().title;
-  artist.innerHTML = docSnap.data().artist;
-  tone.innerHTML = docSnap.data().tone;
-  preElement.innerHTML = docSnap.data().letra;
-} else {
-  // docSnap.data() will be undefined in this case
-  console.log("No such document!");
-}
+      if (docSnap.exists()) {
+        const songData = docSnap.data();
+        title.innerHTML = songData.title;
+        artist.innerHTML = songData.artist || 'Artista desconhecido'; // Exibe 'Artista desconhecido' se não houver dados
+        tone.innerHTML = songData.tone;
+        preElement.innerHTML = songData.letra;
+      } else {
+        console.log("Nenhum documento encontrado!");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar o documento:", error);
+    }
+  };
 
-preElement.contentEditable = "false";
+  // Executa a função para buscar os dados da música
+  fetchSongData();
 
-editButton.addEventListener("click", () => {
+  preElement.contentEditable = "false";
+
+  editButton.addEventListener("click", () => {
     const newEditableState = !preElement.isContentEditable;
     preElement.contentEditable = newEditableState ? "true" : "false";
-});
+  });
 
-saveButton.addEventListener("click", async () => {
+  saveButton.addEventListener("click", async () => {
     const updatedContent = preElement.innerHTML; // pega o conteúdo atualizado do <pre>
     
     try {
-        await setDoc(docRef, { letra: updatedContent }, { merge: true }); // salva o conteúdo atualizado no Firestore
-        console.log("Documento atualizado com sucesso!");
+      await setDoc(docRef, { letra: updatedContent }, { merge: true }); // salva o conteúdo atualizado no Firestore
+      console.log("Documento atualizado com sucesso!");
     } catch (error) {
-        console.error("Erro ao salvar documento:", error);
+      console.error("Erro ao salvar documento:", error);
     }
-});
+  });
 
-exportButton.addEventListener("click", () => {
+  exportButton.addEventListener("click", () => {
     window.print();
-});
+  });
+} else {
+  console.error("ID da música não encontrado na URL.");
+}

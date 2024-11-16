@@ -28,11 +28,9 @@ const fetchSongs = async () => {
         <td>${position}</td>
       `;
 
-      // Adiciona o evento de clique para redirecionar para song.html
+      // Adiciona o evento de clique para redirecionar para song.html com o ID do documento
       row.addEventListener('click', () => {
-        // A implementação do link exato para song.html virá depois
-        console.log(`Clicou em: ${title}`);
-        // window.location.href = `song.html?id=${doc.id}`; // Apenas uma nota para futura implementação
+        window.location.href = `song.html?id=${doc.id}`; // Redireciona para song.html com o ID da música
       });
 
       // Insere a linha na tabela
