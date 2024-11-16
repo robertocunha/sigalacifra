@@ -3,17 +3,26 @@ import '../css/reset.css';
 import '../css/print.css';
 import '../css/style.css';
 
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
-const fetchSongs = async () => {
+const tableBody = document.getElementById('songs-table').querySelector('tbody');
+
+// Função para buscar músicas ativas e ordená-las por posição
+const fetchActiveSongs = async () => {
   try {
     const songsCollection = collection(db, 'musicas');
-    const songsSnapshot = await getDocs(songsCollection);
+    const activeSongsQuery = query(
+      songsCollection,
+      where('active', '==', true),
+      orderBy('position', 'asc') // Ordena as músicas pela posição em ordem crescente
+    );
+    const songsSnapshot = await getDocs(activeSongsQuery);
 
-    const tableBody = document.getElementById('songs-table').querySelector('tbody');
-    tableBody.innerHTML = ''; // Limpa qualquer conteúdo antigo
+    // Limpa qualquer conteúdo antigo da tabela
+    tableBody.innerHTML = '';
 
+    // Preenche a tabela com as músicas ativas e ordenadas
     songsSnapshot.forEach((doc) => {
       const { title, tone, position } = doc.data();
 
@@ -30,16 +39,16 @@ const fetchSongs = async () => {
 
       // Adiciona o evento de clique para redirecionar para song.html com o ID do documento
       row.addEventListener('click', () => {
-        window.location.href = `song.html?id=${doc.id}`; // Redireciona para song.html com o ID da música
+        window.location.href = `song.html?id=${doc.id}`;
       });
 
       // Insere a linha na tabela
       tableBody.appendChild(row);
     });
   } catch (error) {
-    console.error('Erro ao buscar músicas:', error);
+    console.error('Erro ao buscar músicas ativas:', error);
   }
 };
 
-// Chama a função ao carregar o script
-fetchSongs();
+// Busca inicial para músicas ativas
+fetchActiveSongs();
