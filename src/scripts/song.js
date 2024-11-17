@@ -88,6 +88,12 @@ if (songId) {
   }
 
   const transposeChords = (steps) => {
+    // Verifica se a letra está disponível antes de transpor
+    if (preElement.innerHTML.trim() === "") {
+      console.error("Não há conteúdo de letra para transpor.");
+      return; // Se a letra estiver vazia, não faz nada
+    }
+
     const boldElements = preElement.querySelectorAll("b");
     boldElements.forEach((b) => {
       const originalChord = b.textContent.trim();
