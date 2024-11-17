@@ -4,7 +4,7 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { db } from './firebaseConfig.js';
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
 // Captura o ID da música do parâmetro "id" no URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -25,26 +25,29 @@ if (songId) {
   // Referência ao documento do Firestore com base no ID capturado
   const docRef = doc(db, "musicas", songId);
 
-  // Busca e exibe os dados da música
-  const fetchSongData = async () => {
-    try {
-      const docSnap = await getDoc(docRef);
+  // Função que lida com a atualização da interface com os dados da música
+  const updateSongData = (songData) => {
+    title.innerHTML = songData.title;
+    artist.innerHTML = songData.artist || 'Artista desconhecido'; // Exibe 'Artista desconhecido' se não houver dados
+    tone.innerHTML = songData.tone;
+    preElement.innerHTML = songData.letra;
+  };
 
+  // Substitui o getDoc por onSnapshot para receber atualizações em tempo real
+  const fetchSongData = () => {
+    onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const songData = docSnap.data();
-        title.innerHTML = songData.title;
-        artist.innerHTML = songData.artist || 'Artista desconhecido'; // Exibe 'Artista desconhecido' se não houver dados
-        tone.innerHTML = songData.tone;
-        preElement.innerHTML = songData.letra;
+        updateSongData(songData);
       } else {
         console.log("Nenhum documento encontrado!");
       }
-    } catch (error) {
-      console.error("Erro ao buscar o documento:", error);
-    }
+    }, (error) => {
+      console.error("Erro ao buscar dados em tempo real:", error);
+    });
   };
 
-  // Executa a função para buscar os dados da música
+  // Executa a função para buscar os dados da música com onSnapshot
   fetchSongData();
 
   preElement.contentEditable = "false";
