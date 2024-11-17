@@ -50,71 +50,61 @@ if (songId) {
   preElement.contentEditable = "false";
 
   // Função para transpor uma nota, preservando extensões e baixos
-function transposeNoteWithExtensions(chord, semitones) {
-  const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  const flatEquivalents = { "A#": "Bb", "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab" };
+  function transposeNoteWithExtensions(chord, semitones) {
+    const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    const flatEquivalents = { "A#": "Bb", "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab" };
 
-  // Regex para identificar acorde com raiz, extensões e/ou baixo
-  const match = chord.match(/^([A-G][#b]?)(.*?)(\/[A-G][#b]?)?$/);
-  if (!match) {
-    // Se o acorde não corresponder ao padrão, retorna-o como está
-    return chord;
+    const match = chord.match(/^([A-G][#b]?)(.*?)(\/[A-G][#b]?)?$/);
+    if (!match) return chord;
+
+    const [, root, extensions = "", slashWithBass = ""] = match;
+    const slash = slashWithBass.charAt(0); // Mantém a barra "/"
+    const bass = slashWithBass.slice(1); // Captura apenas a nota após a barra
+
+    const transposedRoot = transposeChordWithoutBass(root, semitones, notes, flatEquivalents);
+    const transposedBass = bass ? transposeChordWithoutBass(bass, semitones, notes, flatEquivalents) : "";
+
+    return `${transposedRoot}${extensions}${slash}${transposedBass}`;
   }
 
-  const [, root, extensions = "", slashWithBass = ""] = match;
-  const slash = slashWithBass.charAt(0); // Mantém a barra "/"
-  const bass = slashWithBass.slice(1); // Captura apenas a nota após a barra
+  function transposeChordWithoutBass(note, semitones, notes, flatEquivalents) {
+    const sharpNote = note.replace(/(Db|Eb|Gb|Ab|Bb)/g, match =>
+      Object.entries(flatEquivalents).find(([sharp, flat]) => flat === match)[0]
+    );
+    let index = notes.indexOf(sharpNote);
+    if (index === -1) return note;
 
-  // Transpor nota raiz
-  const transposedRoot = transposeChordWithoutBass(root, semitones, notes, flatEquivalents);
+    index = (index + semitones + notes.length) % notes.length;
+    let transposedNote = notes[index];
 
-  // Transpor nota do baixo, se houver
-  const transposedBass = bass ? transposeChordWithoutBass(bass, semitones, notes, flatEquivalents) : "";
+    if (semitones < 0 && flatEquivalents[transposedNote]) {
+      transposedNote = flatEquivalents[transposedNote];
+    }
 
-  // Reconstruir acorde completo
-  return `${transposedRoot}${extensions}${slash}${transposedBass}`;
-}
-
-// Subfunção para transpor uma nota sem considerar baixos
-function transposeChordWithoutBass(note, semitones, notes, flatEquivalents) {
-  const sharpNote = note.replace(/(Db|Eb|Gb|Ab|Bb)/g, match =>
-    Object.entries(flatEquivalents).find(([sharp, flat]) => flat === match)[0]
-  );
-  let index = notes.indexOf(sharpNote);
-  if (index === -1) return note; // Se não for uma nota válida, retorna o acorde original.
-
-  index = (index + semitones + notes.length) % notes.length;
-  let transposedNote = notes[index];
-
-  // Se descendo (semitones < 0), prefere bemóis
-  if (semitones < 0 && flatEquivalents[transposedNote]) {
-    transposedNote = flatEquivalents[transposedNote];
+    return transposedNote;
   }
 
-  return transposedNote;
-}
+  const transposeChords = (steps) => {
+    const boldElements = preElement.querySelectorAll("b");
+    boldElements.forEach((b) => {
+      const originalChord = b.textContent.trim();
+      const transposedChord = transposeNoteWithExtensions(originalChord, steps);
+      b.textContent = transposedChord;
+    });
 
-// Função para transpor cifras no texto
-const transposeChords = (steps) => {
-  const boldElements = preElement.querySelectorAll("b");
-  boldElements.forEach((b) => {
-    const originalChord = b.textContent.trim();
-    const transposedChord = transposeNoteWithExtensions(originalChord, steps);
-    b.textContent = transposedChord;
-  });
-};
+    const currentTone = tone.textContent.trim();
+    const transposedTone = transposeNoteWithExtensions(currentTone, steps);
+    tone.textContent = transposedTone; // Atualiza o tom exibido na página
+  };
 
-
-
-  // Event listeners para os botões
   increaseToneButton.addEventListener("click", () => {
     console.log("Subindo tom...");
-    transposeChords(1); // Sobe um semitom
+    transposeChords(1);
   });
 
   decreaseToneButton.addEventListener("click", () => {
     console.log("Descendo tom...");
-    transposeChords(-1); // Desce um semitom
+    transposeChords(-1);
   });
 
   editButton.addEventListener("click", () => {
@@ -123,10 +113,11 @@ const transposeChords = (steps) => {
   });
 
   saveButton.addEventListener("click", async () => {
-    const updatedContent = preElement.innerHTML; // pega o conteúdo atualizado do <pre>
+    const updatedContent = preElement.innerHTML;
+    const updatedTone = tone.textContent.trim(); // Pega o tom atualizado exibido na página
 
     try {
-      await setDoc(docRef, { letra: updatedContent }, { merge: true }); // salva o conteúdo atualizado no Firestore
+      await setDoc(docRef, { letra: updatedContent, tone: updatedTone }, { merge: true }); // Salva tom e letra atualizados
       console.log("Documento atualizado com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar documento:", error);
