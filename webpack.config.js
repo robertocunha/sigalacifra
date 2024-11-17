@@ -7,7 +7,8 @@ module.exports = {
   entry: {
     index: './src/scripts/index.js',
     createSong: './src/scripts/createSong.js',
-    song: './src/scripts/song.js'
+    song: './src/scripts/song.js',
+    archived: './src/scripts/archived.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -50,6 +51,12 @@ module.exports = {
       filename: 'song.html',
       inject: 'body',
       chunks: ['song']
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/archived.html',
+      filename: 'archived.html',
+      inject: 'body',
+      chunks: ['archived']
     }),
     new MiniCssExtractPlugin({
       filename: 'main.css'
