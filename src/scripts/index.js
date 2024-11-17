@@ -3,7 +3,7 @@ import '../css/reset.css';
 import '../css/print.css';
 import '../css/style.css';
 
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 const tableBody = document.getElementById('songs-table').querySelector('tbody');
@@ -23,8 +23,8 @@ const fetchActiveSongs = async () => {
     tableBody.innerHTML = '';
 
     // Preenche a tabela com as músicas ativas e ordenadas
-    songsSnapshot.forEach((doc) => {
-      const { title, tone, position } = doc.data();
+    songsSnapshot.forEach((docSnap) => {
+      const { title, tone, position, active } = docSnap.data();
 
       // Cria uma nova linha para cada música
       const row = document.createElement('tr');
@@ -32,14 +32,38 @@ const fetchActiveSongs = async () => {
 
       // Cria células para cada dado
       row.innerHTML = `
-        <td>${title}</td>
+        <td class="title-cell">${title}</td> <!-- Célula do título agora com classe 'title-cell' -->
         <td>${tone}</td>
         <td>${position}</td>
+        <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}"></td> <!-- Checkbox para ativar/desativar -->
       `;
 
       // Adiciona o evento de clique para redirecionar para song.html com o ID do documento
-      row.addEventListener('click', () => {
-        window.location.href = `song.html?id=${doc.id}`;
+      // Redireciona apenas se a célula clicada for a do título
+      const titleCell = row.querySelector('.title-cell');
+      titleCell.addEventListener('click', () => {
+        window.location.href = `song.html?id=${docSnap.id}`;
+      });
+
+      // Adiciona o evento para alterar o estado de 'active' ao clicar no checkbox
+      const checkbox = row.querySelector('input[type="checkbox"]');
+      checkbox.addEventListener('change', async (e) => {
+        const newActiveState = e.target.checked;
+        const songDocRef = doc(db, 'musicas', docSnap.id);
+
+        try {
+          // Atualiza o campo 'active' no Firestore
+          await updateDoc(songDocRef, {
+            active: newActiveState
+          });
+
+          // Se desmarcado, a música desaparecerá da lista (após re-renderizar)
+          if (!newActiveState) {
+            row.style.display = 'none'; // Remove a linha da tabela
+          }
+        } catch (error) {
+          console.error('Erro ao atualizar o estado de ativo da música:', error);
+        }
       });
 
       // Insere a linha na tabela
