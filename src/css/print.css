@@ -2,15 +2,32 @@
     body * {
         visibility: hidden; /* Oculta todos os elementos */
     }
-    pre, pre * {
-        visibility: visible; /* Torna visível o conteúdo do 'pre' e seus filhos */
-        font-weight: bold; /* Garante que as cifras fiquem em negrito */
+    h1, p, pre, pre * {
+        visibility: visible; /* Torna visíveis título, artista, tom e letra */
+    }
+    h1 {
+        position: relative;
+        top: 0;
+        left: 0;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    p {
+        position: relative;
+        top: 0;
+        left: 0;
+        font-size: 1rem;
     }
     pre {
-        position: absolute;
-        top: 0;
+        position: relative;
+        top: 1rem;
         left: 0;
         right: 0;
         font-family: monospace; /* Estilo para manter o alinhamento das cifras */
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+    b {
+        font-weight: bold; /* Garante que as cifras fiquem em negrito */
     }
 }
