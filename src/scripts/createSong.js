@@ -1,10 +1,9 @@
-// imports de css para uso do Webpack 
-import '../css/reset.css';
-import '../css/print.css';
-import '../css/style.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css'; // Estilos
 import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
+
+// imports de css para uso do Webpack 
+import '../css/print.css';
+import '../css/style.css';
 
 import { app, db } from './firebaseConfig.js';
 import { doc, setDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
