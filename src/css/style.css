@@ -6,3 +6,14 @@ b {
     color: orange;
     font-weight: bolder;
 }
+
+td.title-cell  {
+    cursor: pointer;
+    color: #007bff; /* Cor azul padrão de links no Bootstrap */
+    text-decoration: none; /* Sem sublinhado por padrão */
+  }
+  
+  .title-cell:hover {
+    text-decoration: underline; /* Sublinha ao passar o mouse */
+  }
+  
