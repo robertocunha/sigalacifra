@@ -1,5 +1,7 @@
+import 'bootstrap/dist/css/bootstrap.min.css'; // Estilos
+import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
+
 // Imports de CSS para uso do Webpack
-import '../css/reset.css';
 import '../css/print.css';
 import '../css/style.css';
 

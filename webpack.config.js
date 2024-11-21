@@ -1,18 +1,18 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');  // Adicione esta linha
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
     index: './src/scripts/index.js',
     createSong: './src/scripts/createSong.js',
     song: './src/scripts/song.js',
-    archived: './src/scripts/archived.js'
+    archived: './src/scripts/archived.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
   },
   module: {
     rules: [
@@ -20,10 +20,10 @@ module.exports = {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
-      }
-    ]
+          'css-loader',
+        ],
+      },
+    ],
   },
   devServer: {
     static: {
@@ -33,34 +33,34 @@ module.exports = {
     hot: true,
   },
   plugins: [
-    new CleanWebpackPlugin(),  // Adicione esta linha
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
       inject: 'body',
-      chunks: ['index']
+      chunks: ['index'],
     }),
     new HtmlWebpackPlugin({
       template: './src/createSong.html',
       filename: 'createSong.html',
       inject: 'body',
-      chunks: ['createSong']
+      chunks: ['createSong'],
     }),
     new HtmlWebpackPlugin({
       template: './src/song.html',
       filename: 'song.html',
       inject: 'body',
-      chunks: ['song']
+      chunks: ['song'],
     }),
     new HtmlWebpackPlugin({
       template: './src/archived.html',
       filename: 'archived.html',
       inject: 'body',
-      chunks: ['archived']
+      chunks: ['archived'],
     }),
     new MiniCssExtractPlugin({
-      filename: 'main.css'
-    })
+      filename: '[name].css', // Corrige o conflito gerando nomes diferentes para os arquivos CSS
+    }),
   ],
   devtool: 'eval-source-map',
 };

@@ -3,6 +3,9 @@ import '../css/reset.css';
 import '../css/print.css';
 import '../css/style.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css'; // Estilos
+import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
+
 import { db } from './firebaseConfig.js';
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
