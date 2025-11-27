@@ -24,12 +24,13 @@ src/
 ├── index.html / index.js      # Active songs list
 ├── archived.html / archived.js # Archived songs list  
 ├── song.html / song.js        # Single song view (edit, transpose, save)
-├── createSong.html / createSong.js # Create new song (exists but not linked in UI!)
+├── createSong.html / createSong.js # Create new song
 ├── css/
 │   ├── style.css              # Main styles
 │   └── print.css              # Print styles
 └── scripts/
-    └── firebaseConfig.js      # Firebase initialization
+    ├── firebaseConfig.js      # Firebase initialization
+    └── chordParser.js         # Converts plain text to HTML with <b> tags around chords
 ```
 
 ## Data Model (Firestore)
@@ -57,28 +58,38 @@ Collection: `musicas`
 - ✅ Edit song content (contentEditable)
 - ✅ Save changes to Firestore
 - ✅ Export/print (basic window.print())
-- ✅ Create song form exists (but not accessible from UI!)
+- ✅ Create new song with chord parser (converts plain text to HTML automatically)
+- ✅ "New Song" button on homepage
 
 ## What's Missing / Broken
 
-- ❌ No link to create new song from main UI
 - ❌ No way to delete songs
 - ❌ No way to reorder songs (drag-drop or buttons)
-- ❌ "Position" column shown to users (was for debug)
+- ❌ "Position" column shown to users (should be hidden, was for debug)
 - ❌ No validation on forms
 - ❌ No feedback messages (success/error)
 - ❌ Print/export needs improvement
 - ❌ No way to edit title/artist/tone directly
+- ❌ Create song form has poor layout (all fields in one line)
+- ❌ No "Format" button when editing existing songs (new text won't get chord styling)
 - ❌ Mobile responsiveness not tested
 
 ## MVP Requirements (for carnival)
 
-1. **Create songs** - Paste from cifraclub.com and save
+1. **Create songs** - Paste from cifraclub.com and save ✅ (done!)
 2. **Edit songs** - Modify chords, add annotations like "Guitar enters alone"
 3. **Transpose** - Change key up/down ✅ (works)
 4. **Archive/unarchive** - Manage active repertoire ✅ (works)
 5. **Reorder songs** - Change performance order (drag-drop ideal, buttons acceptable)
 6. **Print/export** - Generate PDFs for printing
+
+## Next Steps (Priority Order)
+
+1. Improve create song form layout (fields stacked vertically, better spacing)
+2. Hide "Position" column from users
+3. Add "Format" button to song edit page (reuse chordParser)
+4. Song reordering (buttons or drag-drop)
+5. Improve print/export
 
 ## Code Conventions
 
@@ -101,6 +112,8 @@ Collection: `musicas`
 - This file serves as persistent context between sessions
 - Roberto is enthusiastic about human-AI collaboration
 - No need for excessive caution - Git provides safety net
+- Prefers small incremental steps over big changes (learning opportunity)
+- Commits: atomic, frequent, with conventional commit prefixes (feat:, fix:, docs:)
 
 ## Notes
 
