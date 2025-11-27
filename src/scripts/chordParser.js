@@ -55,5 +55,53 @@ function isChordLine(line) {
   return chordCount / tokens.length > 0.5;
 }
 
+/**
+ * Converts a chord line to HTML, wrapping each chord in <b> tags.
+ * Preserves spacing between chords.
+ * 
+ * @param {string} line - A line that contains chords
+ * @returns {string} - The line with chords wrapped in <b> tags
+ */
+function convertChordLineToHtml(line) {
+  // Replace each chord with <b>chord</b>, preserving spacing
+  // We use a regex that matches words and check if each is a chord
+  return line.replace(/(\S+)/g, (match) => {
+    if (isChord(match)) {
+      return `<b>${match}</b>`;
+    }
+    return match;
+  });
+}
+
+/**
+ * Parses plain text with chords and converts it to HTML.
+ * - Chord lines: chords are wrapped in <b> tags
+ * - Lyric lines: kept as-is
+ * - Empty lines: preserved
+ * 
+ * @param {string} text - Plain text with chords (e.g., from Cifra Club)
+ * @returns {string} - HTML formatted text
+ */
+function parseChordSheet(text) {
+  const lines = text.split('\n');
+  
+  const htmlLines = lines.map(line => {
+    // Empty or whitespace-only lines: preserve them
+    if (line.trim() === '') {
+      return line;
+    }
+    
+    // Check if it's a chord line
+    if (isChordLine(line)) {
+      return convertChordLineToHtml(line);
+    }
+    
+    // Otherwise, it's a lyric line - keep as-is
+    return line;
+  });
+  
+  return htmlLines.join('\n');
+}
+
 // Export for use in other modules
-export { isChord, isChordLine };
+export { isChord, isChordLine, parseChordSheet };
