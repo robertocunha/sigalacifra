@@ -7,6 +7,7 @@ import '../css/style.css';
 
 import { app, db } from './firebaseConfig.js';
 import { doc, setDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import { parseChordSheet } from './chordParser.js';
 
 // Referências aos elementos
 const form = document.getElementById("formId");
@@ -25,7 +26,10 @@ saveButton.addEventListener("click", async () => {
     const tone = toneInput.value;
     let position = Number(positionInput.value);
     const active = activeInput.checked;
-    const lyrics = lyricsInput.value;
+    const lyricsRaw = lyricsInput.value;
+    
+    // Convert plain text to HTML with chords wrapped in <b> tags
+    const lyrics = parseChordSheet(lyricsRaw);
 
     console.log("formData: ", title, artist, tone, position, active, lyrics);
 
