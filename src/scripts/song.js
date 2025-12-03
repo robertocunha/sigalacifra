@@ -7,6 +7,7 @@ import '../css/style.css';
 
 import { db } from './firebaseConfig.js';
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { transposeChord } from './transpose.js';
 
 // Captura o ID da música do parâmetro "id" no URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -54,41 +55,6 @@ if (songId) {
 
   preElement.contentEditable = "false";
 
-  // Função para transpor uma nota, preservando extensões e baixos
-  function transposeNoteWithExtensions(chord, semitones) {
-    const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-    const flatEquivalents = { "A#": "Bb", "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab" };
-
-    const match = chord.match(/^([A-G][#b]?)(.*?)(\/[A-G][#b]?)?$/);
-    if (!match) return chord;
-
-    const [, root, extensions = "", slashWithBass = ""] = match;
-    const slash = slashWithBass.charAt(0); // Mantém a barra "/"
-    const bass = slashWithBass.slice(1); // Captura apenas a nota após a barra
-
-    const transposedRoot = transposeChordWithoutBass(root, semitones, notes, flatEquivalents);
-    const transposedBass = bass ? transposeChordWithoutBass(bass, semitones, notes, flatEquivalents) : "";
-
-    return `${transposedRoot}${extensions}${slash}${transposedBass}`;
-  }
-
-  function transposeChordWithoutBass(note, semitones, notes, flatEquivalents) {
-    const sharpNote = note.replace(/(Db|Eb|Gb|Ab|Bb)/g, match =>
-      Object.entries(flatEquivalents).find(([sharp, flat]) => flat === match)[0]
-    );
-    let index = notes.indexOf(sharpNote);
-    if (index === -1) return note;
-
-    index = (index + semitones + notes.length) % notes.length;
-    let transposedNote = notes[index];
-
-    if (semitones < 0 && flatEquivalents[transposedNote]) {
-      transposedNote = flatEquivalents[transposedNote];
-    }
-
-    return transposedNote;
-  }
-
   const transposeChords = (steps) => {
     // Verifica se a letra está disponível antes de transpor
     if (preElement.innerHTML.trim() === "") {
@@ -99,12 +65,12 @@ if (songId) {
     const boldElements = preElement.querySelectorAll("b");
     boldElements.forEach((b) => {
       const originalChord = b.textContent.trim();
-      const transposedChord = transposeNoteWithExtensions(originalChord, steps);
+      const transposedChord = transposeChord(originalChord, steps);
       b.textContent = transposedChord;
     });
 
     const currentTone = tone.textContent.trim();
-    const transposedTone = transposeNoteWithExtensions(currentTone, steps);
+    const transposedTone = transposeChord(currentTone, steps);
     tone.textContent = transposedTone; // Atualiza o tom exibido na página
   };
 
