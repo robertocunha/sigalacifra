@@ -6,7 +6,7 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { collection, getDocs, query, where, orderBy, doc, updateDoc } from 'firebase/firestore';
-import { db } from './firebaseConfig';
+import { db } from './firebaseConfig.js';
 
 const tableBody = document.getElementById('songs-table').querySelector('tbody');
 
