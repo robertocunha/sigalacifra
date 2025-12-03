@@ -6,33 +6,66 @@
     <title>Siga La Cifra! | Inserir Nova Canção</title>
 </head>
 <body>
-    <h1>Inserir Canção</h1>
-    <nav class="navbar navbar-light bg-light">
-        <div class="d-flex">
-            <a class="btn btn-link" href="index.html">Ativas</a>
-            <a class="btn btn-link" href="archived.html">Arquivadas</a>
+    <nav class="navbar navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Siga La Cifra!</span>
+            <div class="d-flex">
+                <a class="btn btn-link" href="index.html">Ativas</a>
+                <a class="btn btn-link" href="archived.html">Arquivadas</a>
+            </div>
         </div>
     </nav>
-    <form id="formId">
-        <label for="titleId">Título:</label>
-        <input type="text" id="titleId">
 
-        <label for="artistId">Artista:</label>
-        <input type="text" id="artistId">
+    <div class="container">
+        <h1 class="mb-4">Inserir Nova Canção</h1>
+        <p class="text-muted"><small>* Campos obrigatórios</small></p>
+        
+        <form id="formId">
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <label for="titleId" class="form-label">Título *</label>
+                    <input type="text" class="form-control" id="titleId" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="toneId" class="form-label">Tom *</label>
+                    <input type="text" class="form-control" id="toneId" placeholder="Ex: C, Am, F#" required>
+                </div>
+            </div>
 
-        <label for="toneId">Tom:</label>
-        <input type="text" id="toneId">
+            <div class="mb-3">
+                <label for="artistId" class="form-label">Artista *</label>
+                <input type="text" class="form-control" id="artistId" required>
+            </div>
 
-        <label for="positionId">Posição:</label>
-        <input type="number" id="positionId">
+            <div class="mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="activeId" checked>
+                    <label class="form-check-label" for="activeId">
+                        Adicionar à lista de músicas ativas
+                    </label>
+                </div>
+            </div>
 
-        <label for="activeId">Ativo</label>
-        <input type="checkbox" id="activeId" checked>
+            <div class="mb-3">
+                <label for="lyricsId" class="form-label">Letra com Cifras *</label>
+                <textarea class="form-control" id="lyricsId" rows="15" 
+                    placeholder="Cole aqui a letra com as cifras. Os acordes serão formatados automaticamente ao salvar.
+Exemplo:
+    C           G
+Era uma casa muito engraçada
+    Am          F
+Não tinha teto não tinha nada"
+                    required></textarea>
+                <div class="form-text">Cole a cifra do Cifra Club ou digite manualmente. Os acordes serão identificados e formatados automaticamente.</div>
+            </div>
 
-        <label for="lyricsId">Letra (HTML):</label>
-        <textarea id="lyricsId"></textarea>
-
-        <button type="button" id="saveButtonId">Salvar</button>
-    </form>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-primary" id="saveButtonId">
+                    <i class="bi bi-check-lg"></i> Salvar Canção
+                </button>
+                <a href="index.html" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

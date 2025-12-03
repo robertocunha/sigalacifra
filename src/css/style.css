@@ -16,4 +16,10 @@ td.title-cell  {
   .title-cell:hover {
     text-decoration: underline; /* Sublinha ao passar o mouse */
   }
+
+/* Placeholders em itálico */
+input::placeholder,
+textarea::placeholder {
+    font-style: italic;
+}
   
