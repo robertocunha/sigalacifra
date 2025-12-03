@@ -19,7 +19,7 @@ if (songId) {
   const tone = document.getElementById("toneId");
   const preElement = document.querySelector("pre");
 
-  const editButton = document.getElementById("editButtonId");
+  const editToggle = document.getElementById("editToggleId");
   const saveButton = document.getElementById("saveButtonId");
   const exportButton = document.getElementById("exportButtonId");
   const increaseToneButton = document.getElementById("increaseToneId");
@@ -84,12 +84,12 @@ if (songId) {
     transposeChords(-1);
   });
 
-  editButton.addEventListener("click", () => {
-    const newEditableState = !preElement.isContentEditable;
-    preElement.contentEditable = newEditableState ? "true" : "false";
+  editToggle.addEventListener("change", () => {
+    const isEditing = editToggle.checked;
+    preElement.contentEditable = isEditing ? "true" : "false";
     
     // Se entrou em modo de edição, coloca o foco no elemento
-    if (newEditableState) {
+    if (isEditing) {
       preElement.focus();
     }
   });
