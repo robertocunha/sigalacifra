@@ -4,6 +4,13 @@
 
 A web app for members of **Siga La Pelota**, a carnival block from São Paulo, Brazil, to manage chord sheets (cifras) for their rehearsals and performances. About 5 people will use it: musicians playing melodic/harmonic instruments (bass, guitar, keyboard) and vocalists.
 
+## Users & Feedback Loop
+
+- **Small, accessible group**: ~5 musicians from Siga La Pelota
+- **Direct communication**: Roberto can easily reach all users for feedback
+- **Iteration-friendly**: Can ship simple solutions, gather real feedback, and refine
+- **Decision-making**: When uncertain, prefer simple MVP over speculation - users can validate quickly
+
 ## Current Status
 
 - **Live at**: https://sigalacifra.web.app/
@@ -86,11 +93,45 @@ Collection: `musicas`
 
 ## Next Steps (Priority Order)
 
-1. ~~Improve create song form layout~~ ✅ DONE (Dec 3, 2025)
-2. Hide "Position" column from users
-3. Add "Format" button to song edit page (reuse chordParser)
-4. Song reordering (buttons or drag-drop)
-5. Improve print/export
+### High Priority: Mobile Usability
+**Context**: Musicians will use the app on phones during rehearsals/performances, often with instruments in hand.
+
+1. **Mobile responsiveness audit**
+   - Test all pages on small screens
+   - Ensure readable font sizes for chords and lyrics
+   - Fix layout issues (text overflow, button placement, etc.)
+
+2. **Optimize transposition for mobile**
+   - Large, easy-to-tap +/- buttons
+   - Usable with one hand if possible
+   - Clear visual feedback on key changes
+
+3. **Improve touch targets**
+   - Larger buttons and tap areas (min 44x44px)
+   - Better spacing between interactive elements
+   - Easier checkbox interaction for archive/unarchive
+
+4. **Optimize editing for mobile**
+   - Disable autocorrect/autocapitalization in contentEditable areas
+   - Prevent "two spaces = period" behavior on Android
+   - Consider custom keyboard hints for chord entry
+
+5. **Simplify navigation**
+   - Reduce number of taps needed for common actions
+   - Clear back/cancel buttons
+   - Breadcrumb or context indication
+
+### Medium Priority: Core Features
+
+6. Hide "Position" column from users (debug leftover)
+7. Add "Format" button to song edit page (reuse chordParser for new text)
+8. Song reordering with buttons (up/down arrows, not drag-drop)
+
+### Low Priority: Nice-to-Have
+
+9. Improve print/export (when desktop usage becomes relevant)
+10. Aesthetic improvements (after usability is solid)
+11. Optimize song creation for mobile (acceptable to do on desktop for now)
 
 ## Code Conventions
 
