@@ -5,25 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siga La Cifra!</title>
 </head>
-<body>  
-    <div class="form-check form-switch d-inline-block me-2">
-        <input class="form-check-input" type="checkbox" id="editToggleId" style="cursor: pointer;">
-        <label class="form-check-label" for="editToggleId" style="cursor: pointer;">Edição</label>
+<body>
+    <div class="container-fluid py-3">
+        <div class="d-flex gap-2 align-items-stretch" id="controlsBar">
+            <!-- Transposição -->
+            <div class="d-flex align-items-center justify-content-center gap-2 border rounded p-2 flex-grow-1" style="min-height: 48px;">
+                <button id="decreaseToneId" class="btn btn-primary btn-lg">−</button>
+                <span class="fw-bold text-nowrap">Tom: <span id="toneId"></span></span>
+                <button id="increaseToneId" class="btn btn-primary btn-lg">+</button>
+            </div>
+            
+            <!-- Toggle Edição -->
+            <div class="d-flex flex-column align-items-center justify-content-center border rounded px-3" style="min-height: 48px;">
+                <label class="form-check-label small mb-1" for="editToggleId" style="cursor: pointer;">Edição</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="editToggleId" role="switch" style="cursor: pointer;">
+                </div>
+            </div>
+            
+            <!-- Salvar -->
+            <button id="saveButtonId" class="btn btn-success btn-lg text-nowrap" style="min-height: 48px;">Salvar</button>
+        </div>
     </div>
-    <button id="saveButtonId">Salvar</button>
-    <button id="exportButtonId">Exportar</button> 
-    <button id="decreaseToneId">Descer Tom</button>
-    <button id="increaseToneId">Subir Tom</button>
+    
     <nav class="navbar navbar-light bg-light">
         <div class="d-flex">
             <a class="btn btn-link" href="index.html">Ativas</a>
             <a class="btn btn-link" href="archived.html">Arquivadas</a>
         </div>
     </nav>
-    <div>
+    <div class="container-fluid">
         <h1 id="titleId"></h1>
         <p id="artistId"></p>
-        <p>Tom: <b id="toneId"></b></p>
+        <p class="d-none d-print-block">Tom: <b id="tonePrintId"></b></p>
         <pre spellcheck="false" autocorrect="off" autocomplete="off"></pre>
     </div>
 </body>

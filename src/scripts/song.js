@@ -17,11 +17,11 @@ if (songId) {
   const title = document.getElementById("titleId");
   const artist = document.getElementById("artistId");
   const tone = document.getElementById("toneId");
+  const tonePrint = document.getElementById("tonePrintId");
   const preElement = document.querySelector("pre");
 
   const editToggle = document.getElementById("editToggleId");
   const saveButton = document.getElementById("saveButtonId");
-  const exportButton = document.getElementById("exportButtonId");
   const increaseToneButton = document.getElementById("increaseToneId");
   const decreaseToneButton = document.getElementById("decreaseToneId");
 
@@ -33,6 +33,9 @@ if (songId) {
     title.innerHTML = songData.title;
     artist.innerHTML = songData.artist || 'Artista desconhecido'; // Exibe 'Artista desconhecido' se não houver dados
     tone.innerHTML = songData.tone;
+    if (tonePrint) {
+      tonePrint.innerHTML = songData.tone;
+    }
     preElement.innerHTML = songData.letra;
   };
 
@@ -72,6 +75,9 @@ if (songId) {
     const currentTone = tone.textContent.trim();
     const transposedTone = transposeChord(currentTone, steps);
     tone.textContent = transposedTone; // Atualiza o tom exibido na página
+    if (tonePrint) {
+      tonePrint.textContent = transposedTone; // Atualiza também a versão de impressão
+    }
   };
 
   increaseToneButton.addEventListener("click", () => {
@@ -104,10 +110,6 @@ if (songId) {
     } catch (error) {
       console.error("Erro ao salvar documento:", error);
     }
-  });
-
-  exportButton.addEventListener("click", () => {
-    window.print();
   });
 } else {
   console.error("ID da música não encontrado na URL.");
