@@ -30,7 +30,10 @@ src/
 │   └── print.css              # Print styles
 └── scripts/
     ├── firebaseConfig.js      # Firebase initialization
-    └── chordParser.js         # Converts plain text to HTML with <b> tags around chords
+    ├── chordParser.js         # Converts plain text to HTML with <b> tags around chords
+    ├── chordParser.test.js    # 22 automated tests for chord parser
+    ├── transpose.js           # Chord transposition logic (shared module)
+    └── transpose.test.js      # 26 automated tests for transposition
 ```
 
 ## Data Model (Firestore)
@@ -60,17 +63,15 @@ Collection: `musicas`
 - ✅ Export/print (basic window.print())
 - ✅ Create new song with chord parser (converts plain text to HTML automatically)
 - ✅ "New Song" button on homepage
+- ✅ Create song form with proper Bootstrap layout, validation, and UX improvements (Dec 2025)
 
 ## What's Missing / Broken
 
 - ❌ No way to delete songs
 - ❌ No way to reorder songs (drag-drop or buttons)
 - ❌ "Position" column shown to users (should be hidden, was for debug)
-- ❌ No validation on forms
-- ❌ No feedback messages (success/error)
 - ❌ Print/export needs improvement
 - ❌ No way to edit title/artist/tone directly
-- ❌ Create song form has poor layout (all fields in one line)
 - ❌ No "Format" button when editing existing songs (new text won't get chord styling)
 - ❌ Mobile responsiveness not tested
 
@@ -85,7 +86,7 @@ Collection: `musicas`
 
 ## Next Steps (Priority Order)
 
-1. Improve create song form layout (fields stacked vertically, better spacing)
+1. ~~Improve create song form layout~~ ✅ DONE (Dec 3, 2025)
 2. Hide "Position" column from users
 3. Add "Format" button to song edit page (reuse chordParser)
 4. Song reordering (buttons or drag-drop)
@@ -115,8 +116,61 @@ Collection: `musicas`
 - Prefers small incremental steps over big changes (learning opportunity)
 - Commits: atomic, frequent, with conventional commit prefixes (feat:, fix:, docs:)
 
+## Testing
+
+- **Framework**: Vitest (lightweight, ES modules compatible)
+- **Coverage**: 48 automated tests covering critical functions
+- **Run tests**: `npm test` (watch mode) or `npm run test:run` (single run)
+
+### Test Coverage
+
+**chordParser.js** (22 tests):
+- Basic chord recognition (C, Am, G7, F#m, etc.)
+- Complex chords (G7M(9), Csus4, Cdim, slash chords)
+- Edge cases: E/Em/A as words vs. chords
+- Chord line detection (>50% threshold)
+- Full text parsing with mixed content
+
+**transpose.js** (26 tests):
+- Basic transposition up/down
+- Sharp/flat notation (sharps when up, flats when down)
+- Extensions preservation (7M, sus4, dim, aug)
+- Slash chords (bass note transposition)
+- Enharmonic equivalents and full circle validation
+- Real-world progressions (I-IV-V, ii-V-I, bossa patterns)
+
+### Known Limitations (Documented in Tests)
+
+- Lines with exactly 50% chords are NOT parsed (need >50%)
+  - Example: "Solo: Em" = 50% → not parsed
+  - Acceptable trade-off to avoid false positives
+- Chords embedded in descriptive text are not parsed
+  - Example: "no breque do D7 entra o vocal" → D7 not parsed
+  - Intentional: prevents false positives in lyrics
+
+## Recent Changes (Changelog)
+
+### December 3, 2025 (Session 2 - Testing)
+- **Automated Testing Setup** (commits: ae667ac, 3a1f1aa, e1260d0)
+  - Configured project for ES modules (required for Vitest)
+  - Added Vitest with 48 tests for chord parser and transposition
+  - Refactored song.js to use transpose.js module (eliminated ~40 lines of duplication)
+  - Documented edge cases and trade-offs in test comments
+  - All tests passing, providing confidence for future changes
+
+### December 3, 2025 (Session 1 - Create Song)
+- **Create Song Form Improvements** (commits: 618040b, 7534e36)
+  - Redesigned with Bootstrap grid layout (responsive columns)
+  - Added proper form validation with required field indicators (*)
+  - Added helpful placeholders in italic style
+  - Removed manual position field (songs now auto-added to end of list)
+  - Added cancel button and improved navbar
+  - Added loading state during save and auto-redirect after success
+  - Cleaned up unused position conflict functions
+
 ## Notes
 
 - Firebase API key is in the repo (acceptable for this low-risk project)
 - No authentication needed - it's a small trusted group
 - Backup is prudent but not critical (just chord sheets, not sensitive data)
+- New songs are always added at the end (position = last + 10), manual positioning removed in favor of future drag-drop reordering
