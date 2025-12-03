@@ -87,6 +87,11 @@ if (songId) {
   editButton.addEventListener("click", () => {
     const newEditableState = !preElement.isContentEditable;
     preElement.contentEditable = newEditableState ? "true" : "false";
+    
+    // Se entrou em modo de edição, coloca o foco no elemento
+    if (newEditableState) {
+      preElement.focus();
+    }
   });
 
   saveButton.addEventListener("click", async () => {

@@ -1,5 +1,13 @@
 pre {
     line-height: 1.8; /* Aumenta o espaçamento entre as linhas */
+    padding: 12px; /* Espaço interno para o cursor ficar visível */
+    transition: background-color 0.2s ease; /* Transição suave ao entrar em modo de edição */
+}
+
+pre[contenteditable="true"] {
+    background-color: #fffbeb; /* Fundo amarelo claro no modo de edição */
+    border: 2px solid #fbbf24; /* Borda amarela para destacar */
+    border-radius: 4px;
 }
 
 b {
