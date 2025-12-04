@@ -36,7 +36,6 @@ const fetchArchivedSongs = async () => {
       row.innerHTML = `
         <td class="title-cell">${title}</td>
         <td>${tone}</td>
-        <td>${position}</td>
         <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}" ${active ? 'disabled' : ''}></td> <!-- Checkbox habilitado ou desabilitado -->
       `;
 

@@ -27,7 +27,6 @@ const renderSongs = (songsSnapshot) => {
     row.innerHTML = `
       <td class="title-cell">${title}</td> <!-- Célula do título agora com classe 'title-cell' -->
       <td>${tone}</td>
-      <td>${position}</td>
       <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}"></td> <!-- Checkbox para ativar/desativar -->
     `;
 
