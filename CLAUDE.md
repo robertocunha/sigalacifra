@@ -73,13 +73,14 @@ Collection: `musicas`
 - ✅ "New Song" button on homepage
 - ✅ Create song form with proper Bootstrap layout, validation, and UX improvements (Dec 2025)
 - ✅ Delete songs (with confirmation dialog) from lists and song page (Dec 2025)
+- ✅ Font size controls (A+/A-) to adjust between 10px-20px, resets to 16px on page load (Dec 2025)
 
 ## What's Missing / Broken
 
 - ❌ No way to reorder songs (drag-drop or buttons)
 - ❌ No way to edit title/artist/tone directly
 - ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
-- ⚠️ Long lines cause horizontal scroll (accepting as trade-off; pre-wrap breaks chord alignment)
+- ⚠️ Long lines cause horizontal scroll - mitigated by font size controls (user can reduce font when needed)
 - ⚠️ Unsaved changes warning (user can close page without saving edits)
 - ⚠️ Android GBoard "two spaces → period" behavior cannot be disabled (attempted multiple approaches - OS-level limitation)
 
@@ -196,6 +197,14 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 5, 2025 (Session 4 - Font Size Controls)
+- **Font Size Adjustment Feature**
+  - Added A+/A- buttons to song page for dynamic font size control
+  - Range: 10px to 20px (default: 16px)
+  - Resets to default on each page load (no persistence)
+  - User can temporarily reduce font to avoid horizontal scroll on long lines
+  - Simple solution that preserves chord alignment while giving user control
 
 ### December 5, 2025 (Session 3 - Delete Songs)
 - **Delete Song Functionality** (commit: d3c2413)

@@ -26,6 +26,26 @@ if (songId) {
   const deleteButton = document.getElementById("deleteButtonId");
   const increaseToneButton = document.getElementById("increaseToneId");
   const decreaseToneButton = document.getElementById("decreaseToneId");
+  const increaseFontButton = document.getElementById("increaseFontId");
+  const decreaseFontButton = document.getElementById("decreaseFontId");
+
+  // Font size control (resets to 16px on page load)
+  let currentFontSize = 16;
+  const MIN_FONT_SIZE = 10;
+  const MAX_FONT_SIZE = 20;
+
+  const updateFontSize = (newSize) => {
+    currentFontSize = Math.max(MIN_FONT_SIZE, Math.min(MAX_FONT_SIZE, newSize));
+    preElement.style.fontSize = `${currentFontSize}px`;
+  };
+
+  increaseFontButton.addEventListener('click', () => {
+    updateFontSize(currentFontSize + 1);
+  });
+
+  decreaseFontButton.addEventListener('click', () => {
+    updateFontSize(currentFontSize - 1);
+  });
 
   // Referência ao documento do Firestore com base no ID capturado
   const docRef = doc(db, "musicas", songId);
