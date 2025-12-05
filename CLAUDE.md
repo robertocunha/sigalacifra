@@ -72,10 +72,10 @@ Collection: `musicas`
 - ✅ Create new song with chord parser (converts plain text to HTML automatically)
 - ✅ "New Song" button on homepage
 - ✅ Create song form with proper Bootstrap layout, validation, and UX improvements (Dec 2025)
+- ✅ Delete songs (with confirmation dialog) from lists and song page (Dec 2025)
 
 ## What's Missing / Broken
 
-- ❌ No way to delete songs
 - ❌ No way to reorder songs (drag-drop or buttons)
 - ❌ No way to edit title/artist/tone directly
 - ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
@@ -195,6 +195,15 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 5, 2025 (Session 3 - Delete Songs)
+- **Delete Song Functionality** (commit: d3c2413)
+  - Added 'Ações' column with delete button (🗑️) to song lists (index.html, archived.html)
+  - Implemented deleteDoc in index.js, archived.js, and song.js
+  - Added confirmation dialog before deleting
+  - Song page redirects to index.html after successful deletion
+  - Real-time list updates in active songs, manual row removal in archived songs
+  - All 48 tests passing
 
 ### December 3, 2025 (Session 2 - Testing)
 - **Automated Testing Setup** (commits: ae667ac, 3a1f1aa, e1260d0)
