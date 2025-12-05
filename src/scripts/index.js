@@ -1,19 +1,56 @@
 import 'bootstrap/dist/css/bootstrap.min.css'; // Estilos
 import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
+import Sortable from 'sortablejs';
 
 // Imports de CSS para uso do Webpack
 import '../css/print.css';
 import '../css/style.css';
 
-import { collection, query, where, orderBy, doc, updateDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, orderBy, doc, updateDoc, deleteDoc, onSnapshot, writeBatch } from 'firebase/firestore';
 import { db } from './firebaseConfig.js';
 
 const tableBody = document.getElementById('songs-table').querySelector('tbody');
+
+// Variable to store the Sortable instance
+let sortableInstance = null;
+
+// Variable to store current songs data for position calculations
+let currentSongs = [];
+
+// Function to update positions in Firestore after drag-and-drop
+async function updatePositions(oldIndex, newIndex) {
+  // Create a copy of the current songs array
+  const reorderedSongs = [...currentSongs];
+  
+  // Move the item from oldIndex to newIndex
+  const [movedSong] = reorderedSongs.splice(oldIndex, 1);
+  reorderedSongs.splice(newIndex, 0, movedSong);
+
+  // Calculate new positions (keeping 10-unit gaps)
+  const batch = writeBatch(db);
+  
+  reorderedSongs.forEach((song, index) => {
+    const newPosition = (index + 1) * 10;
+    if (song.position !== newPosition) {
+      const songRef = doc(db, 'musicas', song.id);
+      batch.update(songRef, { position: newPosition });
+    }
+  });
+
+  await batch.commit();
+}
 
 // Função para renderizar a tabela com músicas
 const renderSongs = (songsSnapshot) => {
   // Limpa qualquer conteúdo antigo da tabela
   tableBody.innerHTML = '';
+
+  // Store current songs data for position calculations
+  currentSongs = songsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    position: doc.data().position,
+    ...doc.data()
+  }));
 
   // Preenche a tabela com as músicas ativas e ordenadas
   songsSnapshot.forEach((docSnap) => {
@@ -21,14 +58,16 @@ const renderSongs = (songsSnapshot) => {
 
     // Cria uma nova linha para cada música
     const row = document.createElement('tr');
-    row.style.cursor = 'pointer';
+    row.dataset.id = docSnap.id; // Store doc ID for later use
+    row.style.minHeight = '60px';
 
     // Cria células para cada dado
     row.innerHTML = `
-      <td class="title-cell">${title}</td> <!-- Célula do título agora com classe 'title-cell' -->
-      <td>${tone}</td>
-      <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}"></td> <!-- Checkbox para ativar/desativar -->
-      <td><button class="btn btn-danger btn-sm delete-btn" data-id="${docSnap.id}">🗑️</button></td>
+      <td class="drag-handle" style="cursor: grab; text-align: center; vertical-align: middle; font-size: 20px; padding: 15px 10px;">⋮⋮</td>
+      <td class="title-cell" style="cursor: pointer; padding: 15px 10px;">${title}</td>
+      <td style="padding: 15px 10px;">${tone}</td>
+      <td style="padding: 15px 10px;"><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}"></td>
+      <td style="padding: 15px 10px;"><button class="btn btn-danger btn-sm delete-btn" data-id="${docSnap.id}">🗑️</button></td>
     `;
 
     // Adiciona o evento de clique para redirecionar para song.html com o ID do documento
@@ -79,6 +118,32 @@ const renderSongs = (songsSnapshot) => {
 
     // Insere a linha na tabela
     tableBody.appendChild(row);
+  });
+
+  // Initialize or re-initialize Sortable after rendering
+  if (sortableInstance) {
+    sortableInstance.destroy();
+  }
+
+  sortableInstance = new Sortable(tableBody, {
+    animation: 150,
+    handle: '.drag-handle', // Only the handle can initiate drag
+    ghostClass: 'sortable-ghost', // Class for the drop placeholder
+    chosenClass: 'sortable-chosen', // Class for the chosen item
+    dragClass: 'sortable-drag', // Class for the dragging item
+    onEnd: async function(evt) {
+      if (evt.oldIndex === evt.newIndex) return; // No change
+
+      console.log('Item dragged from index', evt.oldIndex, 'to', evt.newIndex);
+      
+      try {
+        await updatePositions(evt.oldIndex, evt.newIndex);
+        console.log('Positions updated successfully');
+      } catch (error) {
+        console.error('Error updating positions:', error);
+        alert('Erro ao reordenar músicas. Tente novamente.');
+      }
+    }
   });
 };
 

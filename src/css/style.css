@@ -32,4 +32,24 @@ input::placeholder,
 textarea::placeholder {
     font-style: italic;
 }
+
+/* Drag-and-drop styles */
+.sortable-ghost {
+    opacity: 0.4;
+    background-color: #f0f0f0;
+}
+
+.sortable-chosen {
+    background-color: #e3f2fd;
+}
+
+.sortable-drag {
+    opacity: 1;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
   
