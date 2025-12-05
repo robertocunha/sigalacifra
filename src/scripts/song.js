@@ -50,8 +50,13 @@ if (songId) {
   // Referência ao documento do Firestore com base no ID capturado
   const docRef = doc(db, "musicas", songId);
 
+  // Variável para armazenar o estado atual da música
+  let currentSongData = null;
+  let hasUnsavedChanges = false;
+
   // Função que lida com a atualização da interface com os dados da música
   const updateSongData = (songData) => {
+    currentSongData = songData; // Armazena os dados para uso posterior
     title.innerHTML = songData.title;
     artist.innerHTML = songData.artist || 'Artista desconhecido'; // Exibe 'Artista desconhecido' se não houver dados
     tone.innerHTML = songData.tone;
@@ -59,6 +64,7 @@ if (songId) {
       tonePrint.innerHTML = songData.tone;
     }
     preElement.innerHTML = songData.letra;
+    hasUnsavedChanges = false; // Reset ao carregar novos dados
   };
 
   // Substitui o getDoc por onSnapshot para receber atualizações em tempo real
@@ -105,11 +111,13 @@ if (songId) {
   increaseToneButton.addEventListener("click", () => {
     console.log("Subindo tom...");
     transposeChords(1);
+    hasUnsavedChanges = true; // Marca como alterado ao transpor
   });
 
   decreaseToneButton.addEventListener("click", () => {
     console.log("Descendo tom...");
     transposeChords(-1);
+    hasUnsavedChanges = true; // Marca como alterado ao transpor
   });
 
   editToggle.addEventListener("change", () => {
@@ -119,6 +127,38 @@ if (songId) {
     // Se entrou em modo de edição, coloca o foco no elemento
     if (isEditing) {
       preElement.focus();
+    }
+  });
+
+  // Detecta alterações no conteúdo editável
+  preElement.addEventListener("input", () => {
+    if (editToggle.checked) {
+      hasUnsavedChanges = true;
+    }
+  });
+
+  // Aviso ao tentar sair com edições não salvas
+  window.addEventListener("beforeunload", (e) => {
+    if (hasUnsavedChanges) {
+      e.preventDefault();
+      e.returnValue = ""; // Necessário para Chrome
+      return ""; // Para outros navegadores
+    }
+  });
+
+  // Atalhos de teclado
+  document.addEventListener("keydown", (e) => {
+    // Ctrl+S ou Cmd+S para salvar
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      saveButton.click();
+    }
+    
+    // Ctrl+E ou Cmd+E para toggle do modo edição
+    if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+      e.preventDefault();
+      editToggle.checked = !editToggle.checked;
+      editToggle.dispatchEvent(new Event('change'));
     }
   });
 
@@ -138,10 +178,77 @@ if (songId) {
     try {
       await setDoc(docRef, { letra: updatedContent, tone: updatedTone }, { merge: true });
       console.log("Documento atualizado e formatado com sucesso!");
+      hasUnsavedChanges = false; // Marca como salvo
+      
+      // Desliga o modo de edição
+      editToggle.checked = false;
+      preElement.contentEditable = "false";
+      
+      // Mostra feedback visual se o usuário não desabilitou
+      if (localStorage.getItem('hideSaveNotification') !== 'true') {
+        showSaveNotification();
+      }
     } catch (error) {
       console.error("Erro ao salvar documento:", error);
+      alert("Erro ao salvar a música. Tente novamente.");
     }
   });
+
+  // Função para mostrar notificação de salvamento
+  function showSaveNotification() {
+    // Remove notificação anterior se existir
+    const existingNotification = document.getElementById('saveNotification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
+    // Cria a notificação
+    const notification = document.createElement('div');
+    notification.id = 'saveNotification';
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 250px;
+    `;
+    
+    notification.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 18px;">✓</span>
+        <span style="font-weight: 500;">Música salva com sucesso!</span>
+      </div>
+      <label style="font-size: 13px; cursor: pointer; user-select: none; display: flex; align-items: center; gap: 6px;">
+        <input type="checkbox" id="dontShowAgain" style="cursor: pointer;">
+        Não exibir novamente
+      </label>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Handler para o checkbox
+    const checkbox = notification.querySelector('#dontShowAgain');
+    checkbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        localStorage.setItem('hideSaveNotification', 'true');
+      }
+    });
+    
+    // Remove após 3 segundos
+    setTimeout(() => {
+      notification.style.transition = 'opacity 0.3s';
+      notification.style.opacity = '0';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }
 
   deleteButton.addEventListener("click", async () => {
     const songTitle = title.textContent;
@@ -150,10 +257,14 @@ if (songId) {
     if (!confirmed) return;
 
     try {
+      // Determina para onde redirecionar baseado no estado 'active' da música
+      const redirectTo = currentSongData?.active ? "index.html" : "archived.html";
+      
       await deleteDoc(docRef);
       console.log("Música deletada com sucesso!");
-      // Redireciona para a página de músicas ativas
-      window.location.href = "index.html";
+      
+      // Redireciona para a página apropriada
+      window.location.href = redirectTo;
     } catch (error) {
       console.error("Erro ao deletar a música:", error);
       alert("Erro ao deletar a música. Tente novamente.");

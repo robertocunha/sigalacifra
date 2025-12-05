@@ -3,29 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siga La Cifra!</title>
+    <title>Siga La Cifra! | Músicas Ativas</title>
 </head>
 <body>  
-    <h1>Músicas Ativas</h1>
-    <nav class="navbar navbar-light bg-light">
-        <div class="d-flex">
-            <a class="btn btn-primary" href="createSong.html">+ Nova Música</a>
-            <a class="btn btn-link" href="archived.html">Arquivadas</a>
-        </div>
-    </nav>
-    <table class="table" id="songs-table" border="1">
-        <thead>
-            <tr>
-                <th style="width: 40px;"></th>
-                <th>Título</th>
-                <th>Tom</th>
-                <th>Ativa</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- As linhas das músicas serão inseridas aqui pelo JavaScript -->
-        </tbody>
-    </table>
+    <header>
+        <h1>Músicas Ativas</h1>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <a href="index.html" class="navbar-brand mb-0 h1" style="text-decoration: none;">Siga La Cifra!</a>
+                <div class="d-flex">
+                    <a class="btn btn-primary" href="createSong.html">+ Nova Música</a>
+                    <span class="btn btn-link active fw-bold" aria-current="page">Ativas</span>
+                    <a class="btn btn-link" href="archived.html">Arquivadas</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <table class="table" id="songs-table" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 40px;"></th>
+                    <th>Título</th>
+                    <th>Tom</th>
+                    <th>Ativa</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As linhas das músicas serão inseridas aqui pelo JavaScript -->
+            </tbody>
+        </table>
+    </main>
 </body>
 </html>

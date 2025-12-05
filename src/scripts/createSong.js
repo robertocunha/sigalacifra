@@ -12,11 +12,23 @@ import { parseChordSheet } from './chordParser.js';
 // Referências aos elementos
 const form = document.getElementById("formId");
 const saveButton = document.getElementById("saveButtonId");
+const cancelButton = document.getElementById("cancelButtonId");
 const titleInput = document.getElementById("titleId");
 const artistInput = document.getElementById("artistId");
 const toneInput = document.getElementById("toneId");
 const activeInput = document.getElementById("activeId");
 const lyricsInput = document.getElementById("lyricsId");
+
+// Botão Cancelar - volta para a página anterior ou index.html
+cancelButton.addEventListener("click", () => {
+    // Verifica se há histórico de navegação
+    if (document.referrer && (document.referrer.includes('index.html') || document.referrer.includes('archived.html'))) {
+        window.history.back();
+    } else {
+        // Fallback para index.html se não houver referrer válido
+        window.location.href = "index.html";
+    }
+});
 
 saveButton.addEventListener("click", async () => {
     // Obtenção dos valores dos inputs
@@ -57,7 +69,8 @@ saveButton.addEventListener("click", async () => {
             letra: lyrics
         });
         alert("Canção salva com sucesso!");
-        window.location.href = active ? "index.html" : "archived.html"; // Redireciona para a lista apropriada
+        // Redireciona para visualizar a música criada
+        window.location.href = `song.html?id=${docRef.id}`;
     } catch (e) {
         console.error("Erro ao salvar canção: ", e);
         alert("Erro ao salvar a canção. Tente novamente.");

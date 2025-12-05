@@ -70,19 +70,22 @@ Collection: `musicas`
 - ✅ Auto-format chords on save (newly added chords automatically styled in orange)
 - ✅ Export/print (basic window.print())
 - ✅ Create new song with chord parser (converts plain text to HTML automatically)
-- ✅ "New Song" button on homepage
+- ✅ "New Song" button accessible from all pages
 - ✅ Create song form with proper Bootstrap layout, validation, and UX improvements (Dec 2025)
 - ✅ Delete songs (with confirmation dialog) from lists and song page (Dec 2025)
 - ✅ Font size controls (A+/A-) to adjust between 10px-20px, resets to 16px on page load (Dec 2025)
 - ✅ Drag-and-drop song reordering with touch-optimized handles (Dec 2025)
+- ✅ Consistent navigation with page indicators (Dec 2025)
+- ✅ Smart redirects after delete/cancel/save (Dec 2025)
+- ✅ Unsaved changes warning when leaving page (Dec 2025)
+- ✅ Keyboard shortcuts (Ctrl+S to save, Ctrl+E to toggle edit mode) (Dec 2025)
+- ✅ Visual save feedback with dismissible notification (Dec 2025)
 
 ## What's Missing / Broken
 
 - ❌ No way to edit title/artist/tone directly
 - ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
 - ⚠️ Long lines cause horizontal scroll - mitigated by font size controls (user can reduce font when needed)
-- ⚠️ Unsaved changes warning (user can close page without saving edits)
-- ⚠️ Android GBoard "two spaces → period" behavior cannot be disabled (attempted multiple approaches - OS-level limitation)
 
 ## MVP Requirements (for carnival)
 
@@ -197,6 +200,30 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 5, 2025 (Session 6 - Navigation Improvements)
+- **Enhanced Navigation & UX** (commits pending)
+  - Standardized page titles: "Siga La Cifra! | [Section]"
+  - Added semantic HTML structure (header/main) to all pages
+  - Unified navbar with brand logo across all pages
+  - Added visual indicators for current page (bold, no link)
+  - Made "Siga La Cifra!" logo clickable to return to home
+  - Smart redirects after actions:
+    - Delete redirects to appropriate list (active/archived)
+    - Cancel button returns to previous page using history
+    - Create song redirects to view newly created song
+  - Unsaved changes warning (beforeunload) for:
+    - Content edits in edit mode
+    - Chord transpositions
+  - Keyboard shortcuts:
+    - Ctrl+S / Cmd+S: Save changes
+    - Ctrl+E / Cmd+E: Toggle edit mode
+  - Save feedback improvements:
+    - Green notification with success message
+    - "Don't show again" option (saved in localStorage)
+    - Auto-dismisses after 3 seconds with fade out
+    - Automatically exits edit mode after save
+  - Removed arrow key shortcuts for transposition (conflicts with scrolling)
 
 ### December 5, 2025 (Session 5 - Drag-and-Drop Reordering)
 - **Song Reordering with Drag-and-Drop** (commit: 5a76f86)
