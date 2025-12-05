@@ -67,6 +67,7 @@ Collection: `musicas`
 - ✅ Transpose chords up/down (with proper handling of extensions and bass notes)
 - ✅ Edit song content (contentEditable)
 - ✅ Save changes to Firestore
+- ✅ Auto-format chords on save (newly added chords automatically styled in orange)
 - ✅ Export/print (basic window.print())
 - ✅ Create new song with chord parser (converts plain text to HTML automatically)
 - ✅ "New Song" button on homepage
@@ -77,8 +78,6 @@ Collection: `musicas`
 - ❌ No way to delete songs
 - ❌ No way to reorder songs (drag-drop or buttons)
 - ❌ No way to edit title/artist/tone directly
-- ❌ No "Format" button when editing existing songs (manually added chords don't get orange styling)
-  - **Options discussed**: A) Add "Format" button, B) Auto-format on save
 - ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
 - ⚠️ Long lines cause horizontal scroll (accepting as trade-off; pre-wrap breaks chord alignment)
 - ⚠️ Unsaved changes warning (user can close page without saving edits)
@@ -130,8 +129,7 @@ Collection: `musicas`
 ### Medium Priority: Core Features
 
 6. ✅ **DONE** - Hide "Position" column from users (Dec 3, 2025)
-7. Add "Format" button to song edit page (reuse chordParser for new text)
-   - **Decision needed**: Button vs auto-format on save
+7. ✅ **DONE** - Auto-format chords on save (Dec 5, 2025)
 8. Song reordering with buttons (up/down arrows, not drag-drop)
 
 ### Low Priority: Nice-to-Have
