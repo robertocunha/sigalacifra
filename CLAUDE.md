@@ -90,7 +90,7 @@ Collection: `musicas`
 2. **Edit songs** - Modify chords, add annotations like "Guitar enters alone"
 3. **Transpose** - Change key up/down ✅ (works)
 4. **Archive/unarchive** - Manage active repertoire ✅ (works)
-5. **Reorder songs** - Change performance order (drag-drop ideal, buttons acceptable)
+5. **Reorder songs** - Change performance order ✅ (drag-drop implemented!)
 6. **Print/export** - Generate PDFs for printing
 
 ## Next Steps (Priority Order)
