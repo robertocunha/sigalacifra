@@ -74,10 +74,10 @@ Collection: `musicas`
 - ✅ Create song form with proper Bootstrap layout, validation, and UX improvements (Dec 2025)
 - ✅ Delete songs (with confirmation dialog) from lists and song page (Dec 2025)
 - ✅ Font size controls (A+/A-) to adjust between 10px-20px, resets to 16px on page load (Dec 2025)
+- ✅ Drag-and-drop song reordering with touch-optimized handles (Dec 2025)
 
 ## What's Missing / Broken
 
-- ❌ No way to reorder songs (drag-drop or buttons)
 - ❌ No way to edit title/artist/tone directly
 - ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
 - ⚠️ Long lines cause horizontal scroll - mitigated by font size controls (user can reduce font when needed)
@@ -132,7 +132,7 @@ Collection: `musicas`
 
 6. ✅ **DONE** - Hide "Position" column from users (Dec 3, 2025)
 7. ✅ **DONE** - Auto-format chords on save (Dec 5, 2025)
-8. Song reordering with buttons (up/down arrows, not drag-drop)
+8. ✅ **DONE** - Drag-and-drop song reordering (Dec 5, 2025)
 
 ### Low Priority: Nice-to-Have
 
@@ -197,6 +197,19 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 5, 2025 (Session 5 - Drag-and-Drop Reordering)
+- **Song Reordering with Drag-and-Drop** (commit: 5a76f86)
+  - Installed SortableJS library (4KB, mobile-optimized)
+  - Added drag handle (⋮⋮) as first column in song list
+  - Handle-only dragging (prevents conflict with scrolling)
+  - Increased row height to 60px with 15px padding for better touch targets
+  - Visual feedback during drag (ghost, chosen, and drag states)
+  - Batch update to Firestore on drop (efficient, single transaction)
+  - Recalculates all positions with 10-unit gaps (10, 20, 30...)
+  - Real-time sync via onSnapshot (changes reflect immediately)
+  - Tested on desktop and mobile - excellent usability
+  - Inspired by Cifra Club mobile app UX
 
 ### December 5, 2025 (Session 4 - Font Size Controls)
 - **Font Size Adjustment Feature**
