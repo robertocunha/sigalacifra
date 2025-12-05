@@ -76,11 +76,12 @@ Collection: `musicas`
 
 - ❌ No way to delete songs
 - ❌ No way to reorder songs (drag-drop or buttons)
-- ❌ "Position" column shown to users (should be hidden, was for debug)
-- ❌ Print/export needs improvement
 - ❌ No way to edit title/artist/tone directly
-- ❌ No "Format" button when editing existing songs (new text won't get chord styling)
-- ❌ Mobile responsiveness not tested
+- ❌ No "Format" button when editing existing songs (manually added chords don't get orange styling)
+  - **Options discussed**: A) Add "Format" button, B) Auto-format on save
+- ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
+- ⚠️ Long lines cause horizontal scroll (accepting as trade-off; pre-wrap breaks chord alignment)
+- ⚠️ Unsaved changes warning (user can close page without saving edits)
 
 ## MVP Requirements (for carnival)
 
