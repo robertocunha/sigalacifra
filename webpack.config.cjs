@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: {
@@ -61,6 +62,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css', // Corrige o conflito gerando nomes diferentes para os arquivos CSS
     }),
+    new Dotenv(),
   ],
   devtool: 'eval-source-map',
 };
