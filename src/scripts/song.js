@@ -6,7 +6,7 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { db } from './firebaseConfig.js';
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc, deleteDoc } from "firebase/firestore";
 import { transposeChord } from './transpose.js';
 import { parseChordSheet } from './chordParser.js';
 
@@ -23,6 +23,7 @@ if (songId) {
 
   const editToggle = document.getElementById("editToggleId");
   const saveButton = document.getElementById("saveButtonId");
+  const deleteButton = document.getElementById("deleteButtonId");
   const increaseToneButton = document.getElementById("increaseToneId");
   const decreaseToneButton = document.getElementById("decreaseToneId");
 
@@ -119,6 +120,23 @@ if (songId) {
       console.log("Documento atualizado e formatado com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar documento:", error);
+    }
+  });
+
+  deleteButton.addEventListener("click", async () => {
+    const songTitle = title.textContent;
+    const confirmed = confirm(`Tem certeza que deseja deletar "${songTitle}"?`);
+    
+    if (!confirmed) return;
+
+    try {
+      await deleteDoc(docRef);
+      console.log("Música deletada com sucesso!");
+      // Redireciona para a página de músicas ativas
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Erro ao deletar a música:", error);
+      alert("Erro ao deletar a música. Tente novamente.");
     }
   });
 } else {

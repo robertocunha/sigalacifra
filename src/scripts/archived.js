@@ -5,7 +5,7 @@ import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
 import '../css/print.css';
 import '../css/style.css';
 
-import { collection, getDocs, query, where, orderBy, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig.js';
 
 const tableBody = document.getElementById('songs-table').querySelector('tbody');
@@ -37,6 +37,7 @@ const fetchArchivedSongs = async () => {
         <td class="title-cell">${title}</td>
         <td>${tone}</td>
         <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}" ${active ? 'disabled' : ''}></td> <!-- Checkbox habilitado ou desabilitado -->
+        <td><button class="btn btn-danger btn-sm delete-btn" data-id="${docSnap.id}">🗑️</button></td>
       `;
 
       // Adiciona o evento de clique para redirecionar para song.html com o ID do documento
@@ -68,6 +69,27 @@ const fetchArchivedSongs = async () => {
           }
         } catch (error) {
           console.error('Erro ao atualizar o estado de ativo da música:', error);
+        }
+      });
+
+      // Adiciona o evento para deletar a música
+      const deleteButton = row.querySelector('.delete-btn');
+      deleteButton.addEventListener('click', async (e) => {
+        e.stopPropagation(); // Evita que o clique acione outros eventos da linha
+        
+        const confirmed = confirm(`Tem certeza que deseja deletar "${title}"?`);
+        if (!confirmed) return;
+
+        const songDocRef = doc(db, 'musicas', docSnap.id);
+
+        try {
+          await deleteDoc(songDocRef);
+          console.log('Música deletada com sucesso');
+          // Remove a linha da tabela imediatamente
+          row.remove();
+        } catch (error) {
+          console.error('Erro ao deletar a música:', error);
+          alert('Erro ao deletar a música. Tente novamente.');
         }
       });
 
