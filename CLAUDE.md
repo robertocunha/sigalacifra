@@ -94,38 +94,44 @@ Collection: `musicas`
 
 ## Next Steps (Priority Order)
 
-### High Priority: Mobile Usability
+### High Priority: Mobile Usability (In Progress)
 **Context**: Musicians will use the app on phones during rehearsals/performances, often with instruments in hand.
 
-1. **Mobile responsiveness audit**
-   - Test all pages on small screens
-   - Ensure readable font sizes for chords and lyrics
-   - Fix layout issues (text overflow, button placement, etc.)
+1. **Mobile responsiveness audit** ✅ **DONE (Dec 3, 2025)**
+   - ✅ Tested song page on mobile via scrcpy
+   - ✅ Increased font size to 16px for better legibility
+   - ✅ Adjusted line-height for consistent spacing
+   - ✅ Reorganized controls into single row with proper sizing
+   - ✅ Hidden "Position" column from song lists
 
-2. **Optimize transposition for mobile**
-   - Large, easy-to-tap +/- buttons
-   - Usable with one hand if possible
-   - Clear visual feedback on key changes
+2. **Optimize transposition for mobile** ✅ **DONE (Dec 3, 2025)**
+   - ✅ Large, easy-to-tap +/- buttons (btn-lg)
+   - ✅ Prominent placement with tone display between buttons
+   - ✅ Clear visual feedback on key changes
 
-3. **Improve touch targets**
-   - Larger buttons and tap areas (min 44x44px)
-   - Better spacing between interactive elements
-   - Easier checkbox interaction for archive/unarchive
+3. **Improve touch targets** ✅ **DONE (Dec 3, 2025)**
+   - ✅ All buttons min 48px height
+   - ✅ Better spacing with Bootstrap gap utilities
+   - ✅ Toggle switch for edit mode (clear on/off state)
 
-4. **Optimize editing for mobile**
-   - Disable autocorrect/autocapitalization in contentEditable areas
-   - Prevent "two spaces = period" behavior on Android
-   - Consider custom keyboard hints for chord entry
+4. **Optimize editing for mobile** ✅ **DONE (Dec 3, 2025)**
+   - ✅ Disabled spellcheck (no more distracting underlines)
+   - ✅ Disabled autocorrect and autocomplete
+   - ✅ Re-enabled autocapitalize (natural text input)
+   - ✅ Added padding to pre element (cursor always visible)
+   - ✅ Visual feedback on edit mode (yellow background)
+   - ✅ Auto-focus when entering edit mode
 
-5. **Simplify navigation**
-   - Reduce number of taps needed for common actions
-   - Clear back/cancel buttons
-   - Breadcrumb or context indication
+5. **Remaining mobile tasks**
+   - Test create song page on mobile
+   - Test song lists (active/archived) on mobile
+   - Verify navigation flows on mobile
 
 ### Medium Priority: Core Features
 
-6. Hide "Position" column from users (debug leftover)
+6. ✅ **DONE** - Hide "Position" column from users (Dec 3, 2025)
 7. Add "Format" button to song edit page (reuse chordParser for new text)
+   - **Decision needed**: Button vs auto-format on save
 8. Song reordering with buttons (up/down arrows, not drag-drop)
 
 ### Low Priority: Nice-to-Have
