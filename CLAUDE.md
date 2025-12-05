@@ -90,7 +90,7 @@ Collection: `musicas`
 ## MVP Requirements (for carnival)
 
 1. **Create songs** - Paste from cifraclub.com and save ✅ (done!)
-2. **Edit songs** - Modify chords, add annotations like "Guitar enters alone"
+2. **Edit songs** - Modify chords, add annotations like "Guitar enters alone" ✅ (done!)
 3. **Transpose** - Change key up/down ✅ (works)
 4. **Archive/unarchive** - Manage active repertoire ✅ (works)
 5. **Reorder songs** - Change performance order ✅ (drag-drop implemented!)
