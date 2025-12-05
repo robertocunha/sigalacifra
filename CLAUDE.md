@@ -81,6 +81,7 @@ Collection: `musicas`
 - ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
 - ⚠️ Long lines cause horizontal scroll (accepting as trade-off; pre-wrap breaks chord alignment)
 - ⚠️ Unsaved changes warning (user can close page without saving edits)
+- ⚠️ Android GBoard "two spaces → period" behavior cannot be disabled (attempted multiple approaches - OS-level limitation)
 
 ## MVP Requirements (for carnival)
 
