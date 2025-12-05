@@ -8,6 +8,7 @@ import '../css/style.css';
 import { db } from './firebaseConfig.js';
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { transposeChord } from './transpose.js';
+import { parseChordSheet } from './chordParser.js';
 
 // Captura o ID da música do parâmetro "id" no URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -101,12 +102,21 @@ if (songId) {
   });
 
   saveButton.addEventListener("click", async () => {
-    const updatedContent = preElement.innerHTML;
-    const updatedTone = tone.textContent.trim(); // Pega o tom atualizado exibido na página
+    // Pega o conteúdo atual
+    let updatedContent = preElement.innerHTML;
+    const updatedTone = tone.textContent.trim();
+
+    // Auto-formatar: converte HTML para texto puro e reaplicar parseChordSheet
+    // Isso garante que acordes recém-adicionados fiquem laranja
+    const plainText = preElement.textContent;
+    updatedContent = parseChordSheet(plainText);
+    
+    // Atualiza a visualização imediatamente (feedback visual)
+    preElement.innerHTML = updatedContent;
 
     try {
-      await setDoc(docRef, { letra: updatedContent, tone: updatedTone }, { merge: true }); // Salva tom e letra atualizados
-      console.log("Documento atualizado com sucesso!");
+      await setDoc(docRef, { letra: updatedContent, tone: updatedTone }, { merge: true });
+      console.log("Documento atualizado e formatado com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar documento:", error);
     }
