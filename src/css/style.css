@@ -1,3 +1,28 @@
+/* Layout responsivo com largura máxima */
+body {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Header navbar com mais espaçamento */
+.navbar {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+/* Responsive logo sizing */
+.navbar-brand img {
+    max-height: 15vh; /* 15% of viewport height on lists */
+    width: auto;
+    height: auto;
+}
+
+/* Smaller logo on song page */
+body.song-page .navbar-brand img {
+    max-height: 8vh; /* Smaller on song page where space is precious */
+}
+
 pre {
     line-height: 1.5; /* Espaçamento entre linhas mais compacto e uniforme */
     padding: 12px; /* Espaço interno para o cursor ficar visível */
@@ -52,4 +77,39 @@ textarea::placeholder {
 .drag-handle:active {
     cursor: grabbing;
 }
-  
+
+/* Floating Action Button */
+.fab {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.fab span {
+    color: white;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.fab:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+

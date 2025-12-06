@@ -7,12 +7,12 @@
 </head>
 <body>  
     <header>
-        <h1>Músicas Ativas</h1>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a href="index.html" class="navbar-brand mb-0 h1" style="text-decoration: none;">Siga La Cifra!</a>
+                <a href="index.html" class="navbar-brand p-0 m-0" style="text-decoration: none;">
+                    <img src="images/logo.png" alt="Siga La Cifra!">
+                </a>
                 <div class="d-flex">
-                    <a class="btn btn-primary" href="createSong.html">+ Nova Música</a>
                     <span class="btn btn-link active fw-bold" aria-current="page">Ativas</span>
                     <a class="btn btn-link" href="archived.html">Arquivadas</a>
                 </div>
@@ -20,6 +20,7 @@
         </nav>
     </header>
     <main>
+        <h1 class="my-4">Músicas Ativas</h1>
         <table class="table" id="songs-table" border="1">
             <thead>
                 <tr>
@@ -35,5 +36,10 @@
             </tbody>
         </table>
     </main>
+    
+    <!-- Floating Action Button -->
+    <a href="createSong.html" class="fab" title="Nova música">
+        <span>+</span>
+    </a>
 </body>
 </html>

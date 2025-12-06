@@ -5,47 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siga La Cifra! | Música</title>
 </head>
-<body>
+<body class="song-page">
     <header>
-        <div class="container-fluid py-3">
-            <div class="d-flex gap-2 align-items-stretch" id="controlsBar">
-                <!-- Transposição -->
-                <div class="d-flex align-items-center justify-content-center gap-2 border rounded p-2 flex-grow-1" style="min-height: 48px;">
-                    <button id="decreaseToneId" class="btn btn-primary btn-lg">−</button>
-                    <span class="fw-bold text-nowrap">Tom: <span id="toneId"></span></span>
-                    <button id="increaseToneId" class="btn btn-primary btn-lg">+</button>
-                </div>
-                
-                <!-- Tamanho da fonte -->
-                <div class="d-flex align-items-center justify-content-center gap-2 border rounded p-2" style="min-height: 48px;">
-                    <button id="decreaseFontId" class="btn btn-secondary btn-lg">A−</button>
-                    <button id="increaseFontId" class="btn btn-secondary btn-lg">A+</button>
-                </div>
-                
-                <!-- Toggle Edição -->
-                <div class="d-flex flex-column align-items-center justify-content-center border rounded px-3" style="min-height: 48px;">
-                    <label class="form-check-label small mb-1" for="editToggleId" style="cursor: pointer;">Edição</label>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="editToggleId" role="switch" style="cursor: pointer;">
-                    </div>
-                </div>
-                
-                <!-- Salvar -->
-                <button id="saveButtonId" class="btn btn-success btn-lg text-nowrap" style="min-height: 48px;">Salvar</button>
-                
-                <!-- Deletar -->
-                <button id="deleteButtonId" class="btn btn-danger btn-lg text-nowrap" style="min-height: 48px;">🗑️</button>
-                
-                <!-- Imprimir -->
-                <button id="printButtonId" class="btn btn-secondary btn-lg text-nowrap" style="min-height: 48px;">🖨️</button>
-            </div>
-        </div>
-        
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a href="index.html" class="navbar-brand mb-0 h1" style="text-decoration: none;">Siga La Cifra!</a>
+                <a href="index.html" class="navbar-brand p-0 m-0" style="text-decoration: none;">
+                    <img src="images/logo.png" alt="Siga La Cifra!" height="210">
+                </a>
                 <div class="d-flex">
-                    <a class="btn btn-primary" href="createSong.html">+ Nova Música</a>
                     <a class="btn btn-link" href="index.html">Ativas</a>
                     <a class="btn btn-link" href="archived.html">Arquivadas</a>
                 </div>
@@ -53,6 +20,47 @@
         </nav>
     </header>
     <main class="container-fluid">
+        <div class="py-3">
+            <!-- Controles responsivos: grupos que quebram juntos -->
+            <div class="d-flex flex-wrap gap-3 mb-3" id="controlsBar">
+                <!-- Grupo 1: Controles de Edição -->
+                <div class="d-flex gap-3 align-items-stretch" style="margin-right: 1.5rem;">
+                    <!-- Transposição -->
+                    <div class="d-flex align-items-center justify-content-center gap-2 border rounded p-2" style="min-height: 48px;">
+                        <button id="decreaseToneId" class="btn btn-primary btn-lg">−</button>
+                        <span class="fw-bold text-nowrap">Tom: <span id="toneId"></span></span>
+                        <button id="increaseToneId" class="btn btn-primary btn-lg">+</button>
+                    </div>
+                    
+                    <!-- Toggle Edição -->
+                    <div class="d-flex flex-column align-items-center justify-content-center border rounded px-3" style="min-height: 48px;">
+                        <label class="form-check-label small mb-1" for="editToggleId" style="cursor: pointer;">Edição</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="editToggleId" role="switch" style="cursor: pointer;">
+                        </div>
+                    </div>
+                    
+                    <!-- Salvar -->
+                    <button id="saveButtonId" class="btn btn-success btn-lg text-nowrap" style="min-height: 48px;">Salvar</button>
+                </div>
+                
+                <!-- Grupo 2: Controles de Visualização -->
+                <div class="d-flex gap-3 align-items-stretch">
+                    <!-- Tamanho da fonte -->
+                    <div class="d-flex align-items-center justify-content-center gap-2 border rounded p-2" style="min-height: 48px;">
+                        <button id="decreaseFontId" class="btn btn-secondary btn-lg">A−</button>
+                        <button id="increaseFontId" class="btn btn-secondary btn-lg">A+</button>
+                    </div>
+                    
+                    <!-- Imprimir -->
+                    <button id="printButtonId" class="btn btn-secondary btn-lg text-nowrap" style="min-height: 48px;">🖨️</button>
+                    
+                    <!-- Deletar -->
+                    <button id="deleteButtonId" class="btn btn-danger btn-lg text-nowrap" style="min-height: 48px;">🗑️</button>
+                </div>
+            </div>
+        </div>
+        
         <h1 id="titleId"></h1>
         <p id="artistId"></p>
         <p id="tonePrintWrapper">Tom: <b id="tonePrintId"></b></p>
