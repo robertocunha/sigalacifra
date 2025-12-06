@@ -21,7 +21,8 @@ A web app for members of **Siga La Pelota**, a carnival block from São Paulo, B
 
 - **Frontend**: Vanilla JavaScript + Bootstrap 5
 - **Backend**: Firebase (Firestore database + Hosting)
-- **Build**: Webpack (bundles JS/CSS, multiple entry points)
+- **Build**: Webpack (bundles JS/CSS, multiple entry points, CopyWebpackPlugin for images)
+- **Libraries**: SortableJS (drag-and-drop reordering)
 - **No framework** - intentionally simple
 
 ## Project Structure
@@ -35,6 +36,8 @@ src/
 ├── css/
 │   ├── style.css              # Main styles
 │   └── print.css              # Print styles
+├── images/
+│   └── logo.png               # App logo (6.74 MB, needs optimization)
 └── scripts/
     ├── firebaseConfig.js      # Firebase initialization
     ├── chordParser.js         # Converts plain text to HTML with <b> tags around chords
@@ -68,7 +71,7 @@ Collection: `musicas`
 - ✅ Edit song content (contentEditable)
 - ✅ Save changes to Firestore
 - ✅ Auto-format chords on save (newly added chords automatically styled in orange)
-- ✅ Export/print (basic window.print())
+- ✅ Export/print with tone visible (Dec 2025)
 - ✅ Create new song with chord parser (converts plain text to HTML automatically)
 - ✅ "New Song" button accessible from all pages
 - ✅ Create song form with proper Bootstrap layout, validation, and UX improvements (Dec 2025)
@@ -80,6 +83,7 @@ Collection: `musicas`
 - ✅ Unsaved changes warning when leaving page (Dec 2025)
 - ✅ Keyboard shortcuts (Ctrl+S to save, Ctrl+E to toggle edit mode) (Dec 2025)
 - ✅ Visual save feedback with dismissible notification (Dec 2025)
+- ✅ Responsive logo across all pages (15vh on lists, 8vh on song page) (Dec 2025)
 
 ## What's Missing / Broken
 
@@ -201,8 +205,18 @@ Collection: `musicas`
 
 ## Recent Changes (Changelog)
 
+### December 6, 2025 (Session 8 - Responsive Logo)
+- **Responsive Logo Implementation** (commit: 03fba72)
+  - Created logo with Leonardo.ai based on Siga La Pelota carnival block
+  - Configured webpack with CopyWebpackPlugin for image asset management
+  - Implemented responsive sizing using viewport units (vh)
+  - Logo size: 15vh on list pages, 8vh on song page (space optimization)
+  - Logo scales proportionally with screen size for optimal mobile/desktop display
+  - Maintained 1rem navbar padding for consistent spacing
+  - Logo files stored in src/images/ and docs/ (reference materials)
+
 ### December 5, 2025 (Session 7 - Print/Export Fixes)
-- **Fixed Print Functionality** (commit pending)
+- **Fixed Print Functionality** (commit: 4f68567)
   - Tone now appears correctly in print preview and printed output
   - Removed conflicting Bootstrap classes (d-none, d-print-block)
   - Created dedicated `#tonePrintWrapper` element with explicit print visibility
@@ -211,7 +225,7 @@ Collection: `musicas`
   - Added print button (🖨️) to song page for easier access to print dialog
 
 ### December 5, 2025 (Session 6 - Navigation Improvements)
-- **Enhanced Navigation & UX** (commits pending)
+- **Enhanced Navigation & UX** (commit: 4f68567)
   - Standardized page titles: "Siga La Cifra! | [Section]"
   - Added semantic HTML structure (header/main) to all pages
   - Unified navbar with brand logo across all pages
