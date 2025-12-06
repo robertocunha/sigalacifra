@@ -2,8 +2,11 @@
     body * {
         visibility: hidden; /* Oculta todos os elementos */
     }
-    h1, p, pre, pre * {
+    h1, p, pre, pre *, #tonePrintWrapper, #tonePrintWrapper * {
         visibility: visible; /* Torna visíveis título, artista, tom e letra */
+    }
+    #tonePrintWrapper {
+        display: block !important; /* Força a exibição na impressão */
     }
     h1 {
         position: relative;

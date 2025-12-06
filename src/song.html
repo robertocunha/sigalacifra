@@ -35,6 +35,9 @@
                 
                 <!-- Deletar -->
                 <button id="deleteButtonId" class="btn btn-danger btn-lg text-nowrap" style="min-height: 48px;">🗑️</button>
+                
+                <!-- Imprimir -->
+                <button id="printButtonId" class="btn btn-secondary btn-lg text-nowrap" style="min-height: 48px;">🖨️</button>
             </div>
         </div>
         
@@ -52,7 +55,7 @@
     <main class="container-fluid">
         <h1 id="titleId"></h1>
         <p id="artistId"></p>
-        <p class="d-none d-print-block">Tom: <b id="tonePrintId"></b></p>
+        <p id="tonePrintWrapper">Tom: <b id="tonePrintId"></b></p>
         <pre spellcheck="false" autocorrect="off" autocomplete="off"></pre>
     </main>
 </body>

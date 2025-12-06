@@ -84,8 +84,8 @@ Collection: `musicas`
 ## What's Missing / Broken
 
 - ❌ No way to edit title/artist/tone directly
-- ❌ Tone doesn't appear in print version (tonePrintId element not populating correctly)
 - ⚠️ Long lines cause horizontal scroll - mitigated by font size controls (user can reduce font when needed)
+- ⚠️ Bulk print: select multiple songs from list and print all at once (useful for carnival prep, low priority until February)
 
 ## MVP Requirements (for carnival)
 
@@ -200,6 +200,15 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 5, 2025 (Session 7 - Print/Export Fixes)
+- **Fixed Print Functionality** (commit pending)
+  - Tone now appears correctly in print preview and printed output
+  - Removed conflicting Bootstrap classes (d-none, d-print-block)
+  - Created dedicated `#tonePrintWrapper` element with explicit print visibility
+  - Tone now visible both on screen and in print (improved UX)
+  - Updated print.css to include `#tonePrintWrapper` and children in visible elements
+  - Added print button (🖨️) to song page for easier access to print dialog
 
 ### December 5, 2025 (Session 6 - Navigation Improvements)
 - **Enhanced Navigation & UX** (commits pending)

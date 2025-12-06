@@ -24,6 +24,7 @@ if (songId) {
   const editToggle = document.getElementById("editToggleId");
   const saveButton = document.getElementById("saveButtonId");
   const deleteButton = document.getElementById("deleteButtonId");
+  const printButton = document.getElementById("printButtonId");
   const increaseToneButton = document.getElementById("increaseToneId");
   const decreaseToneButton = document.getElementById("decreaseToneId");
   const increaseFontButton = document.getElementById("increaseFontId");
@@ -269,6 +270,10 @@ if (songId) {
       console.error("Erro ao deletar a música:", error);
       alert("Erro ao deletar a música. Tente novamente.");
     }
+  });
+
+  printButton.addEventListener("click", () => {
+    window.print();
   });
 } else {
   console.error("ID da música não encontrado na URL.");
