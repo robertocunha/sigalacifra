@@ -90,6 +90,7 @@ Collection: `musicas`
 - ❌ No way to edit title/artist/tone directly
 - ⚠️ Long lines cause horizontal scroll - mitigated by font size controls (user can reduce font when needed)
 - ⚠️ Bulk print: select multiple songs from list and print all at once (useful for carnival prep, low priority until February)
+- ⚠️ Print layout inefficient: single song often takes 4-5 pages. Need two-column layout for print to fit in 1-2 pages (like traditional songbooks)
 
 ## MVP Requirements (for carnival)
 
