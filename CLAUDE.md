@@ -88,9 +88,23 @@ Collection: `musicas`
 ## What's Missing / Broken
 
 - ❌ No way to edit title/artist/tone directly
-- ⚠️ Long lines cause horizontal scroll - mitigated by font size controls (user can reduce font when needed)
+- ⚠️ Long lines cause horizontal scroll - **being addressed with structured data refactoring (see below)**
 - ⚠️ Bulk print: select multiple songs from list and print all at once (useful for carnival prep, low priority until February)
-- ⚠️ Print layout inefficient: single song often takes 4-5 pages. Need two-column layout for print to fit in 1-2 pages (like traditional songbooks). **See [structured-data-refactoring.md](docs/structured-data-refactoring.md) for detailed solution plan.**
+- ⚠️ Print layout inefficient: single song often takes 4-5 pages. Need two-column layout for print to fit in 1-2 pages (like traditional songbooks). **See [structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md) for detailed solution plan.**
+
+## Current Work: Structured Data Refactoring (Dec 18-19, 2025)
+
+**Problem**: Long chord/lyrics lines cause horizontal scroll on mobile, especially when users increase font size.
+
+**Solution**: Convert plain text chord sheets to structured data that separates chords (with positions) from lyrics, enabling intelligent line wrapping that preserves chord-to-syllable alignment.
+
+**Status**: In progress on branch `refactor/structured-data`
+- ✅ Phase 1: Line parser (text → structure) - 3 tests passing
+- ✅ Phase 2: Line renderer (structure → text) - 3 tests passing  
+- ✅ Phase 3: Line wrapper (intelligent breaking) - 3 tests passing
+- ⏳ Next: Multiple wraps, integration with existing app
+
+**See [docs/structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md)** for complete context, algorithms, examples, and implementation progress.
 
 ## MVP Requirements (for carnival)
 
@@ -195,6 +209,13 @@ Collection: `musicas`
 - Enharmonic equivalents and full circle validation
 - Real-world progressions (I-IV-V, ii-V-I, bossa patterns)
 
+**Structured Data Modules** (9 tests - Dec 2025):
+- **lineParser.js** (3 tests): Parse text lines to structured data
+- **lineRenderer.js** (3 tests): Render structure back to text with round-trip validation
+- **lineWrapper.js** (3 tests): Intelligent line wrapping without splitting chords
+
+**Total**: 57 tests passing
+
 ### Known Limitations (Documented in Tests)
 
 - Lines with exactly 50% chords are NOT parsed (need >50%)
@@ -205,6 +226,19 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 18-19, 2025 (Session 9 - Structured Data Refactoring - In Progress)
+- **Created comprehensive refactoring plan** (docs/structured-data-refactoring-v2.md)
+  - Documented problem: horizontal scroll on mobile with long lines
+  - Designed solution: structured data separating chords (with positions) from lyrics
+  - Defined algorithms for parsing, rendering, and intelligent line wrapping
+- **Implemented core modules with TDD approach** (57 total tests passing)
+  - lineParser.js: Converts text chord/lyrics lines to structure {chords: [{position, chord}], lyrics}
+  - lineRenderer.js: Renders structure back to text with round-trip validation
+  - lineWrapper.js: Intelligent line breaking that preserves chord-syllable alignment
+  - Critical feature: Detects when break point would split chord, adjusts to avoid cutting chords
+- **Branch**: refactor/structured-data
+- **Status**: Core wrapping logic complete, needs multiple-wrap support and integration
 
 ### December 6, 2025 (Session 8 - Responsive Logo)
 - **Responsive Logo Implementation** (commit: 03fba72)
