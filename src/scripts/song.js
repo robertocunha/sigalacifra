@@ -8,7 +8,8 @@ import '../css/style.css';
 import { db } from './firebaseConfig.js';
 import { doc, onSnapshot, setDoc, deleteDoc } from "firebase/firestore";
 import { transposeChord } from './transpose.js';
-import { parseChordSheet } from './chordParser.js';
+import { parseSong } from './songParser.js';
+import { renderSong } from './songRenderer.js';
 
 // Captura o ID da música do parâmetro "id" no URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -38,6 +39,19 @@ if (songId) {
   const updateFontSize = (newSize) => {
     currentFontSize = Math.max(MIN_FONT_SIZE, Math.min(MAX_FONT_SIZE, newSize));
     preElement.style.fontSize = `${currentFontSize}px`;
+    
+    console.log('Font size changed to:', currentFontSize);
+    
+    // Re-render song with new wrapping based on new font size
+    if (currentSongData && currentSongData.linePairs) {
+      console.log('Re-rendering song with new font size...');
+      const maxWidth = calculateMaxWidth();
+      const renderedHtml = renderSong(currentSongData.linePairs, maxWidth);
+      preElement.innerHTML = renderedHtml;
+      console.log('Song re-rendered!');
+    } else {
+      console.log('No song data to re-render');
+    }
   };
 
   increaseFontButton.addEventListener('click', () => {
@@ -55,6 +69,30 @@ if (songId) {
   let currentSongData = null;
   let hasUnsavedChanges = false;
 
+  // Calculate max width for wrapping based on pre element width and font size
+  const calculateMaxWidth = () => {
+    const computedStyle = window.getComputedStyle(preElement);
+    const preWidth = preElement.clientWidth;
+    const padding = parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+    const availableWidth = preWidth - padding;
+    
+    // Measure actual character width using a temporary span
+    const measureSpan = document.createElement('span');
+    measureSpan.style.font = computedStyle.font;
+    measureSpan.style.visibility = 'hidden';
+    measureSpan.style.position = 'absolute';
+    measureSpan.textContent = 'M'.repeat(100); // 100 chars to get average
+    document.body.appendChild(measureSpan);
+    const charWidth = measureSpan.offsetWidth / 100;
+    document.body.removeChild(measureSpan);
+    
+    const maxChars = Math.floor(availableWidth / charWidth);
+    
+    console.log('DEBUG maxWidth:', { preWidth, padding, availableWidth, charWidth, maxChars });
+    
+    return Math.max(20, maxChars); // Minimum 20 chars (reduced from 40)
+  };
+
   // Função que lida com a atualização da interface com os dados da música
   const updateSongData = (songData) => {
     currentSongData = songData; // Armazena os dados para uso posterior
@@ -64,7 +102,18 @@ if (songId) {
     if (tonePrint) {
       tonePrint.innerHTML = songData.tone;
     }
-    preElement.innerHTML = songData.letra;
+    
+    // Parse plain text to structured data
+    const linePairs = parseSong(songData.letra);
+    
+    // Store parsed data for later use (transpose, font size changes, etc.)
+    currentSongData.linePairs = linePairs;
+    
+    // Render structured data with wrapping
+    const maxWidth = calculateMaxWidth();
+    const renderedHtml = renderSong(linePairs, maxWidth);
+    preElement.innerHTML = renderedHtml;
+    
     hasUnsavedChanges = false; // Reset ao carregar novos dados
   };
 
@@ -85,28 +134,62 @@ if (songId) {
   // Executa a função para buscar os dados da música com onSnapshot
   fetchSongData();
 
+  // Re-render on window resize to adjust wrapping
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    // Debounce resize events
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (currentSongData && currentSongData.linePairs) {
+        console.log('Window resized, re-rendering song...');
+        const maxWidth = calculateMaxWidth();
+        const renderedHtml = renderSong(currentSongData.linePairs, maxWidth);
+        preElement.innerHTML = renderedHtml;
+      }
+    }, 300); // Wait 300ms after resize stops
+  });
+
   preElement.contentEditable = "false";
 
   const transposeChords = (steps) => {
-    // Verifica se a letra está disponível antes de transpor
-    if (preElement.innerHTML.trim() === "") {
+    // Verifica se há dados da música
+    if (!currentSongData || !currentSongData.linePairs) {
       console.error("Não há conteúdo de letra para transpor.");
-      return; // Se a letra estiver vazia, não faz nada
+      return;
     }
 
-    const boldElements = preElement.querySelectorAll("b");
-    boldElements.forEach((b) => {
-      const originalChord = b.textContent.trim();
-      const transposedChord = transposeChord(originalChord, steps);
-      b.textContent = transposedChord;
+    // Transpõe os acordes na estrutura de dados parseada
+    const transposedLinePairs = currentSongData.linePairs.map(item => {
+      if (item.chords && item.lyrics !== undefined) {
+        // É um line pair - transpõe os acordes
+        return {
+          chords: item.chords.map(({ position, chord }) => ({
+            position,
+            chord: transposeChord(chord, steps)
+          })),
+          lyrics: item.lyrics
+        };
+      }
+      // Outros tipos (empty, annotation) ficam como estão
+      return item;
     });
 
+    // Atualiza a estrutura parseada em memória
+    currentSongData.linePairs = transposedLinePairs;
+
+    // Transpõe o tom
     const currentTone = tone.textContent.trim();
     const transposedTone = transposeChord(currentTone, steps);
-    tone.textContent = transposedTone; // Atualiza o tom exibido na página
+    tone.textContent = transposedTone;
+    currentSongData.tone = transposedTone;
     if (tonePrint) {
-      tonePrint.textContent = transposedTone; // Atualiza também a versão de impressão
+      tonePrint.textContent = transposedTone;
     }
+
+    // Re-renderiza a música
+    const maxWidth = calculateMaxWidth();
+    const renderedHtml = renderSong(transposedLinePairs, maxWidth);
+    preElement.innerHTML = renderedHtml;
   };
 
   increaseToneButton.addEventListener("click", () => {
@@ -164,20 +247,15 @@ if (songId) {
   });
 
   saveButton.addEventListener("click", async () => {
-    // Pega o conteúdo atual
-    let updatedContent = preElement.innerHTML;
+    // Pega o texto puro editado pelo usuário
+    const plainText = preElement.textContent;
     const updatedTone = tone.textContent.trim();
 
-    // Auto-formatar: converte HTML para texto puro e reaplicar parseChordSheet
-    // Isso garante que acordes recém-adicionados fiquem laranja
-    const plainText = preElement.textContent;
-    updatedContent = parseChordSheet(plainText);
-    
-    // Atualiza a visualização imediatamente (feedback visual)
-    preElement.innerHTML = updatedContent;
+    // Converte texto puro para estrutura JSON
+    const updatedLetra = parseSong(plainText);
 
     try {
-      await setDoc(docRef, { letra: updatedContent, tone: updatedTone }, { merge: true });
+      await setDoc(docRef, { letra: updatedLetra, tone: updatedTone }, { merge: true });
       console.log("Documento atualizado e formatado com sucesso!");
       hasUnsavedChanges = false; // Marca como salvo
       

@@ -51,8 +51,8 @@ function isChordLine(line) {
   // Count how many tokens look like chords
   const chordCount = tokens.filter(t => isChord(t)).length;
   
-  // If more than 50% are chords, it's a chord line
-  return chordCount / tokens.length > 0.5;
+  // If 50% or more are chords, it's a chord line
+  return chordCount / tokens.length >= 0.5;
 }
 
 /**

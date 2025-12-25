@@ -7,7 +7,6 @@ import '../css/style.css';
 
 import { app, db } from './firebaseConfig.js';
 import { doc, setDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
-import { parseChordSheet } from './chordParser.js';
 
 // Referências aos elementos
 const form = document.getElementById("formId");
@@ -48,13 +47,10 @@ saveButton.addEventListener("click", async () => {
     saveButton.disabled = true;
     saveButton.textContent = "Salvando...";
     
-    // Convert plain text to HTML with chords wrapped in <b> tags
-    const lyrics = parseChordSheet(lyricsRaw);
-
     // Define position as last + 10
     const position = await getLastPosition() + 10;
 
-    console.log("formData: ", title, artist, tone, position, active, lyrics);
+    console.log("formData: ", title, artist, tone, position, active, lyricsRaw);
 
     // Referência para o documento, deixando o Firestore gerar o ID automaticamente
     const docRef = doc(collection(db, "musicas"));
@@ -66,7 +62,7 @@ saveButton.addEventListener("click", async () => {
             tone: tone,
             position: position,
             active: active,
-            letra: lyrics
+            letra: lyricsRaw
         });
         alert("Canção salva com sucesso!");
         // Redireciona para visualizar a música criada
