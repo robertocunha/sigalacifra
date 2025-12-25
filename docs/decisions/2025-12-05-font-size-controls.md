@@ -1,8 +1,14 @@
 # Responsive Chord Wrapping - Technical Decision Document
 
 **Date:** December 5, 2025  
-**Status:** Decision made - MVP solution implemented  
+**Status:** ⚠️ HISTORICAL DECISION - See `structured-data-refactoring-v2.md` for current implementation  
 **Context:** Mobile optimization for Sigalacifra
+
+---
+
+**⚠️ NOTA IMPORTANTE:** Este documento descreve a decisão **inicial** de implementar controles de fonte (A+/A-) como solução MVP. A **refatoração estrutural completa** foi posteriormente iniciada no branch `refactor/structured-data` e está documentada em `docs/structured-data-refactoring-v2.md`. Mantenha este arquivo apenas como referência histórica da decisão arquitetural.
+
+---
 
 ## Problem Statement
 

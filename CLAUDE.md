@@ -88,23 +88,38 @@ Collection: `musicas`
 ## What's Missing / Broken
 
 - ❌ No way to edit title/artist/tone directly
-- ⚠️ Long lines cause horizontal scroll - **being addressed with structured data refactoring (see below)**
-- ⚠️ Bulk print: select multiple songs from list and print all at once (useful for carnival prep, low priority until February)
 - ⚠️ Print layout inefficient: single song often takes 4-5 pages. Need two-column layout for print to fit in 1-2 pages (like traditional songbooks). **See [structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md) for detailed solution plan.**
+- ⚠️ Bulk print: select multiple songs from list and print all at once (useful for carnival prep, low priority until February)
 
-## Current Work: Structured Data Refactoring (Dec 18-19, 2025)
+## Documentation Structure
+
+**Primary context file:** This file (`CLAUDE.md`) provides high-level project overview and changelog.
+
+**Detailed technical documentation:**
+- **[docs/structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md)** - Complete architecture of chord/lyrics parsing, rendering, and wrapping system. Read this for deep understanding of the codebase's core modules.
+- **[docs/analysis2025December.md](docs/analysis2025December.md)** - Module-by-module code analysis with examples and test coverage details.
+
+**Historical decisions:**
+- **[docs/decisions/2025-12-05-font-size-controls.md](docs/decisions/2025-12-05-font-size-controls.md)** - Original decision to implement A+/A- controls as MVP before structured data refactoring.
+
+## Current Work: Structured Data Refactoring (Dec 18-24, 2025)
 
 **Problem**: Long chord/lyrics lines cause horizontal scroll on mobile, especially when users increase font size.
 
 **Solution**: Convert plain text chord sheets to structured data that separates chords (with positions) from lyrics, enabling intelligent line wrapping that preserves chord-to-syllable alignment.
 
-**Status**: In progress on branch `refactor/structured-data`
-- ✅ Phase 1: Line parser (text → structure) - 3 tests passing
-- ✅ Phase 2: Line renderer (structure → text) - 3 tests passing  
-- ✅ Phase 3: Line wrapper (intelligent breaking) - 3 tests passing
-- ⏳ Next: Multiple wraps, integration with existing app
+**Status**: ✅ **COMPLETED AND INTEGRATED** (Dec 24, 2025)
+- ✅ All core modules implemented (lineParser, lineRenderer, lineWrapper, songParser, songRenderer)
+- ✅ Recursive line wrapping (handles extremely long lines)
+- ✅ Integration with song.js (parse on load, cache linePairs)
+- ✅ Architecture fixed: Firebase stores plain text, parsing happens on read
+- ✅ 64 tests passing (16 new tests for structured data modules)
+- ✅ maxWidth calculated by actual measurement (not estimation)
+- ✅ Chord line detection fixed (>= 50% threshold)
 
-**See [docs/structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md)** for complete context, algorithms, examples, and implementation progress.
+**Next steps:** Print layout (two-column), additional edge case tests, mobile UX polish.
+
+**See [docs/structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md)** for complete technical details.
 
 ## MVP Requirements (for carnival)
 
@@ -210,18 +225,20 @@ Collection: `musicas`
 - Enharmonic equivalents and full circle validation
 - Real-world progressions (I-IV-V, ii-V-I, bossa patterns)
 
-**Structured Data Modules** (9 tests - Dec 2025):
+**Structured Data Modules** (16 tests - Dec 2025):
 - **lineParser.js** (3 tests): Parse text lines to structured data
 - **lineRenderer.js** (3 tests): Render structure back to text with round-trip validation
-- **lineWrapper.js** (3 tests): Intelligent line wrapping without splitting chords
+- **lineWrapper.js** (3 tests): Intelligent line wrapping without splitting chords (includes recursive wrapping)
+- **songParser.js** (4 tests): Parse complete song text to array of linePairs
+- **songRenderer.js** (3 tests): Render complete song with wrapping applied
 
-**Total**: 57 tests passing
+**Total**: 64 tests passing
 
 ### Known Limitations (Documented in Tests)
 
-- Lines with exactly 50% chords are NOT parsed (need >50%)
-  - Example: "Solo: Em" = 50% → not parsed
-  - Acceptable trade-off to avoid false positives
+- Lines with exactly 50% chords were NOT parsed initially (needed >50%)
+  - **FIXED Dec 24, 2025:** Threshold changed to >= 50%
+  - Example: "F#7(4)  (frase)" now correctly recognized
 - Chords embedded in descriptive text are not parsed
   - Example: "no breque do D7 entra o vocal" → D7 not parsed
   - Intentional: prevents false positives in lyrics
@@ -238,9 +255,6 @@ Collection: `musicas`
   - lineRenderer.js: Renders structure back to text with round-trip validation
   - lineWrapper.js: Intelligent line breaking that preserves chord-syllable alignment
   - Critical feature: Detects when break point would split chord, adjusts to avoid cutting chords
-- **Branch**: refactor/structured-data
-- **Status**: ✅ **COMPLETED AND INTEGRATED** (Dec 24, 2025)
-
 ### December 24, 2025 (Session 10 - Architecture Fix & Bug Fixes)
 - **Fixed Data Architecture** (commit: 3e3e813)
   - **BREAKING CHANGE:** Firebase now stores plain text instead of parsed structure
@@ -262,16 +276,19 @@ Collection: `musicas`
   - Comprehensive module-by-module breakdown with examples
   - 64 tests passing (16 new tests for structured data modules)
 
-### December 18-19, 2025 (Session 9 - Structured Data Refactoring - In Progress)
+### December 18-19, 2025 (Session 9 - Structured Data Refactoring)
 - **Created comprehensive refactoring plan** (docs/structured-data-refactoring-v2.md)
   - Documented problem: horizontal scroll on mobile with long lines
   - Designed solution: structured data separating chords (with positions) from lyrics
   - Defined algorithms for parsing, rendering, and intelligent line wrapping
-- **Implemented core modules with TDD approach** (64 total tests passing)
+- **Implemented core modules with TDD approach**
   - lineParser.js: Converts text chord/lyrics lines to structure {chords: [{position, chord}], lyrics}
   - lineRenderer.js: Renders structure back to text with round-trip validation
   - lineWrapper.js: Intelligent line breaking that preserves chord-syllable alignment
+  - songParser.js: Parse complete song text to array of linePairs
+  - songRenderer.js: Render complete song with wrapping applied
   - Critical feature: Detects when break point would split chord, adjusts to avoid cutting chords
+  - Recursive wrapping: Handles extremely long lines (multiple breaks)
 - **Branch**: refactor/structured-data
 - **Status**: ✅ **COMPLETED AND INTEGRATED** (Dec 24, 2025)
 

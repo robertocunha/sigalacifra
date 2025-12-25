@@ -223,9 +223,9 @@ Dada a complexidade do algoritmo de quebra (espaços entre palavras, cifras que 
 
 ❓ **Detalhes do algoritmo de quebra** serão descobertos via TDD
 
-## Progresso Atual (19/12/2025)
+## Progresso Atual (24/12/2025) - ATUALIZADO ✅
 
-### ✅ Implementado
+### ✅ Implementado E Integrado
 
 #### 1. Módulo de Parsing (`lineParser.js`)
 **Função:** `parseLine(chordLine, lyricsLine)`  
@@ -287,33 +287,83 @@ Dada a complexidade do algoritmo de quebra (espaços entre palavras, cifras que 
 
 **Caso crítico resolvido:** Se acorde "Am" está na posição 6 e tem 2 caracteres (ocupa 6-7), quebrar na posição 7 cortaria o acorde. O algoritmo detecta isso e quebra na posição 6 ao invés.
 
+**Quebra recursiva:** O algoritmo chama `wrapLine` recursivamente na segunda parte se ela ainda exceder `maxWidth`, permitindo múltiplas quebras em uma única line pair (linha 106 do lineWrapper.js).
+
+#### 4. Integração com song.js ✅ (24/12/2025)
+**Responsabilidade:** Carregar músicas do Firebase e aplicar parsing + wrapping em tempo real.
+
+**Mudança arquitetural crítica:**
+- ✅ **Firebase agora armazena texto plano** (`songData.letra` é string pura)
+- ✅ **Parse executado "on read"** (ao carregar música, não ao salvar)
+- ✅ **Estrutura cacheada** em `currentSongData.linePairs` para re-renders
+
+**Algoritmo de maxWidth:**
+- Substituiu estimativa `fontSize * 0.6` por **medição real**
+- Cria `<span>` temporário com 100 caracteres 'M'
+- Calcula largura média: `offsetWidth / 100`
+- Mínimo ajustado de 40 para 20 caracteres
+
+**Funções que usam linePairs cacheado:**
+- `updateTranspose()` - Recalcula acordes e re-renderiza
+- `updateFontSize()` - Recalcula maxWidth e re-renderiza  
+- `handleResize()` - Recalcula maxWidth e re-renderiza
+
+**Benefícios da arquitetura:**
+- Edição mais fácil (texto plano no Firebase)
+- Sem migração de dados quando algoritmo muda
+- Armazenamento menor (não guarda estrutura)
+- Separação de responsabilidades (storage vs apresentação)
+
+#### 5. Módulos de Alto Nível (songParser + songRenderer) ✅
+**songParser.js:** Processa texto completo da música em array de linePairs
+- Detecta linhas vazias, anotações (texto sem cifras), e pares cifra+letra
+- Usa `isChordLine()` para identificar linhas de acordes
+- Permite cifras sem letra (acordes instrumentais)
+
+**songRenderer.js:** Renderiza linePairs com wrapping aplicado
+- Chama `wrapLine()` para cada line pair
+- Chama `renderLine(wrappedLine, true)` para gerar HTML com tags `<b>`
+- Preserva linhas vazias e anotações
+
+**Testes:** 4 testes em songParser, 3 testes em songRenderer
+
 ### 📊 Status dos Testes
-- **Total:** 57 testes passando
+- **Total:** 64 testes passando ✅
 - **Originais:** 48 testes (transpose.test.js: 26, chordParser.test.js: 22)
-- **Novos:** 9 testes (lineParser: 3, lineRenderer: 3, lineWrapper: 3)
+- **Novos módulos:** 16 testes
+  - lineParser: 3 testes
+  - lineRenderer: 3 testes
+  - lineWrapper: 3 testes
+  - songParser: 4 testes
+  - songRenderer: 3 testes
 - **Comando:** `npm test`
 
-### ⏳ Próximas Etapas
+### ⏳ Próximas Etapas (Atualizado 24/12/2025)
 
-1. **Adicionar mais testes ao lineWrapper:**
-   - Múltiplas quebras em uma mesma linha
-   - Cifras em posições variadas (início, meio, fim)
-   - Linhas muito longas
-   - Edge case: palavra muito longa sem espaços
+**Pendente:**
 
-2. **Implementar quebra recursiva:**
-   - Atualmente `wrapLine` faz apenas uma quebra
-   - Precisa chamar recursivamente para segunda parte se ela também exceder maxWidth
+1. **Print layout de duas colunas** (economizar papel)
+   - Ver discussão em `docs/decisions/2025-12-05-font-size-controls.md`
+   - Layout tradicional de songbook: duas colunas lado a lado
+   - Usar `@media print` para aplicar apenas ao imprimir
 
-3. **Integração com a aplicação:**
-   - Modificar `song.js` para usar os novos módulos
-   - Converter dados existentes do Firestore (se necessário)
-   - Atualizar renderização das cifras na tela
+2. **Testes adicionais para lineWrapper:**
+   - Edge case: palavra muito longa sem espaços (> maxWidth)
+   - Validar quebra recursiva com linhas extremamente longas
+   - Testar com cifras em todas as posições (início, meio, fim)
 
-4. **Melhorias na renderização:**
-   - Considerar se HTML é necessário (tags para cifras vs texto plano)
-   - Estilização CSS para mobile
-   - Testes com tamanhos de fonte variados
+3. **Melhorias de UX:**
+   - Indicador visual quando linha foi quebrada automaticamente
+   - Ajuste fino de limites de maxWidth (atualmente 20-infinito)
+   - Testar em dispositivos móveis reais (diversos tamanhos de tela)
+
+**Completado:**
+- ✅ Quebra recursiva implementada (linha 106 do lineWrapper.js)
+- ✅ Integração com song.js (parse on read, cache de linePairs)
+- ✅ Renderização HTML com tags `<b>` (lineRenderer.js)
+- ✅ Mudança arquitetural: Firebase armazena texto plano
+- ✅ maxWidth calculado por medição real (não estimativa)
+- ✅ Todos os módulos testados e funcionando (64 testes)
 
 ### 🔧 Configuração Técnica
 
@@ -327,12 +377,24 @@ Dada a complexidade do algoritmo de quebra (espaços entre palavras, cifras que 
 **Estrutura de arquivos criados:**
 ```
 src/scripts/
-  lineParser.js       - Parse texto → estrutura
-  lineParser.test.js  - 3 testes
-  lineRenderer.js     - Render estrutura → texto
+  lineParser.js        - Parse texto → estrutura (line pair)
+  lineParser.test.js   - 3 testes
+  lineRenderer.js      - Render estrutura → texto (com/sem HTML)
   lineRenderer.test.js - 3 testes
-  lineWrapper.js      - Quebra inteligente de linhas
-  lineWrapper.test.js - 3 testes
+  lineWrapper.js       - Quebra inteligente de linhas (recursiva)
+  lineWrapper.test.js  - 3 testes
+  songParser.js        - Parse música completa → array de linePairs
+  songParser.test.js   - 4 testes
+  songRenderer.js      - Render música completa com wrapping
+  songRenderer.test.js - 3 testes
+```
+
+**Arquivos modificados:**
+```
+src/scripts/
+  createSong.js  - Salva texto plano (não mais estrutura parseada)
+  song.js        - Parse on load, cache linePairs, maxWidth medido
+  chordParser.js - Threshold >= 50% (era > 50%)
 ```
 
 ### 📝 Notas Importantes para Continuação
@@ -343,6 +405,8 @@ src/scripts/
 4. **Fórmula de recálculo:** `novaPosicao = posicaoOriginal - pontoDeQuebra`
 5. **TDD funcionou muito bem:** Continue com essa abordagem incremental
 6. **Round-trip validado:** Garantia de que parse→render não perde dados
+7. **Arquitetura "parse on read":** Firebase = texto plano, parse só ao exibir
+8. **Quebra recursiva:** Já implementada (linha 106 do lineWrapper.js)
 
 ### 🐛 Observações sobre Performance
 
