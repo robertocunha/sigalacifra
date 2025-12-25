@@ -57,7 +57,7 @@ Collection: `musicas`
   tone: string,       // Current key (e.g., "D", "G#m", "Ebm")
   position: number,   // Order in list (increments by 10)
   active: boolean,    // true = active list, false = archived
-  letra: string       // HTML content with chords in <b> tags
+  letra: string       // Plain text with chords and lyrics (Dec 2025: changed from parsed structure to plain text)
 }
 ```
 
@@ -189,7 +189,7 @@ Collection: `musicas`
 ## Testing
 
 - **Framework**: Vitest (lightweight, ES modules compatible)
-- **Coverage**: 48 automated tests covering critical functions
+- **Coverage**: 64 automated tests covering critical functions (Dec 2025: was 48)
 - **Run tests**: `npm test` (watch mode) or `npm run test:run` (single run)
 
 ### Test Coverage
@@ -198,6 +198,7 @@ Collection: `musicas`
 - Basic chord recognition (C, Am, G7, F#m, etc.)
 - Complex chords (G7M(9), Csus4, Cdim, slash chords)
 - Edge cases: E/Em/A as words vs. chords
+- **Chord line detection:** >= 50% threshold (Dec 2025: changed from > 50%)
 - Chord line detection (>50% threshold)
 - Full text parsing with mixed content
 
@@ -238,7 +239,41 @@ Collection: `musicas`
   - lineWrapper.js: Intelligent line breaking that preserves chord-syllable alignment
   - Critical feature: Detects when break point would split chord, adjusts to avoid cutting chords
 - **Branch**: refactor/structured-data
-- **Status**: Core wrapping logic complete, needs multiple-wrap support and integration
+- **Status**: ✅ **COMPLETED AND INTEGRATED** (Dec 24, 2025)
+
+### December 24, 2025 (Session 10 - Architecture Fix & Bug Fixes)
+- **Fixed Data Architecture** (commit: 3e3e813)
+  - **BREAKING CHANGE:** Firebase now stores plain text instead of parsed structure
+  - Follows "parse on read, not on write" principle
+  - Benefits: easier editing, no migration needed, smaller storage, clear data/presentation separation
+  - `createSong.js`: Removed `parseSong()`, now saves `lyricsRaw` directly
+  - `song.js`: Added `parseSong()` on load, caches `linePairs` in memory
+  - All re-render functions (resize, font change, transpose) use cached `linePairs`
+- **Improved maxWidth Calculation**
+  - Changed from estimation (fontSize * 0.6) to actual measurement
+  - Creates temporary `<span>` with 100 chars, measures real width
+  - More accurate line wrapping on different screens/fonts
+- **Fixed Chord Line Detection**
+  - Changed threshold from `> 0.5` to `>= 0.5`
+  - Fixes recognition of lines like "F#7(4)  (frase)" (50% chords)
+  - Now correctly identifies and transposes edge cases
+- **Documentation**
+  - Created `docs/analysis2025December.md` with detailed architecture explanation
+  - Comprehensive module-by-module breakdown with examples
+  - 64 tests passing (16 new tests for structured data modules)
+
+### December 18-19, 2025 (Session 9 - Structured Data Refactoring - In Progress)
+- **Created comprehensive refactoring plan** (docs/structured-data-refactoring-v2.md)
+  - Documented problem: horizontal scroll on mobile with long lines
+  - Designed solution: structured data separating chords (with positions) from lyrics
+  - Defined algorithms for parsing, rendering, and intelligent line wrapping
+- **Implemented core modules with TDD approach** (64 total tests passing)
+  - lineParser.js: Converts text chord/lyrics lines to structure {chords: [{position, chord}], lyrics}
+  - lineRenderer.js: Renders structure back to text with round-trip validation
+  - lineWrapper.js: Intelligent line breaking that preserves chord-syllable alignment
+  - Critical feature: Detects when break point would split chord, adjusts to avoid cutting chords
+- **Branch**: refactor/structured-data
+- **Status**: ✅ **COMPLETED AND INTEGRATED** (Dec 24, 2025)
 
 ### December 6, 2025 (Session 8 - Responsive Logo)
 - **Responsive Logo Implementation** (commit: 03fba72)
