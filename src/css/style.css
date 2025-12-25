@@ -28,7 +28,8 @@ pre {
     padding: 12px; /* Espaço interno para o cursor ficar visível */
     transition: background-color 0.2s ease; /* Transição suave ao entrar em modo de edição */
     font-size: 16px; /* Aumenta tamanho da fonte para melhor legibilidade mobile */
-    overflow-x: auto; /* Permite scroll horizontal quando necessário */
+    overflow-x: hidden; /* Hide horizontal overflow - lines are wrapped intelligently */
+    word-wrap: break-word; /* Break words if absolutely necessary */
 }
 
 pre[contenteditable="true"] {
