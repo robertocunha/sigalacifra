@@ -75,8 +75,8 @@ describe('isChordLine', () => {
   });
 
   it('should handle edge case: exactly 50% chords', () => {
-    // 1 chord + 1 word = 50%, should be false (needs >50%)
-    expect(isChordLine('C amor')).toBe(false);
+    // 1 chord + 1 word = 50%, changed to >= 50% (Dec 2025 fix)
+    expect(isChordLine('C amor')).toBe(true);
   });
 
   it('should NOT recognize empty lines', () => {
@@ -96,9 +96,8 @@ describe('isChordLine', () => {
     expect(isChordLine('Intro: Am7 D7')).toBe(true); // 2 acordes / 3 palavras = 66%
     expect(isChordLine('Refrão: G C D')).toBe(true); // 3 acordes / 4 palavras = 75%
     
-    // Edge case: exatamente 50% não parseia (precisa >50%)
-    // Este é um comportamento aceitável - usuário pode formatar manualmente se necessário
-    expect(isChordLine('Solo: Em')).toBe(false); // 1 acorde / 2 palavras = 50%
+    // Exatamente 50% agora parseia (>= 50% após fix de Dec 2025)
+    expect(isChordLine('Solo: Em')).toBe(true); // 1 acorde / 2 palavras = 50%
   });
 
   it('should NOT parse chords embedded in descriptive text', () => {

@@ -1,4 +1,43 @@
 /**
+ * Wraps a chord-only line (no lyrics) by breaking between chords
+ * @param {array} chords - Array of chord objects
+ * @param {number} maxWidth - Maximum width in characters
+ * @returns {array} Array of line data objects
+ */
+function wrapChordOnlyLine(chords, maxWidth) {
+  const lines = [];
+  let currentLineChords = [];
+  let currentPosition = 0;
+  
+  for (const { chord } of chords) {
+    // Calculate space needed for this chord (chord + spacing)
+    const chordLength = chord.length;
+    const spacing = 2; // Minimum spacing between chords
+    
+    // Check if adding this chord would exceed maxWidth
+    const wouldExceed = currentPosition + chordLength > maxWidth;
+    
+    if (wouldExceed && currentLineChords.length > 0) {
+      // Finish current line and start a new one
+      lines.push({ chords: currentLineChords, lyrics: '' });
+      currentLineChords = [{ position: 0, chord }];
+      currentPosition = chordLength + spacing;
+    } else {
+      // Add to current line
+      currentLineChords.push({ position: currentPosition, chord });
+      currentPosition += chordLength + spacing;
+    }
+  }
+  
+  // Don't forget the last line
+  if (currentLineChords.length > 0) {
+    lines.push({ chords: currentLineChords, lyrics: '' });
+  }
+  
+  return lines;
+}
+
+/**
  * Wraps a line into multiple lines if it exceeds max width
  * @param {object} lineData - Line data with chords and lyrics
  * @param {number} maxWidth - Maximum width in characters
@@ -6,6 +45,11 @@
  */
 export function wrapLine(lineData, maxWidth) {
   const { chords, lyrics } = lineData;
+  
+  // Special case: chord-only line (no lyrics)
+  if (lyrics.trim() === '' && chords.length > 0) {
+    return wrapChordOnlyLine(chords, maxWidth);
+  }
   
   // Check if line fits
   const lyricsLength = lyrics.length;

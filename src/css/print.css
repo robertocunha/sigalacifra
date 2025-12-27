@@ -1,6 +1,28 @@
 @media print {
+    /* Remove margens padrão da página */
+    @page {
+        margin: 1cm;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    
     body * {
         visibility: hidden; /* Oculta todos os elementos */
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Colapsa elementos ocultos */
+    header, nav, .container-fluid > .py-3 {
+        display: none !important;
+    }
+    
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
     }
     h1, p, pre, pre *, #tonePrintWrapper, #tonePrintWrapper * {
         visibility: visible; /* Torna visíveis título, artista, tom e letra */
@@ -9,28 +31,39 @@
         display: block !important; /* Força a exibição na impressão */
     }
     h1 {
-        position: relative;
-        top: 0;
-        left: 0;
         font-size: 1.5rem;
-        margin-bottom: 1rem;
+        margin: 0 0 0.3rem 0;
     }
     p {
-        position: relative;
-        top: 0;
-        left: 0;
-        font-size: 1rem;
+        font-size: 0.9rem;
+        margin: 0 0 0.2rem 0;
     }
     pre {
-        position: relative;
-        top: 1rem;
-        left: 0;
-        right: 0;
         font-family: monospace; /* Estilo para manter o alinhamento das cifras */
-        font-size: 1rem;
-        line-height: 1.8;
+        font-size: 0.7rem; /* Reduzido para evitar overflow */
+        line-height: 1.5;
+        margin: 0.5rem 0 0 0;
+        padding: 0;
+        white-space: pre; /* Mantém formatação exata (sem re-wrap) */
+        overflow: visible; /* Remove scroll */
+        
+        /* Layout de duas colunas */
+        column-count: 2;
+        column-gap: 2rem; /* Aumentado para dar mais espaço */
+        column-fill: auto;
+        
+        /* Evita quebras indesejadas */
+        orphans: 3;
+        widows: 3;
     }
     b {
         font-weight: bold; /* Garante que as cifras fiquem em negrito */
+        color: #000; /* Garante que cifras sejam pretas na impressão */
+    }
+    
+    /* Previne quebra de linha no meio de palavras/cifras */
+    pre b {
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 }

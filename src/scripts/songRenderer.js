@@ -2,6 +2,42 @@ import { wrapLine } from './lineWrapper.js';
 import { renderLine } from './lineRenderer.js';
 
 /**
+ * Wraps annotation text by breaking it into multiple lines at word boundaries
+ * @param {string} text - Text to wrap
+ * @param {number} maxWidth - Maximum width in characters
+ * @returns {array} Array of wrapped lines
+ */
+function wrapAnnotation(text, maxWidth) {
+  // If text fits, return as-is
+  if (text.length <= maxWidth) {
+    return [text];
+  }
+  
+  const lines = [];
+  const words = text.split(' ');
+  let currentLine = '';
+  
+  for (const word of words) {
+    const testLine = currentLine ? currentLine + ' ' + word : word;
+    
+    if (testLine.length > maxWidth && currentLine) {
+      // Current line is full, start new line
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  
+  // Don't forget the last line
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  return lines;
+}
+
+/**
  * Renders a complete song as HTML with chord wrapping
  * @param {array} linePairs - Array of line pair objects
  * @param {number} maxWidth - Maximum width in characters for wrapping
@@ -15,7 +51,9 @@ export function renderSong(linePairs, maxWidth) {
     if (item.type === 'empty') {
       renderedLines.push('');
     } else if (item.type === 'annotation') {
-      renderedLines.push(item.text);
+      // Wrap annotations if they exceed maxWidth
+      const wrappedAnnotations = wrapAnnotation(item.text, maxWidth);
+      renderedLines.push(...wrappedAnnotations);
     } else {
       // It's a line pair with chords and lyrics
       // Apply wrapping

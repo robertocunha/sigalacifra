@@ -88,8 +88,42 @@ Collection: `musicas`
 ## What's Missing / Broken
 
 - ❌ No way to edit title/artist/tone directly
-- ⚠️ Print layout inefficient: single song often takes 4-5 pages. Need two-column layout for print to fit in 1-2 pages (like traditional songbooks). **See [structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md) for detailed solution plan.**
+- ⚠️ **Print layout inefficient:** single song often takes 4-5 pages. Need two-column layout for print to fit in 1-2 pages (like traditional songbooks).
 - ⚠️ Bulk print: select multiple songs from list and print all at once (useful for carnival prep, low priority until February)
+
+### Print Layout - Additional Context
+
+**Current state:**
+- Single-column layout for screen viewing (works well)
+- `print.css` hides navigation, shows only: title, artist, tone, lyrics with chords
+- One song typically spans 4-5 printed pages (wasteful)
+- Print button (🖨️) triggers browser's native print dialog
+
+**Desired state:**
+- **Two-column layout for print media** (like traditional songbooks)
+- Target: 1 song fits in 1-2 pages max
+- Must preserve chord-syllable alignment (critical!)
+- Should work with the existing line wrapping system
+
+**Technical foundation (already implemented):**
+- Songs are parsed into `linePairs` array (via `parseSong()`)
+- Each `linePair` contains structured chords + lyrics
+- Line wrapping respects `maxWidth` and doesn't split chords
+- Rendering generates HTML with `<b>` tags for chords
+
+**Key challenge:**
+How to split `linePairs` array into two balanced columns for print, while:
+1. Maintaining visual flow (users read top→bottom, left column→right column)
+2. Keeping chord alignment intact
+3. Avoiding awkward breaks (e.g., splitting a verse across columns)
+
+**Files to review:**
+- `src/css/print.css` - Current print styles (single column)
+- `src/scripts/songRenderer.js` - Renders song from linePairs
+- `src/scripts/song.js` - Main song page logic (has cached `linePairs`)
+
+**Inspiration:**
+Traditional printed songbooks use two columns to fit 2-3 songs per A4 page. We want similar density for single-song view.
 
 ## Documentation Structure
 
@@ -102,22 +136,24 @@ Collection: `musicas`
 **Historical decisions:**
 - **[docs/decisions/2025-12-05-font-size-controls.md](docs/decisions/2025-12-05-font-size-controls.md)** - Original decision to implement A+/A- controls as MVP before structured data refactoring.
 
-## Current Work: Structured Data Refactoring (Dec 18-24, 2025)
+## Current Work: Structured Data Refactoring (Dec 18-27, 2025)
 
 **Problem**: Long chord/lyrics lines cause horizontal scroll on mobile, especially when users increase font size.
 
 **Solution**: Convert plain text chord sheets to structured data that separates chords (with positions) from lyrics, enabling intelligent line wrapping that preserves chord-to-syllable alignment.
 
-**Status**: ✅ **COMPLETED AND INTEGRATED** (Dec 24, 2025)
+**Status**: ✅ **COMPLETED AND BUGS FIXED** (Dec 27, 2025)
 - ✅ All core modules implemented (lineParser, lineRenderer, lineWrapper, songParser, songRenderer)
 - ✅ Recursive line wrapping (handles extremely long lines)
 - ✅ Integration with song.js (parse on load, cache linePairs)
 - ✅ Architecture fixed: Firebase stores plain text, parsing happens on read
-- ✅ 64 tests passing (16 new tests for structured data modules)
+- ✅ 77 tests passing (23 new tests for structured data modules + bug fixes)
 - ✅ maxWidth calculated by actual measurement (not estimation)
 - ✅ Chord line detection fixed (>= 50% threshold)
+- ✅ **Bug fix #1:** Annotations (text without chords) now wrap correctly
+- ✅ **Bug fix #2:** Chord-only lines now wrap correctly (e.g., intros)
 
-**Next steps:** Print layout (two-column), additional edge case tests, mobile UX polish.
+**Next steps:** Test with real songs on mobile, print layout (two-column), mobile UX polish.
 
 **See [docs/structured-data-refactoring-v2.md](docs/structured-data-refactoring-v2.md)** for complete technical details.
 
@@ -225,14 +261,15 @@ Collection: `musicas`
 - Enharmonic equivalents and full circle validation
 - Real-world progressions (I-IV-V, ii-V-I, bossa patterns)
 
-**Structured Data Modules** (16 tests - Dec 2025):
+**Structured Data Modules** (23 tests - Dec 2025):
 - **lineParser.js** (3 tests): Parse text lines to structured data
 - **lineRenderer.js** (3 tests): Render structure back to text with round-trip validation
-- **lineWrapper.js** (3 tests): Intelligent line wrapping without splitting chords (includes recursive wrapping)
+- **lineWrapper.js** (4 tests): Intelligent line wrapping without splitting chords (includes recursive wrapping)
 - **songParser.js** (4 tests): Parse complete song text to array of linePairs
-- **songRenderer.js** (3 tests): Render complete song with wrapping applied
+- **songRenderer.js** (2 tests): Render complete song with wrapping applied
+- **bugFixes.js** (7 tests): Wrapping for annotations and chord-only lines
 
-**Total**: 64 tests passing
+**Total**: 77 tests passing
 
 ### Known Limitations (Documented in Tests)
 
@@ -244,6 +281,27 @@ Collection: `musicas`
   - Intentional: prevents false positives in lyrics
 
 ## Recent Changes (Changelog)
+
+### December 27, 2025 (Session 11 - Bug Fixes for Line Wrapping)
+- **Fixed Bug #1: Annotations not wrapping**
+  - Added `wrapAnnotation()` function in `songRenderer.js`
+  - Text without chords (annotations or lyrics without chord changes) now wraps correctly
+  - Breaks at word boundaries, no mid-word splits
+  - Applies to both actual annotations ("Aqui entram os tamborins") and lyrics without chords
+- **Fixed Bug #2: Chord-only lines not wrapping**
+  - Added `wrapChordOnlyLine()` function in `lineWrapper.js`
+  - Detects lines with `lyrics: ""` and applies chord-specific wrapping
+  - Distributes chords across multiple lines when exceeding maxWidth
+  - Handles multi-line intros (e.g., `[intro] Dm7 G7(13) Cmaj7 A7 / Fmaj7 G7 C6`)
+- **Documentation**
+  - Created `docs/bug-analysis-wrapping.md` - Technical analysis of both bugs
+  - Created `docs/data-flow-diagrams.md` - Visual diagrams of data flow
+  - Created `docs/study-guide-wrapping.md` - Step-by-step study guide
+  - Created `docs/bug-fixes-implemented.md` - Implementation summary
+- **Tests**
+  - Added 7 new tests in `bugFixes.test.js`
+  - Updated `bugInvestigation.test.js` to reflect new behavior
+  - All 77 tests passing ✅
 
 ### December 18-19, 2025 (Session 9 - Structured Data Refactoring - In Progress)
 - **Created comprehensive refactoring plan** (docs/structured-data-refactoring-v2.md)

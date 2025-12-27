@@ -149,6 +149,37 @@ if (songId) {
     }, 300); // Wait 300ms after resize stops
   });
 
+  // Re-render for print with narrow maxWidth for two-column layout
+  let normalRenderedContent = null;
+
+  window.addEventListener('beforeprint', () => {
+    if (currentSongData && currentSongData.linePairs) {
+      console.log('Entering print mode, re-rendering with narrow maxWidth...');
+      
+      // Save current content
+      normalRenderedContent = preElement.innerHTML;
+      
+      // Calculate narrow maxWidth for print columns
+      // Each column is ~45% of page width
+      const normalMaxWidth = calculateMaxWidth();
+      const printMaxWidth = Math.floor(normalMaxWidth * 0.45);
+      
+      console.log('Print maxWidth:', printMaxWidth);
+      
+      // Re-render with narrow width
+      const renderedHtml = renderSong(currentSongData.linePairs, printMaxWidth);
+      preElement.innerHTML = renderedHtml;
+    }
+  });
+
+  window.addEventListener('afterprint', () => {
+    if (normalRenderedContent) {
+      console.log('Exiting print mode, restoring normal rendering...');
+      preElement.innerHTML = normalRenderedContent;
+      normalRenderedContent = null;
+    }
+  });
+
   preElement.contentEditable = "false";
 
   const transposeChords = (steps) => {
