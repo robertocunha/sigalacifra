@@ -5,7 +5,7 @@ import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
 import '../css/print.css';
 import '../css/style.css';
 
-import { app, db } from './firebaseConfig.js';
+import { app, db } from './firebaseConfig.prod.js';
 import { doc, setDoc, collection, query, where, orderBy, getDocs } from "firebase/firestore";
 
 // Referências aos elementos

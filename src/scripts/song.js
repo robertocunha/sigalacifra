@@ -5,7 +5,7 @@ import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
 import '../css/print.css';
 import '../css/style.css';
 
-import { db } from './firebaseConfig.js';
+import { db } from './firebaseConfig.prod.js';
 import { doc, onSnapshot, setDoc, deleteDoc } from "firebase/firestore";
 import { transposeChord } from './transpose.js';
 import { parseSong } from './songParser.js';
