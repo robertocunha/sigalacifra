@@ -114,3 +114,228 @@ textarea::placeholder {
     transform: scale(0.95);
 }
 
+/* ============================================
+   DRAWER STYLES
+   ============================================ */
+
+/* Botão Hambúrguer */
+.drawer-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1040; /* Menor que o drawer (1060) para ficar atrás */
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    width: 44px;
+    height: 44px;
+    display: none; /* Escondido por padrão (desktop) */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.drawer-toggle:hover {
+    background-color: #0056b3;
+}
+
+.drawer-toggle:active {
+    background-color: #004085;
+}
+
+.drawer-toggle span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Animação do botão hambúrguer quando drawer está aberto */
+.drawer-toggle.active {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Overlay (fundo escuro) */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Drawer (menu lateral) */
+.drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1060;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    display: none; /* Escondido por padrão (desktop) */
+}
+
+.drawer.active {
+    transform: translateX(0);
+}
+
+/* Header do drawer */
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.drawer-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.drawer-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.drawer-close:hover {
+    color: #000;
+}
+
+/* Conteúdo do drawer */
+.drawer-content {
+    padding: 20px;
+}
+
+.drawer-section {
+    margin-bottom: 30px;
+}
+
+.drawer-section:last-child {
+    margin-bottom: 0;
+}
+
+.drawer-section-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.drawer-control {
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.drawer-control-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+.drawer-control .btn {
+    padding: 8px 16px;
+}
+
+.drawer-control .form-switch {
+    display: flex;
+    justify-content: center;
+}
+
+.drawer-control .form-check-input {
+    width: 3rem;
+    height: 1.5rem;
+    cursor: pointer;
+}
+
+/* Botões no drawer */
+.drawer-section > .btn {
+    margin-top: 10px;
+    padding: 12px;
+    font-weight: 500;
+}
+
+/* ============================================
+   MEDIA QUERIES
+   ============================================ */
+
+/* Mobile: Mostrar drawer, esconder controles desktop */
+@media (max-width: 767px) {
+    .drawer-toggle {
+        display: flex;
+    }
+    
+    .drawer {
+        display: block;
+    }
+    
+    .desktop-controls {
+        display: none !important;
+    }
+    
+    /* Adiciona espaço à esquerda do navbar para não sobrepor o logo */
+    .navbar .container-fluid {
+        padding-left: 75px !important; /* Espaço para o botão hambúrguer */
+    }
+}
+
+/* Desktop: Esconder drawer, mostrar controles normais */
+@media (min-width: 768px) {
+    .drawer-toggle {
+        display: none;
+    }
+    
+    .drawer {
+        display: none;
+    }
+    
+    .drawer-overlay {
+        display: none;
+    }
+    
+    .desktop-controls {
+        display: flex !important;
+    }
+}

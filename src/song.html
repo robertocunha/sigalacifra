@@ -6,6 +6,71 @@
     <title>Siga La Cifra! | Música</title>
 </head>
 <body class="song-page">
+    <!-- Botão Hambúrguer (visível apenas em mobile) -->
+    <button id="drawerToggle" class="drawer-toggle" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay (fundo escuro quando drawer está aberto) -->
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+
+    <!-- Drawer (menu lateral) -->
+    <div id="drawer" class="drawer">
+        <div class="drawer-header">
+            <h5>Controles</h5>
+            <button id="drawerClose" class="drawer-close" aria-label="Fechar menu">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <!-- Grupo 1: Controles de Edição -->
+            <div class="drawer-section">
+                <h6 class="drawer-section-title">Edição</h6>
+                
+                <!-- Transposição -->
+                <div class="drawer-control">
+                    <span class="drawer-control-label">Transposição</span>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <button id="decreaseToneIdDrawer" class="btn btn-primary">−</button>
+                        <span class="fw-bold">Tom: <span id="toneIdDrawer"></span></span>
+                        <button id="increaseToneIdDrawer" class="btn btn-primary">+</button>
+                    </div>
+                </div>
+                
+                <!-- Toggle Edição -->
+                <div class="drawer-control">
+                    <span class="drawer-control-label">Modo de Edição</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="editToggleIdDrawer" role="switch">
+                    </div>
+                </div>
+                
+                <!-- Salvar -->
+                <button id="saveButtonIdDrawer" class="btn btn-success w-100">Salvar</button>
+            </div>
+            
+            <!-- Grupo 2: Controles de Visualização -->
+            <div class="drawer-section">
+                <h6 class="drawer-section-title">Visualização</h6>
+                
+                <!-- Tamanho da fonte -->
+                <div class="drawer-control">
+                    <span class="drawer-control-label">Tamanho da Fonte</span>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <button id="decreaseFontIdDrawer" class="btn btn-secondary">A−</button>
+                        <button id="increaseFontIdDrawer" class="btn btn-secondary">A+</button>
+                    </div>
+                </div>
+                
+                <!-- Imprimir -->
+                <button id="printButtonIdDrawer" class="btn btn-secondary w-100">🖨️ Imprimir</button>
+                
+                <!-- Deletar -->
+                <button id="deleteButtonIdDrawer" class="btn btn-danger w-100">🗑️ Deletar</button>
+            </div>
+        </div>
+    </div>
+
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
@@ -21,8 +86,8 @@
     </header>
     <main class="container-fluid">
         <div class="py-3">
-            <!-- Controles responsivos: grupos que quebram juntos -->
-            <div class="d-flex flex-wrap gap-3 mb-3" id="controlsBar">
+            <!-- Controles responsivos: grupos que quebram juntos (visível apenas em desktop) -->
+            <div class="d-flex flex-wrap gap-3 mb-3 desktop-controls" id="controlsBar">
                 <!-- Grupo 1: Controles de Edição -->
                 <div class="d-flex gap-3 align-items-stretch" style="margin-right: 1.5rem;">
                     <!-- Transposição -->
