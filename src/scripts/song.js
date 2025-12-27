@@ -93,6 +93,12 @@ if (songId) {
     return Math.max(20, maxChars); // Minimum 20 chars (reduced from 40)
   };
 
+  // Remove trailing whitespace/newlines from rendered HTML to avoid blank printed pages
+  const sanitizeRenderedHtml = (html) => {
+    if (typeof html !== 'string') return html;
+    return html.replace(/\s+$/, '');
+  };
+
   // Função que lida com a atualização da interface com os dados da música
   const updateSongData = (songData) => {
     currentSongData = songData; // Armazena os dados para uso posterior
@@ -111,8 +117,8 @@ if (songId) {
     
     // Render structured data with wrapping
     const maxWidth = calculateMaxWidth();
-    const renderedHtml = renderSong(linePairs, maxWidth);
-    preElement.innerHTML = renderedHtml;
+      const renderedHtml = renderSong(linePairs, maxWidth);
+      preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
     
     hasUnsavedChanges = false; // Reset ao carregar novos dados
   };
@@ -168,7 +174,7 @@ if (songId) {
       
       // Re-render with narrow width
       const renderedHtml = renderSong(currentSongData.linePairs, printMaxWidth);
-      preElement.innerHTML = renderedHtml;
+        preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
     }
   });
 
@@ -176,7 +182,8 @@ if (songId) {
     if (normalRenderedContent) {
       console.log('Exiting print mode, restoring normal rendering...');
       preElement.innerHTML = normalRenderedContent;
-      normalRenderedContent = null;
+        preElement.innerHTML = sanitizeRenderedHtml(normalRenderedContent);
+        normalRenderedContent = null;
     }
   });
 
@@ -219,8 +226,8 @@ if (songId) {
 
     // Re-renderiza a música
     const maxWidth = calculateMaxWidth();
-    const renderedHtml = renderSong(transposedLinePairs, maxWidth);
-    preElement.innerHTML = renderedHtml;
+      const renderedHtml = renderSong(transposedLinePairs, maxWidth);
+      preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
   };
 
   increaseToneButton.addEventListener("click", () => {
