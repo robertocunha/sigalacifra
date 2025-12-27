@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest",
     "test:run": "vitest run",
-    "build": "webpack --mode=development",
+    "build": "webpack --mode=production",
     "start": "webpack serve --mode development"
   },
   "keywords": [],
