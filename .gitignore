@@ -1,4 +1,4 @@
 node_modules
 dist
 .firebase
-.env
+.env.firebase/
