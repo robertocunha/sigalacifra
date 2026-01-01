@@ -84,7 +84,6 @@ const fetchArchivedSongs = async () => {
 
         try {
           await deleteDoc(songDocRef);
-          console.log('Música deletada com sucesso');
           // Remove a linha da tabela imediatamente
           row.remove();
         } catch (error) {

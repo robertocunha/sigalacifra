@@ -50,8 +50,6 @@ saveButton.addEventListener("click", async () => {
     // Define position as last + 10
     const position = await getLastPosition() + 10;
 
-    console.log("formData: ", title, artist, tone, position, active, lyricsRaw);
-
     // Referência para o documento, deixando o Firestore gerar o ID automaticamente
     const docRef = doc(collection(db, "musicas"));
 

@@ -125,17 +125,11 @@ if (songId) {
     currentFontSize = Math.max(MIN_FONT_SIZE, Math.min(MAX_FONT_SIZE, newSize));
     preElement.style.fontSize = `${currentFontSize}px`;
     
-    console.log('Font size changed to:', currentFontSize);
-    
     // Re-render song with new wrapping based on new font size
     if (currentSongData && currentSongData.linePairs) {
-      console.log('Re-rendering song with new font size...');
       const maxWidth = calculateMaxWidth();
       const renderedHtml = renderSong(currentSongData.linePairs, maxWidth);
       preElement.innerHTML = renderedHtml;
-      console.log('Song re-rendered!');
-    } else {
-      console.log('No song data to re-render');
     }
   };
 
@@ -182,8 +176,6 @@ if (songId) {
     document.body.removeChild(measureSpan);
     
     const maxChars = Math.floor(availableWidth / charWidth);
-    
-    console.log('DEBUG maxWidth:', { preWidth, padding, availableWidth, charWidth, maxChars });
     
     return Math.max(20, maxChars); // Minimum 20 chars (reduced from 40)
   };
@@ -241,7 +233,6 @@ if (songId) {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       if (currentSongData && currentSongData.linePairs) {
-        console.log('Window resized, re-rendering song...');
         const maxWidth = calculateMaxWidth();
         const renderedHtml = renderSong(currentSongData.linePairs, maxWidth);
         preElement.innerHTML = renderedHtml;
@@ -254,9 +245,6 @@ if (songId) {
 
   window.addEventListener('beforeprint', () => {
     if (currentSongData && currentSongData.linePairs) {
-      
-      console.log('Entering print mode, re-rendering with narrow maxWidth...');
-      
       // Save current content
       normalRenderedContent = preElement.innerHTML;
       
@@ -264,8 +252,6 @@ if (songId) {
       // Each column is ~45% of page width
       const normalMaxWidth = calculateMaxWidth();
       const printMaxWidth = Math.floor(normalMaxWidth * 0.42);
-      
-      console.log('Print maxWidth:', printMaxWidth);
       
       // Re-render with narrow width
       const renderedHtml = renderSong(currentSongData.linePairs, printMaxWidth);
@@ -275,7 +261,6 @@ if (songId) {
 
   window.addEventListener('afterprint', () => {
     if (normalRenderedContent) {
-      console.log('Exiting print mode, restoring normal rendering...');
       preElement.innerHTML = sanitizeRenderedHtml(normalRenderedContent);
       normalRenderedContent = null;
     }
@@ -323,26 +308,22 @@ if (songId) {
 
   // Desktop transpose controls
   increaseToneButton.addEventListener("click", () => {
-    console.log("Subindo tom...");
     transposeChords(1);
     hasUnsavedChanges = true;
   });
 
   decreaseToneButton.addEventListener("click", () => {
-    console.log("Descendo tom...");
     transposeChords(-1);
     hasUnsavedChanges = true;
   });
 
   // Drawer transpose controls
   increaseToneButtonDrawer.addEventListener("click", () => {
-    console.log("Subindo tom...");
     transposeChords(1);
     hasUnsavedChanges = true;
   });
 
   decreaseToneButtonDrawer.addEventListener("click", () => {
-    console.log("Descendo tom...");
     transposeChords(-1);
     hasUnsavedChanges = true;
   });
@@ -410,7 +391,6 @@ if (songId) {
 
     try {
       await setDoc(docRef, { letra: updatedLetra, tone: updatedTone }, { merge: true });
-      console.log("Documento atualizado e formatado com sucesso!");
       hasUnsavedChanges = false;
       
       // Desliga o modo de edição
@@ -498,7 +478,6 @@ if (songId) {
     try {
       const redirectTo = currentSongData?.active ? "index.html" : "archived.html";
       await deleteDoc(docRef);
-      console.log("Música deletada com sucesso!");
       window.location.href = redirectTo;
     } catch (error) {
       console.error("Erro ao deletar a música:", error);

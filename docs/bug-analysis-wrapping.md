@@ -1,13 +1,33 @@
 # Análise dos Bugs de Quebra de Linha
 
+> **Status:** ✅ **TODOS OS BUGS RESOLVIDOS** (Dezembro 2025)
+
 ## 🎯 Resumo Executivo
 
-Identifiquei a causa raiz de ambos os problemas:
+Ambos os problemas foram identificados e corrigidos:
 
-1. **Linhas de letra sem acordes**: ✅ **NÃO É BUG** - Funcionando conforme design
+1. **Linhas de letra sem acordes**: ✅ **CORRIGIDO** - Annotations agora quebram corretamente
 2. **Linhas com apenas acordes**: ✅ **CORRIGIDO** - Lógica de quebra implementada
+3. **Quebra na impressão**: ✅ **CORRIGIDO** - Pares chord+lyrics não se separam mais
+
+## 🔧 Soluções Implementadas
+
+### Fix #1: Wrapping de Annotations
+- Implementada função `wrapAnnotation()` em `songRenderer.js`
+- Quebra texto longo respeitando limites de palavras
+
+### Fix #2: Wrapping de Linhas Chord-Only  
+- Implementada função `wrapChordOnlyLine()` em `lineWrapper.js`
+- Quebra entre acordes quando excede maxWidth
+
+### Fix #3: Quebra de Impressão
+- Adicionado wrapper `<span class="chord-lyrics-pair">` no `lineRenderer.js`
+- CSS `break-inside: avoid` previne separação na impressão
+- Ajustado printMaxWidth (0.28 → 0.42) e column-gap (2rem → 1rem)
 
 ---
+
+## 📊 Histórico Original da Análise
 
 ## 🔍 Bug #1: Linha de Letra SEM Acordes
 
