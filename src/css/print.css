@@ -3,64 +3,88 @@
     @page {
         margin: 1cm;
     }
-    
+
     body {
         margin: 0;
         padding: 0;
     }
-    
+
     body * {
-        visibility: hidden; /* Oculta todos os elementos */
+        visibility: hidden;
         margin: 0;
         padding: 0;
     }
-    
+
     /* Colapsa elementos ocultos */
-    header, nav, .container-fluid > .py-3 {
+    header,
+    nav,
+    .container-fluid > .py-3 {
         display: none !important;
     }
-    
+
     main {
         padding: 0 !important;
         margin: 0 !important;
+        display: block !important;
+        
+        /* Movemos as colunas para o container principal */
+        column-count: 2;
+        column-gap: 2rem;
+        column-fill: auto;
     }
-    h1, p, pre, pre *, #tonePrintWrapper, #tonePrintWrapper * {
-        visibility: visible; /* Torna visíveis título, artista, tom e letra */
+
+    h1,
+    p,
+    pre,
+    pre *,
+    #tonePrintWrapper,
+    #tonePrintWrapper * {
+        visibility: visible;
     }
+
+    /* UNIFICADO - todas as regras de #tonePrintWrapper juntas */
     #tonePrintWrapper {
-        display: block !important; /* Força a exibição na impressão */
+        display: block !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        column-span: all; /* Faz o tom atravessar as colunas */
     }
+
     h1 {
         font-size: 1.5rem;
         margin: 0 0 0.3rem 0;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        column-span: all; /* Faz o título atravessar as colunas */
     }
+
     p {
         font-size: 0.9rem;
         margin: 0 0 0.2rem 0;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        column-span: all; /* Faz o artista atravessar as colunas */
     }
+
     pre {
-        font-family: monospace; /* Estilo para manter o alinhamento das cifras */
-        font-size: 0.65rem; /* Ajuste solicitado para economizar mais espaço */
+        font-family: monospace;
+        font-size: 0.65rem;
         line-height: 1.5;
         margin: 0.5rem 0 0 0;
         padding: 0;
-        white-space: pre; /* Mantém formatação exata (sem re-wrap) */
-        overflow: visible; /* Remove scroll */
-        
-        /* Layout de duas colunas */
-        column-count: 2;
-        column-gap: 2rem; /* Espaço entre colunas */
-        column-fill: auto;
-        
-        /* Evita quebras indesejadas */
-        orphans: 3;
-        widows: 3;
+        white-space: pre;
+        overflow: visible;
+
+        /* Força ficar junto com cabeçalho */
+        page-break-before: avoid !important;
+        break-before: avoid !important;
     }
+
     b {
-        font-weight: bold; /* Garante que as cifras fiquem em negrito */
-        color: #000; /* Garante que cifras sejam pretas na impressão */
+        font-weight: bold;
+        color: #000;
     }
-    
+
     /* Previne quebra de linha no meio de palavras/cifras */
     pre b {
         break-inside: avoid;

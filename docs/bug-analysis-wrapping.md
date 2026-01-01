@@ -5,7 +5,7 @@
 Identifiquei a causa raiz de ambos os problemas:
 
 1. **Linhas de letra sem acordes**: ✅ **NÃO É BUG** - Funcionando conforme design
-2. **Linhas com apenas acordes**: ❌ **BUG CONFIRMADO** - Não estão quebrando
+2. **Linhas com apenas acordes**: ✅ **CORRIGIDO** - Lógica de quebra implementada
 
 ---
 
@@ -130,6 +130,8 @@ Permitir que uma linha de letra exista "órfã" (sem acordes), em vez de ser ann
 ---
 
 ## 🔍 Bug #2: Linha com APENAS Acordes
+
+> **Status:** ✅ **RESOLVIDO**. A função `wrapChordOnlyLine` foi implementada em `lineWrapper.js` para tratar este caso.
 
 ### Exemplo
 ```

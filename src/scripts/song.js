@@ -254,6 +254,7 @@ if (songId) {
 
   window.addEventListener('beforeprint', () => {
     if (currentSongData && currentSongData.linePairs) {
+      
       console.log('Entering print mode, re-rendering with narrow maxWidth...');
       
       // Save current content
@@ -262,7 +263,7 @@ if (songId) {
       // Calculate narrow maxWidth for print columns
       // Each column is ~45% of page width
       const normalMaxWidth = calculateMaxWidth();
-      const printMaxWidth = Math.floor(normalMaxWidth * 0.45);
+      const printMaxWidth = Math.floor(normalMaxWidth * 0.28);
       
       console.log('Print maxWidth:', printMaxWidth);
       
