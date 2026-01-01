@@ -29,7 +29,7 @@
         
         /* Movemos as colunas para o container principal */
         column-count: 2;
-        column-gap: 2rem;
+        column-gap: 1rem;
         column-fill: auto;
     }
 
@@ -89,5 +89,12 @@
     pre b {
         break-inside: avoid;
         page-break-inside: avoid;
+    }
+
+    /* Previne quebra entre acordes e letra (par inseparável) */
+    .chord-lyrics-pair {
+        display: inline-block;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
     }
 }

@@ -17,7 +17,8 @@ describe('songRenderer', () => {
     
     // Should render chords in <b> tags on first line, lyrics on second
     // Note: chord line is padded to match lyrics line length
-    expect(result).toBe('<b>C</b>      <b>Dm7</b>    \nMarcha soldado');
+    // Wrapped in span to prevent print breaks
+    expect(result).toBe('<span class="chord-lyrics-pair"><b>C</b>      <b>Dm7</b>    \nMarcha soldado</span>');
   });
 
   it('should render a song with line wrapping applied', () => {
@@ -34,14 +35,14 @@ describe('songRenderer', () => {
     
     const result = renderSong(linePairs, 10); // Small maxWidth, forces wrapping
     
-    // Should wrap into 3 lines
+    // Should wrap into 3 lines, each pair in its own span
     expect(result).toBe(
-      '<b>C</b>      \n' +
-      'Marcha \n' +
-      '<b>Dm7</b>     \n' +
-      'soldado \n' +
-      '<b>F</b>     \n' +
-      'cabeça'
+      '<span class="chord-lyrics-pair"><b>C</b>      \n' +
+      'Marcha </span>\n' +
+      '<span class="chord-lyrics-pair"><b>Dm7</b>     \n' +
+      'soldado </span>\n' +
+      '<span class="chord-lyrics-pair"><b>F</b>     \n' +
+      'cabeça</span>'
     );
   });
 });

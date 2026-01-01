@@ -45,15 +45,12 @@ describe('Bug Fixes - Line Wrapping', () => {
       const parsed = parseSong(input);
       const rendered = renderSong(parsed, 15); // maxWidth = 15
       
-      const lines = rendered.split('\n').filter(l => l.trim() !== '');
+      // Should contain multiple chord-lyrics-pair spans (wrapped)
+      const spanCount = (rendered.match(/chord-lyrics-pair/g) || []).length;
+      expect(spanCount).toBeGreaterThan(1);
       
-      // Should be broken into multiple lines
-      expect(lines.length).toBeGreaterThan(1);
-      
-      // Each line should contain chords
-      lines.forEach(line => {
-        expect(line).toContain('<b>');
-      });
+      // Should contain chords
+      expect(rendered).toContain('<b>');
     });
     
     it('should handle intro with multiple chord-only lines', () => {
@@ -77,10 +74,9 @@ Fmaj7  G7  C6`;
       const parsed = parseSong(input);
       const rendered = renderSong(parsed, 30);
       
-      const lines = rendered.split('\n').filter(l => l.trim() !== '');
-      
-      // Should remain as single line (fits in 30 chars)
-      expect(lines.length).toBe(1);
+      // Should have only one chord-lyrics-pair span (no wrapping needed)
+      const spanCount = (rendered.match(/chord-lyrics-pair/g) || []).length;
+      expect(spanCount).toBe(1);
     });
   });
   

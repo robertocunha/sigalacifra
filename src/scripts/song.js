@@ -263,7 +263,7 @@ if (songId) {
       // Calculate narrow maxWidth for print columns
       // Each column is ~45% of page width
       const normalMaxWidth = calculateMaxWidth();
-      const printMaxWidth = Math.floor(normalMaxWidth * 0.28);
+      const printMaxWidth = Math.floor(normalMaxWidth * 0.42);
       
       console.log('Print maxWidth:', printMaxWidth);
       

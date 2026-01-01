@@ -25,7 +25,8 @@ export function renderLine(lineData, html = false) {
       chordLine += ' '.repeat(lyrics.length - currentPos);
     }
     
-    return chordLine + '\n' + lyrics;
+    // Wrap chord+lyrics pair in span to prevent column/page breaks
+    return `<span class="chord-lyrics-pair">${chordLine}\n${lyrics}</span>`;
   } else {
     // Plain text version (existing code)
     const chordLineArray = new Array(lyrics.length).fill(' ');
