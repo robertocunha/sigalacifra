@@ -1,3 +1,34 @@
+/* Color scheme: Beige Cream background with Beige Paper header */
+body {
+    background-color: #f5efe6;
+}
+
+/* Tables with beige paper background */
+.table {
+    background-color: #f5efe6 !important;
+    --bs-table-bg: #f5efe6 !important;
+}
+
+.table thead th {
+    background-color: #f0ead6 !important;
+}
+
+.table tbody tr {
+    background-color: #f5efe6 !important; /* Same as body background */
+}
+
+.table tbody tr td {
+    background-color: #f5efe6 !important; /* Apply directly to cells */
+}
+
+.table tbody tr:hover {
+    background-color: #f0ead6 !important;
+}
+
+.table tbody tr:hover td {
+    background-color: #f0ead6 !important;
+}
+
 /* Layout responsivo com largura máxima */
 body {
     max-width: 1200px;
@@ -9,6 +40,7 @@ body {
 .navbar {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
+    background-color: #f4f1ea !important;
 }
 
 /* Responsive logo sizing */
