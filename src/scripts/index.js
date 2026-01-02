@@ -1,8 +1,7 @@
-import 'bootstrap/dist/css/bootstrap.min.css'; // Estilos
-import 'bootstrap'; // Funcionalidades JS (requer Popper.js)
 import Sortable from 'sortablejs';
 
 // Imports de CSS para uso do Webpack
+import '../css/components.css';
 import '../css/print.css';
 import '../css/style.css';
 
