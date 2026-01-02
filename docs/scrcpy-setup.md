@@ -2,14 +2,16 @@
 
 Guide for mirroring Android phone screen on desktop for mobile testing.
 
-## Quick Start (After Initial Setup)
+## Quick Start (If Already Connected)
 
-Connect to phone via WiFi and start mirroring:
+If you recently used scrcpy and didn't reboot the phone:
 
 ```bash
 adb connect 192.168.10.101:5555
 scrcpy
 ```
+
+**⚠️ If you get "Connection refused":** Skip to "Reconnecting After Reboot" below!
 
 ## Keyboard Shortcuts
 
@@ -55,23 +57,35 @@ adb connect [PHONE_IP]:5555
 
 Now you can disconnect the USB cable!
 
+## Reconnecting After Reboot (Common!)
+
+**If phone rebooted or you get "Connection refused":**
+
+The TCP mode resets! You need to re-enable it via USB:
+
+```bash
+# 1. Connect USB cable to phone
+# 2. Run:
+adb devices          # Should show device connected via USB
+adb tcpip 5555       # Re-enable TCP mode
+# 3. Disconnect USB cable
+# 4. Connect via WiFi:
+adb connect 192.168.10.101:5555
+scrcpy
+```
+
+**This is NOT a one-time setup** - you'll need to do this every time the phone reboots or loses TCP connection!
+
 ## Troubleshooting
 
-**Phone not detected:**
+**Phone not detected via USB:**
 - Check USB debugging is enabled
 - Accept the authorization popup on phone
 - Try a different USB cable/port
 
-**WiFi connection fails:**
+**WiFi connection still fails:**
 - Make sure phone and computer are on the same WiFi network
-- Check the phone's IP address hasn't changed
-- Reconnect via USB and run `adb tcpip 5555` again
-
-**To reconnect after reboot:**
-```bash
-adb connect 192.168.10.101:5555
-scrcpy
-```
+- Check the phone's IP address hasn't changed (Settings → About → Status)
 
 ## Why This Setup?
 
