@@ -16,6 +16,13 @@ body {
     color: #212529;
 }
 
+/* Box-sizing universal */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
@@ -86,6 +93,12 @@ a:hover {
     margin: 0 -15px;
 }
 
+@media (max-width: 767px) {
+    .row {
+        margin: 0;
+    }
+}
+
 .col-md-4 {
     flex: 0 0 33.333%;
     padding: 0 15px;
@@ -100,6 +113,7 @@ a:hover {
     .col-md-4,
     .col-md-8 {
         flex: 0 0 100%;
+        padding: 0;
     }
 }
 
