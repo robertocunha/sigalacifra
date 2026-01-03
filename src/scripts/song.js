@@ -1,4 +1,5 @@
 // CSS imports
+import '../css/design-tokens.css';
 import '../css/components.css';
 
 // Imports de CSS para uso do Webpack

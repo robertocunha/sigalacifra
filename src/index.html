@@ -9,26 +9,26 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a href="index.html" class="navbar-brand p-0 m-0" style="text-decoration: none;">
+                <a href="index.html" class="navbar-brand" style="text-decoration: none;">
                     <img src="images/logo.png" alt="Siga La Cifra!">
                 </a>
-                <div class="d-flex">
+                <div class="d-flex gap-2">
                     <span class="btn btn-link active fw-bold" aria-current="page">Ativas</span>
                     <a class="btn btn-link" href="archived.html">Arquivadas</a>
                 </div>
             </div>
         </nav>
     </header>
-    <main>
+    <main class="px-3">
         <h1 class="my-4">Músicas Ativas</h1>
-        <table class="table" id="songs-table" border="1">
+        <table class="table" id="songs-table">
             <thead>
                 <tr>
-                    <th style="width: 40px;"></th>
+                    <th style="width: 40px;" aria-label="Reordenar"></th>
                     <th>Título</th>
-                    <th>Tom</th>
-                    <th>Ativa</th>
-                    <th>Ações</th>
+                    <th style="width: 80px;">Tom</th>
+                    <th style="width: 80px;" class="text-nowrap">Ativa</th>
+                    <th style="width: 100px;">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,7 +38,7 @@
     </main>
     
     <!-- Floating Action Button -->
-    <a href="createSong.html" class="fab" title="Nova música">
+    <a href="createSong.html" class="fab" title="Nova música" aria-label="Criar nova música">
         <span>+</span>
     </a>
 </body>

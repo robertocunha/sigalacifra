@@ -1,83 +1,153 @@
 /* Color scheme: Beige Cream background with Beige Paper header */
 body {
-    background-color: #f5efe6;
+    background-color: var(--color-bg-body);
+}
+
+/* Main content padding */
+main {
+    padding-bottom: var(--space-8); /* Space for FAB */
+}
+
+/* Page title styling */
+main h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-5);
+}
+
+@media (max-width: 767px) {
+    main h1 {
+        font-size: var(--font-size-2xl);
+        margin-top: var(--space-4);
+        margin-bottom: var(--space-4);
+    }
 }
 
 /* Tables with beige paper background */
 .table {
-    background-color: #f5efe6 !important;
-    --bs-table-bg: #f5efe6 !important;
+    background-color: var(--color-bg-body) !important;
+    --bs-table-bg: var(--color-bg-body) !important;
 }
 
 .table thead th {
-    background-color: #f0ead6 !important;
+    background-color: var(--color-bg-paper) !important;
 }
 
 .table tbody tr {
-    background-color: #f5efe6 !important; /* Same as body background */
+    background-color: var(--color-bg-body) !important; /* Same as body background */
 }
 
 .table tbody tr td {
-    background-color: #f5efe6 !important; /* Apply directly to cells */
+    background-color: var(--color-bg-body) !important; /* Apply directly to cells */
 }
 
 .table tbody tr:hover {
-    background-color: #f0ead6 !important;
+    background-color: var(--color-bg-hover) !important;
 }
 
 .table tbody tr:hover td {
-    background-color: #f0ead6 !important;
+    background-color: var(--color-bg-hover) !important;
+}
+
+/* TESTE: Fundo vermelho em TODAS as telas */
+.table th,
+.table td {
+    background-color: red !important;
+}
+
+/* Table alignment and widths - Following UX best practices */
+/* First column: drag handle - centered */
+.table th:first-child,
+.table td:first-child {
+    text-align: center;
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+}
+
+/* Title column: left-aligned (long text) - flexible but constrained */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    text-align: left;
+    width: auto;
+    max-width: 300px; /* Prevents excessive stretching on wide screens */
+}
+
+/* Tom column: centered (short text/badges) */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    text-align: center;
+    width: 100px;
+    min-width: 80px;
+}
+
+/* Ativa column: centered (checkbox) */
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    text-align: center;
+    width: 80px;
+    min-width: 80px;
+}
+
+/* Ações column: centered (action buttons) */
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    text-align: center;
+    width: 120px;
+    min-width: 100px;
 }
 
 /* Layout responsivo com largura máxima */
 body {
-    max-width: 1200px;
+    max-width: var(--container-max-width);
     margin: 0 auto;
     position: relative;
 }
 
 /* Header navbar com mais espaçamento */
 .navbar {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-    background-color: #f4f1ea !important;
+    padding-top: var(--navbar-padding-y) !important;
+    padding-bottom: var(--navbar-padding-y) !important;
+    background-color: var(--color-bg-subtle) !important;
 }
 
 /* Responsive logo sizing */
 .navbar-brand img {
-    max-height: 15vh; /* 15% of viewport height on lists */
+    max-height: var(--logo-height-mobile); /* 15% of viewport height on lists */
     width: auto;
     height: auto;
 }
 
 /* Smaller logo on song page */
 body.song-page .navbar-brand img {
-    max-height: 8vh; /* Smaller on song page where space is precious */
+    max-height: var(--logo-height-song); /* Smaller on song page where space is precious */
 }
 
 pre {
-    line-height: 1.5; /* Espaçamento entre linhas mais compacto e uniforme */
-    padding: 12px; /* Espaço interno para o cursor ficar visível */
-    transition: background-color 0.2s ease; /* Transição suave ao entrar em modo de edição */
-    font-size: 16px; /* Aumenta tamanho da fonte para melhor legibilidade mobile */
+    line-height: var(--pre-line-height); /* Espaçamento entre linhas mais compacto e uniforme */
+    padding: var(--pre-padding); /* Espaço interno para o cursor ficar visível */
+    transition: background-color var(--transition-base) ease; /* Transição suave ao entrar em modo de edição */
+    font-size: var(--pre-font-size); /* Aumenta tamanho da fonte para melhor legibilidade mobile */
     overflow-x: hidden; /* Hide horizontal overflow - lines are wrapped intelligently */
     word-wrap: break-word; /* Break words if absolutely necessary */
 }
 
 pre[contenteditable="true"] {
-    background-color: #fffbeb; /* Fundo amarelo claro no modo de edição */
-    border: 2px solid #fbbf24; /* Borda amarela para destacar */
-    border-radius: 4px;
+    background-color: var(--color-bg-active); /* Fundo amarelo claro no modo de edição */
+    border: var(--border-width-medium) solid var(--border-color-accent); /* Borda amarela para destacar */
+    border-radius: var(--border-radius-sm);
 }
 
 b {
-    color: orange;
-    font-weight: bolder;
+    color: var(--color-chord);
+    font-weight: var(--font-weight-bold);
 }
 
 td.title-cell  {
     cursor: pointer;
-    color: #007bff; /* Cor azul padrão de links no Bootstrap */
+    color: var(--color-primary); /* Cor azul padrão de links no Bootstrap */
     text-decoration: none; /* Sem sublinhado por padrão */
   }
   
@@ -94,17 +164,17 @@ textarea::placeholder {
 /* Drag-and-drop styles */
 .sortable-ghost {
     opacity: 0.4;
-    background-color: #f0f0f0;
+    background-color: var(--color-bg-subtle);
 }
 
 .sortable-chosen {
-    background-color: #e3f2fd;
+    background-color: var(--color-primary-light);
 }
 
 .sortable-drag {
     opacity: 1;
     background-color: #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: var(--shadow-lg);
 }
 
 .drag-handle:active {
@@ -114,31 +184,31 @@ textarea::placeholder {
 /* Floating Action Button */
 .fab {
     position: fixed;
-    bottom: 24px;
-    right: max(24px, calc((100vw - 1200px) / 2 + 24px));
-    width: 56px;
-    height: 56px;
-    background-color: #007bff;
-    border-radius: 50%;
+    bottom: var(--fab-offset);
+    right: max(var(--fab-offset), calc((100vw - var(--container-max-width)) / 2 + var(--fab-offset)));
+    width: var(--fab-size);
+    height: var(--fab-size);
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-md);
     text-decoration: none;
-    transition: all 0.3s ease;
-    z-index: 1000;
+    transition: all var(--transition-slow);
+    z-index: var(--z-fixed);
 }
 
 .fab span {
     color: white;
-    font-size: 32px;
-    font-weight: 300;
+    font-size: var(--fab-icon-size);
+    font-weight: var(--font-weight-normal);
     line-height: 1;
 }
 
 .fab:hover {
-    background-color: #0056b3;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-lg);
     transform: scale(1.05);
 }
 
@@ -153,40 +223,40 @@ textarea::placeholder {
 /* Botão Hambúrguer */
 .drawer-toggle {
     position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1040; /* Menor que o drawer (1060) para ficar atrás */
-    background-color: #007bff;
+    top: var(--space-5);
+    left: var(--space-5);
+    z-index: var(--z-modal-backdrop); /* Menor que o drawer (1060) para ficar atrás */
+    background-color: var(--color-primary);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     width: 44px;
     height: 44px;
     display: none; /* Escondido por padrão (desktop) */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: var(--space-1);
     padding: 0;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.2s ease, opacity 0.3s ease, visibility 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--transition-base), opacity var(--transition-slow), visibility var(--transition-slow);
 }
 
 .drawer-toggle:hover {
-    background-color: #0056b3;
+    background-color: var(--color-primary-hover);
 }
 
 .drawer-toggle:active {
-    background-color: #004085;
+    background-color: var(--color-primary-active);
 }
 
 .drawer-toggle span {
     display: block;
-    width: 24px;
-    height: 3px;
+    width: var(--space-6);
+    height: var(--space-1);
     background-color: white;
-    border-radius: 2px;
-    transition: all 0.3s ease;
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-slow);
 }
 
 /* Animação do botão hambúrguer quando drawer está aberto */
@@ -203,10 +273,10 @@ textarea::placeholder {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1050;
+    z-index: var(--z-modal);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity var(--transition-slow), visibility var(--transition-slow);
 }
 
 .drawer-overlay.active {
@@ -219,13 +289,13 @@ textarea::placeholder {
     position: fixed;
     top: 0;
     left: 0;
-    width: 280px;
+    width: var(--drawer-width);
     height: 100%;
     background-color: white;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1060;
+    box-shadow: var(--shadow-md);
+    z-index: var(--z-popover);
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-slow);
     overflow-y: auto;
     display: none; /* Escondido por padrão (desktop) */
 }
@@ -239,44 +309,44 @@ textarea::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid #dee2e6;
-    background-color: #f8f9fa;
+    padding: var(--drawer-header-padding);
+    border-bottom: var(--border-width-thin) solid var(--border-color-subtle);
+    background-color: var(--color-bg-subtle);
 }
 
 .drawer-header h5 {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
 }
 
 .drawer-close {
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: var(--font-size-2xl);
     line-height: 1;
-    color: #6c757d;
+    color: var(--color-text-muted);
     cursor: pointer;
     padding: 0;
-    width: 32px;
-    height: 32px;
+    width: var(--space-6);
+    height: var(--space-6);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s ease;
+    transition: color var(--transition-base);
 }
 
 .drawer-close:hover {
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 /* Conteúdo do drawer */
 .drawer-content {
-    padding: 20px;
+    padding: var(--drawer-content-padding);
 }
 
 .drawer-section {
-    margin-bottom: 30px;
+    margin-bottom: var(--space-7);
 }
 
 .drawer-section:last-child {
@@ -284,31 +354,31 @@ textarea::placeholder {
 }
 
 .drawer-section-title {
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
-    color: #6c757d;
-    margin-bottom: 15px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
     letter-spacing: 0.5px;
 }
 
 .drawer-control {
-    margin-bottom: 15px;
-    padding: 12px;
-    background-color: #f8f9fa;
-    border-radius: 6px;
+    margin-bottom: var(--space-4);
+    padding: var(--space-3);
+    background-color: var(--color-bg-subtle);
+    border-radius: var(--border-radius-md);
 }
 
 .drawer-control-label {
     display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: #495057;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-secondary);
 }
 
 .drawer-control .btn {
-    padding: 8px 16px;
+    padding: var(--space-2) var(--space-4);
 }
 
 .drawer-control .form-switch {
@@ -324,9 +394,9 @@ textarea::placeholder {
 
 /* Botões no drawer */
 .drawer-section > .btn {
-    margin-top: 10px;
-    padding: 12px;
-    font-weight: 500;
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    font-weight: var(--font-weight-medium);
 }
 
 /* ============================================
@@ -334,7 +404,7 @@ textarea::placeholder {
    ============================================ */
 
 /* Mobile: Mostrar drawer, esconder controles desktop */
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     .drawer-toggle {
         display: flex;
     }
@@ -351,10 +421,51 @@ textarea::placeholder {
     .navbar .container-fluid {
         padding-left: 75px !important; /* Espaço para o botão hambúrguer */
     }
+    
+    /* Fonte menor na tabela */
+    .table th,
+    .table td {
+        font-size: var(--font-size-sm) !important;
+    }
+    
+    /* Ajustar larguras das colunas para mobile - evitar overflow */
+    .table th:first-child,
+    .table td:first-child {
+        width: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
+    }
+    
+    /* Tom - menor */
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        width: 50px !important;
+        min-width: 50px !important;
+        padding-left: var(--space-1) !important;
+        padding-right: var(--space-1) !important;
+    }
+    
+    /* Ativa - menor */
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        width: 50px !important;
+        min-width: 50px !important;
+        padding-left: var(--space-1) !important;
+        padding-right: var(--space-1) !important;
+    }
+    
+    /* Ações - menor */
+    .table th:nth-child(5),
+    .table td:nth-child(5) {
+        width: 60px !important;
+        min-width: 60px !important;
+        padding-left: var(--space-1) !important;
+        padding-right: var(--space-1) !important;
+    }
 }
 
 /* Desktop: Esconder drawer, mostrar controles normais */
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .drawer-toggle {
         display: none;
     }
@@ -369,5 +480,13 @@ textarea::placeholder {
     
     .desktop-controls {
         display: flex !important;
+    }
+}
+
+/* Desktop grande: Mais espaço respirável */
+@media (min-width: 1024px) {
+    .table th,
+    .table td {
+        padding: var(--space-3) var(--space-4); /* Mais respirável em telas grandes */
     }
 }

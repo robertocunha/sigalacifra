@@ -1,0 +1,199 @@
+/* ============================================
+   DESIGN TOKENS
+   Sistema de design do Siga La Cifra
+   
+   Baseado em escalas harmônicas e proporções
+   para garantir consistência visual
+   ============================================ */
+
+:root {
+    /* ============================================
+       ESCALA DE ESPAÇAMENTO
+       Baseada em múltiplos de 4px (base: 1rem = 16px)
+       ============================================ */
+    --space-0: 0;
+    --space-1: 0.25rem;    /* 4px */
+    --space-2: 0.5rem;     /* 8px */
+    --space-3: 0.75rem;    /* 12px */
+    --space-4: 1rem;       /* 16px - base */
+    --space-5: 1.5rem;     /* 24px */
+    --space-6: 2rem;       /* 32px */
+    --space-7: 3rem;       /* 48px */
+    --space-8: 4rem;       /* 64px */
+    
+    /* ============================================
+       ESCALA TIPOGRÁFICA
+       Escala modular 1.250 (Quinta Maior)
+       Base: 16px
+       ============================================ */
+    --font-size-xs: 0.75rem;      /* 12px */
+    --font-size-sm: 0.875rem;     /* 14px */
+    --font-size-base: 1rem;       /* 16px */
+    --font-size-md: 1.125rem;     /* 18px */
+    --font-size-lg: 1.25rem;      /* 20px */
+    --font-size-xl: 1.5rem;       /* 24px */
+    --font-size-2xl: 1.875rem;    /* 30px */
+    --font-size-3xl: 2.25rem;     /* 36px */
+    --font-size-4xl: 3rem;        /* 48px */
+    
+    /* ============================================
+       PESOS DE FONTE
+       ============================================ */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* ============================================
+       ALTURAS DE LINHA
+       ============================================ */
+    --line-height-tight: 1.25;
+    --line-height-base: 1.5;
+    --line-height-relaxed: 1.75;
+    --line-height-loose: 2;
+    
+    /* ============================================
+       CORES - PALETA BASE
+       Bege/Creme para tema de papel de música
+       ============================================ */
+    
+    /* Cores Neutras (Bege) */
+    --color-bg-body: #f5efe6;          /* Fundo principal - bege cream */
+    --color-bg-paper: #f0ead6;         /* Papel bege - elementos em destaque */
+    --color-bg-subtle: #f8f9fa;        /* Cinza muito claro */
+    --color-bg-hover: #f0ead6;         /* Hover state */
+    --color-bg-active: #fffbeb;        /* Active/edição - amarelo claro */
+    
+    /* Cores de Texto */
+    --color-text-primary: #212529;     /* Texto principal */
+    --color-text-secondary: #495057;   /* Texto secundário */
+    --color-text-muted: #6c757d;       /* Texto discreto */
+    --color-text-disabled: #adb5bd;    /* Texto desabilitado */
+    
+    /* Cores de Acordes (Destaque) */
+    --color-chord: #ff8c00;            /* Laranja para acordes */
+    --color-chord-hover: #e67e00;      /* Laranja mais escuro */
+    
+    /* Cores de Ação (Blue) */
+    --color-primary: #007bff;
+    --color-primary-hover: #0056b3;
+    --color-primary-active: #004085;
+    --color-primary-light: rgba(0, 123, 255, 0.1);
+    
+    /* Cores de Estado */
+    --color-success: #28a745;
+    --color-success-hover: #218838;
+    --color-danger: #dc3545;
+    --color-danger-hover: #c82333;
+    --color-warning: #ffc107;
+    --color-warning-hover: #e0a800;
+    
+    /* ============================================
+       BORDAS
+       ============================================ */
+    --border-width-thin: 1px;
+    --border-width-medium: 2px;
+    --border-width-thick: 3px;
+    
+    --border-color-subtle: #dee2e6;
+    --border-color-medium: #ced4da;
+    --border-color-strong: #adb5bd;
+    --border-color-accent: #fbbf24;    /* Amarelo para edição */
+    
+    --border-radius-sm: 0.25rem;       /* 4px */
+    --border-radius-md: 0.375rem;      /* 6px */
+    --border-radius-lg: 0.5rem;        /* 8px */
+    --border-radius-full: 50%;         /* Círculo */
+    
+    /* ============================================
+       SOMBRAS
+       Baseadas em elevação física
+       ============================================ */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 10px 24px rgba(0, 0, 0, 0.3);
+    
+    /* ============================================
+       TRANSIÇÕES
+       ============================================ */
+    --transition-fast: 0.15s ease-in-out;
+    --transition-base: 0.2s ease-in-out;
+    --transition-slow: 0.3s ease-in-out;
+    
+    /* ============================================
+       Z-INDEX (Camadas)
+       ============================================ */
+    --z-base: 1;
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    
+    /* ============================================
+       COMPONENTES ESPECÍFICOS
+       ============================================ */
+    
+    /* Navbar */
+    --navbar-height: 4rem;
+    --navbar-padding-y: var(--space-4);
+    --navbar-padding-x: var(--space-4);
+    
+    /* Logo */
+    --logo-height-mobile: 15vh;
+    --logo-height-desktop: 15vh;
+    --logo-height-song: 8vh;
+    
+    /* Tabela */
+    --table-cell-padding-x: var(--space-3);
+    --table-cell-padding-y: var(--space-3);
+    --table-border-color: var(--border-color-subtle);
+    
+    /* Botões */
+    --btn-padding-y: var(--space-2);
+    --btn-padding-x: var(--space-4);
+    --btn-padding-y-lg: var(--space-3);
+    --btn-padding-x-lg: var(--space-5);
+    --btn-border-radius: var(--border-radius-sm);
+    
+    /* FAB (Floating Action Button) */
+    --fab-size: 56px;
+    --fab-offset: 24px;
+    --fab-icon-size: 32px;
+    
+    /* Forms */
+    --input-padding-y: var(--space-2);
+    --input-padding-x: var(--space-3);
+    --input-border-radius: var(--border-radius-sm);
+    --input-focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    
+    /* Pre (Cifra Display) */
+    --pre-padding: var(--space-3);
+    --pre-line-height: var(--line-height-base);
+    --pre-font-size: var(--font-size-base);
+    
+    /* Drawer (Mobile Menu) */
+    --drawer-width: 280px;
+    --drawer-header-padding: var(--space-5);
+    --drawer-content-padding: var(--space-5);
+    
+    /* ============================================
+       BREAKPOINTS
+       ============================================ */
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    --container-max-width: 850px;
+    --content-padding-mobile: var(--space-4);
+    --content-padding-desktop: var(--space-5);
+}

@@ -1,6 +1,7 @@
 import Sortable from 'sortablejs';
 
 // Imports de CSS para uso do Webpack
+import '../css/design-tokens.css';
 import '../css/components.css';
 import '../css/print.css';
 import '../css/style.css';
