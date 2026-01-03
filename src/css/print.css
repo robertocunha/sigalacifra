@@ -18,8 +18,15 @@
     /* Colapsa elementos ocultos */
     header,
     nav,
-    .container-fluid > .py-3 {
+    .container-fluid > .py-3,
+    .drawer-toggle,
+    .drawer-overlay,
+    .drawer,
+    #drawerToggle,
+    #drawerOverlay,
+    #drawer {
         display: none !important;
+        visibility: hidden !important;
     }
 
     main {
@@ -72,7 +79,9 @@
         line-height: 1.5;
         margin: 0.5rem 0 0 0;
         padding: 0;
-        white-space: pre;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
         overflow: visible;
 
         /* Força ficar junto com cabeçalho */

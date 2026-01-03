@@ -244,14 +244,16 @@ if (songId) {
   let normalRenderedContent = null;
 
   window.addEventListener('beforeprint', () => {
+    // Close drawer before printing to avoid interference
+    closeDrawer();
+    
     if (currentSongData && currentSongData.linePairs) {
       // Save current content
       normalRenderedContent = preElement.innerHTML;
       
-      // Calculate narrow maxWidth for print columns
-      // Each column is ~45% of page width
-      const normalMaxWidth = calculateMaxWidth();
-      const printMaxWidth = Math.floor(normalMaxWidth * 0.42);
+      // Use fixed width for print columns (optimized for A4 paper with 2 columns)
+      // A4 width with 2 columns and margins allows ~110-120 chars per column
+      const printMaxWidth = 115;
       
       // Re-render with narrow width
       const renderedHtml = renderSong(currentSongData.linePairs, printMaxWidth);
