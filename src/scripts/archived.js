@@ -1,3 +1,5 @@
+import Sortable from 'sortablejs';
+
 // CSS imports
 import '../css/design-tokens.css';
 import '../css/components.css';
@@ -10,6 +12,37 @@ import { collection, getDocs, query, where, orderBy, doc, updateDoc, deleteDoc }
 import { db } from './firebaseConfig.prod.js';
 
 const tableBody = document.getElementById('songs-table').querySelector('tbody');
+
+// Variable to store the Sortable instance
+let sortableInstance = null;
+
+// Variable to store current songs for reordering
+let currentSongs = [];
+
+// Function to update positions in Firestore after drag-and-drop
+const updatePositions = async (oldIndex, newIndex) => {
+  const reorderedSongs = [...currentSongs];
+  
+  // Reorder the array
+  const [movedSong] = reorderedSongs.splice(oldIndex, 1);
+  reorderedSongs.splice(newIndex, 0, movedSong);
+  
+  // Update positions in Firestore
+  const updates = [];
+  
+  reorderedSongs.forEach((song, index) => {
+    const songDocRef = doc(db, 'musicas', song.id);
+    updates.push(updateDoc(songDocRef, { position: index }));
+  });
+  
+  try {
+    await Promise.all(updates);
+    currentSongs = reorderedSongs;
+    console.log('Positions updated successfully');
+  } catch (error) {
+    console.error('Error updating positions:', error);
+  }
+};
 
 // Função para buscar músicas arquivadas e ordená-las por posição
 const fetchArchivedSongs = async () => {
@@ -24,10 +57,22 @@ const fetchArchivedSongs = async () => {
 
     // Limpa qualquer conteúdo antigo da tabela
     tableBody.innerHTML = '';
+    
+    // Store songs in currentSongs array
+    currentSongs = [];
 
     // Preenche a tabela com as músicas arquivadas e ordenadas
     songsSnapshot.forEach((docSnap) => {
       const { title, tone, position, active } = docSnap.data();
+      
+      // Store song data for reordering
+      currentSongs.push({
+        id: docSnap.id,
+        title,
+        tone,
+        position,
+        active
+      });
 
       // Cria uma nova linha para cada música
       const row = document.createElement('tr');
@@ -35,9 +80,10 @@ const fetchArchivedSongs = async () => {
 
       // Cria células para cada dado
       row.innerHTML = `
+        <td class="drag-handle" style="cursor: grab; text-align: center; vertical-align: middle; font-size: 20px; padding: 15px 10px;">⋮⋮</td>
         <td class="title-cell">${title}</td>
         <td>${tone}</td>
-        <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}" ${active ? 'disabled' : ''}></td> <!-- Checkbox habilitado ou desabilitado -->
+        <td><input type="checkbox" ${active ? 'checked' : ''} data-id="${docSnap.id}" ${active ? 'disabled' : ''}></td>
         <td><button class="btn btn-danger btn-sm delete-btn" data-id="${docSnap.id}">🗑️</button></td>
       `;
 
@@ -95,6 +141,22 @@ const fetchArchivedSongs = async () => {
 
       // Insere a linha na tabela
       tableBody.appendChild(row);
+    });
+    
+    // Initialize or re-initialize Sortable after rendering
+    if (sortableInstance) {
+      sortableInstance.destroy();
+    }
+    
+    sortableInstance = new Sortable(tableBody, {
+      animation: 150,
+      handle: '.drag-handle',
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass: 'sortable-drag',
+      onEnd: function (evt) {
+        updatePositions(evt.oldIndex, evt.newIndex);
+      },
     });
   } catch (error) {
     console.error('Erro ao buscar músicas arquivadas:', error);
