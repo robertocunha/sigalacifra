@@ -389,12 +389,6 @@ textarea::placeholder {
     justify-content: center;
 }
 
-.drawer-control .form-check-input {
-    width: 3rem;
-    height: 1.5rem;
-    cursor: pointer;
-}
-
 /* Botões no drawer */
 .drawer-section > .btn {
     margin-top: var(--space-3);

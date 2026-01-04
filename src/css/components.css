@@ -404,38 +404,45 @@ textarea.form-control {
 }
 
 .form-switch .form-check-input {
-    width: 2.5rem !important;
-    height: 1.375rem !important;
-    background-color: var(--border-color-medium);
-    border: none;
-    border-radius: var(--border-radius-full) !important;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    position: relative;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    width: 3rem !important;
+    height: 1.75rem !important;
+    min-width: 3rem !important;
+    background-color: #cbd5e0 !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    cursor: pointer !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    position: relative !important;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 !important;
 }
 
 .form-switch .form-check-input::before {
     content: '';
     position: absolute;
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.375rem;
+    height: 1.375rem;
     background-color: white;
-    border-radius: var(--border-radius-full);
-    top: 0.125rem;
-    left: 0.125rem;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    top: 0.1875rem;
+    left: 0.1875rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .form-switch .form-check-input:checked {
-    background-color: var(--color-primary);
+    background-color: var(--color-primary) !important;
 }
 
 .form-switch .form-check-input:checked::before {
-    transform: translateX(1.125rem);
+    transform: translateX(1.25rem);
+}
+
+.form-switch .form-check-input:focus {
+    outline: none !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(128, 0, 0, 0.1) !important;
 }
 
 .form-text {
