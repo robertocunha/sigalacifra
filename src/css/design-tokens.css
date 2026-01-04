@@ -162,9 +162,9 @@
     --navbar-padding-x: var(--space-4);
     
     /* Logo */
-    --logo-height-mobile: 15vh;
-    --logo-height-desktop: 15vh;
-    --logo-height-song: 8vh;
+    --logo-height-mobile: 12vh;
+    --logo-height-desktop: 12vh;
+    --logo-height-song: 7vh;
     
     /* Tabela */
     --table-cell-padding-x: var(--space-3);

@@ -114,8 +114,14 @@ body {
 }
 
 /* Responsive logo sizing */
+.navbar-brand picture {
+    display: block;
+    max-width: 100%;
+}
+
 .navbar-brand img {
     max-height: var(--logo-height-mobile); /* 15% of viewport height on lists */
+    max-width: 100%;
     width: auto;
     height: auto;
 }
