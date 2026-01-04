@@ -6,7 +6,21 @@
    para garantir consistência visual
    ============================================ */
 
+/* ============================================
+   TIPOGRAFIA - Google Fonts
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
+    /* ============================================
+       FAMÍLIAS DE FONTE
+       Comfortaa (circular geometric) para títulos - círculos perfeitos
+       Inter (sans-serif) para interface - moderna e legível
+       ============================================ */
+    --font-family-display: 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-family-base: var(--font-family-sans);
+    --font-family-heading: var(--font-family-display);
     /* ============================================
        ESCALA DE ESPAÇAMENTO
        Baseada em múltiplos de 4px (base: 1rem = 16px)
@@ -53,40 +67,40 @@
     --line-height-loose: 2;
     
     /* ============================================
-       CORES - PALETA BASE
-       Bege/Creme para tema de papel de música
+       CORES - PALETA MUSICAL
+       Inspirada em partituras vintage e manuscritos
        ============================================ */
     
-    /* Cores Neutras (Bege) */
-    --color-bg-body: #f5efe6;          /* Fundo principal - bege cream */
-    --color-bg-paper: #f0ead6;         /* Papel bege - elementos em destaque */
-    --color-bg-subtle: #f8f9fa;        /* Cinza muito claro */
-    --color-bg-hover: #f0ead6;         /* Hover state */
-    --color-bg-active: #fffbeb;        /* Active/edição - amarelo claro */
+    /* Backgrounds - Warm Paper Tones */
+    --color-bg-body: #f7f3ed;          /* Warm ivory - fundo principal */
+    --color-bg-paper: #ede7dd;         /* Beige paper - navbar/cards */
+    --color-bg-subtle: #fdfcfb;        /* Almost white - elementos discretos */
+    --color-bg-hover: #e8e2d5;         /* Darker hover - interação */
+    --color-bg-active: #fff9e6;        /* Warm yellow - estados ativos */
     
-    /* Cores de Texto */
-    --color-text-primary: #212529;     /* Texto principal */
-    --color-text-secondary: #495057;   /* Texto secundário */
-    --color-text-muted: #6c757d;       /* Texto discreto */
-    --color-text-disabled: #adb5bd;    /* Texto desabilitado */
+    /* Text Colors - Dark Brown/Orange */
+    --color-text-primary: #451a03;     /* Orange-950 - laranja quase preto */
+    --color-text-secondary: #475569;   /* Slate-600 - texto secundário */
+    --color-text-muted: #64748b;       /* Slate-500 - texto discreto */
+    --color-text-disabled: #94a3b8;    /* Slate-400 - desabilitado */
     
-    /* Cores de Acordes (Destaque) */
-    --color-chord: #ff8c00;            /* Laranja para acordes */
-    --color-chord-hover: #e67e00;      /* Laranja mais escuro */
+    /* Chord Colors - Mantém laranja (bom contraste) */
+    --color-chord: #ff8c00;            /* Laranja vibrante para acordes */
+    --color-chord-hover: #e67e00;      /* Laranja escuro hover */
     
-    /* Cores de Ação (Blue) */
-    --color-primary: #007bff;
-    --color-primary-hover: #0056b3;
-    --color-primary-active: #004085;
-    --color-primary-light: rgba(0, 123, 255, 0.1);
+    /* Primary Actions - Amber/Gold (musical, warm) */
+    --color-primary: #d97706;          /* Amber-600 - ações principais */
+    --color-primary-hover: #b45309;    /* Amber-700 - hover */
+    --color-primary-active: #92400e;   /* Amber-800 - active */
+    --color-primary-light: rgba(217, 119, 6, 0.1);  /* Amber transparente */
     
-    /* Cores de Estado */
-    --color-success: #28a745;
-    --color-success-hover: #218838;
-    --color-danger: #dc3545;
-    --color-danger-hover: #c82333;
-    --color-warning: #ffc107;
-    --color-warning-hover: #e0a800;
+    /* State Colors - Refinados */
+    --color-success: #16a34a;          /* Green-600 - sucesso */
+    --color-success-hover: #15803d;    /* Green-700 */
+    --color-danger: #dc2626;           /* Red-600 - perigo */
+    --color-danger-hover: #b91c1c;     /* Red-700 */
+    --color-warning: #f59e0b;          /* Amber-500 - aviso */
+    --color-warning-hover: #d97706;    /* Amber-600 */
     
     /* ============================================
        BORDAS
@@ -95,10 +109,11 @@
     --border-width-medium: 2px;
     --border-width-thick: 3px;
     
-    --border-color-subtle: #dee2e6;
-    --border-color-medium: #ced4da;
-    --border-color-strong: #adb5bd;
-    --border-color-accent: #fbbf24;    /* Amarelo para edição */
+    /* Border Colors - Warm Tones */
+    --border-color-subtle: #e8e3d8;    /* Soft taupe - bordas discretas */
+    --border-color-medium: #d4cdbf;    /* Medium taupe - bordas definidas */
+    --border-color-strong: #b8b0a0;    /* Strong taupe - bordas marcantes */
+    --border-color-accent: #f59e0b;    /* Amber - destaques */
     
     --border-radius-sm: 0.25rem;       /* 4px */
     --border-radius-md: 0.375rem;      /* 6px */
