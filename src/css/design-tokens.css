@@ -97,8 +97,8 @@
     /* State Colors - Refinados */
     --color-success: #16a34a;          /* Green-600 - sucesso */
     --color-success-hover: #15803d;    /* Green-700 */
-    --color-danger: #dc2626;           /* Red-600 - perigo */
-    --color-danger-hover: #b91c1c;     /* Red-700 */
+    --color-danger: #c2410c;           /* Orange-700 - perigo (laranja avermelhado) */
+    --color-danger-hover: #9a3412;     /* Orange-800 */
     --color-warning: #f59e0b;          /* Amber-500 - aviso */
     --color-warning-hover: #d97706;    /* Amber-600 */
     
