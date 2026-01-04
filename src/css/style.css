@@ -29,6 +29,10 @@ main h1 {
 .table {
     background-color: var(--color-bg-body) !important;
     --bs-table-bg: var(--color-bg-body) !important;
+    border-radius: var(--border-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color-subtle);
 }
 
 .table thead th {
@@ -45,16 +49,12 @@ main h1 {
 
 .table tbody tr:hover {
     background-color: var(--color-bg-hover) !important;
+    box-shadow: inset 0 0 0 1px var(--border-color-medium);
+    transition: all 0.15s ease;
 }
 
 .table tbody tr:hover td {
     background-color: var(--color-bg-hover) !important;
-}
-
-/* TESTE: Fundo vermelho em TODAS as telas */
-.table th,
-.table td {
-    background-color: red !important;
 }
 
 /* Table alignment and widths - Following UX best practices */
@@ -193,10 +193,11 @@ textarea::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
     text-decoration: none;
-    transition: all var(--transition-slow);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: var(--z-fixed);
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .fab span {
@@ -208,12 +209,14 @@ textarea::placeholder {
 
 .fab:hover {
     background-color: var(--color-primary-hover);
-    box-shadow: var(--shadow-lg);
-    transform: scale(1.05);
+    box-shadow: var(--shadow-xl);
+    transform: scale(1.1) translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .fab:active {
-    transform: scale(0.95);
+    transform: scale(0.95) translateY(0);
+    box-shadow: var(--shadow-md);
 }
 
 /* ============================================

@@ -118,17 +118,20 @@
     --border-radius-sm: 0.25rem;       /* 4px */
     --border-radius-md: 0.375rem;      /* 6px */
     --border-radius-lg: 0.5rem;        /* 8px */
+    --border-radius-xl: 0.75rem;       /* 12px */
+    --border-radius-2xl: 1rem;         /* 16px */
     --border-radius-full: 50%;         /* Círculo */
     
     /* ============================================
        SOMBRAS
-       Baseadas em elevação física
+       Baseadas em elevação física com tons quentes
        ============================================ */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.25);
-    --shadow-xl: 0 10px 24px rgba(0, 0, 0, 0.3);
+    --shadow-xs: 0 1px 2px rgba(69, 26, 3, 0.05);
+    --shadow-sm: 0 2px 4px rgba(69, 26, 3, 0.08);
+    --shadow-md: 0 4px 12px rgba(69, 26, 3, 0.12);
+    --shadow-lg: 0 8px 20px rgba(69, 26, 3, 0.15);
+    --shadow-xl: 0 12px 32px rgba(69, 26, 3, 0.18);
+    --shadow-hover: 0 6px 16px rgba(69, 26, 3, 0.14);
     
     /* ============================================
        TRANSIÇÕES

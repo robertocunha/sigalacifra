@@ -4,9 +4,23 @@
         margin: 1cm;
     }
 
+    /* CRÍTICO: Força fundo branco para economizar tinta */
     body {
+        background-color: white !important;
+        background-image: none !important;
         margin: 0;
         padding: 0;
+    }
+    
+    /* Remove todos os backgrounds coloridos */
+    * {
+        background-color: transparent !important;
+        background-image: none !important;
+    }
+    
+    /* Garante que o conteúdo principal tenha fundo branco */
+    main, pre, h1, p {
+        background-color: white !important;
     }
 
     body * {
