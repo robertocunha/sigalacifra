@@ -127,7 +127,9 @@ if (songId) {
     preElement.style.fontSize = `${currentFontSize}px`;
     
     // Re-render song with new wrapping based on new font size
-    if (currentSongData && currentSongData.linePairs) {
+    // Não re-renderiza se estiver em modo de edição
+    const isEditing = (editToggle && editToggle.checked) || (editToggleDrawer && editToggleDrawer.checked);
+    if (currentSongData && currentSongData.linePairs && !isEditing) {
       const maxWidth = calculateMaxWidth();
       const renderedHtml = renderSong(currentSongData.linePairs, maxWidth);
       preElement.innerHTML = renderedHtml;
@@ -189,6 +191,15 @@ if (songId) {
 
   // Função que lida com a atualização da interface com os dados da música
   const updateSongData = (songData) => {
+    // Se estiver em modo de edição, não sobrescreve o conteúdo sendo editado
+    const isEditing = (editToggle && editToggle.checked) || (editToggleDrawer && editToggleDrawer.checked);
+    if (isEditing) {
+      // Apenas atualiza os dados em memória, mas não renderiza
+      currentSongData = songData;
+      currentSongData.linePairs = parseSong(songData.letra);
+      return;
+    }
+    
     currentSongData = songData; // Armazena os dados para uso posterior
     title.innerHTML = songData.title;
     artist.innerHTML = songData.artist || 'Artista desconhecido'; // Exibe 'Artista desconhecido' se não houver dados
@@ -233,7 +244,9 @@ if (songId) {
     // Debounce resize events
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      if (currentSongData && currentSongData.linePairs) {
+      // Não re-renderiza se estiver em modo de edição
+      const isEditing = (editToggle && editToggle.checked) || (editToggleDrawer && editToggleDrawer.checked);
+      if (currentSongData && currentSongData.linePairs && !isEditing) {
         const maxWidth = calculateMaxWidth();
         const renderedHtml = renderSong(currentSongData.linePairs, maxWidth);
         preElement.innerHTML = renderedHtml;
@@ -303,10 +316,13 @@ if (songId) {
     syncToneDisplay(transposedTone);
     currentSongData.tone = transposedTone;
 
-    // Re-renderiza a música
-    const maxWidth = calculateMaxWidth();
-    const renderedHtml = renderSong(transposedLinePairs, maxWidth);
-    preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
+    // Re-renderiza a música (apenas se não estiver editando)
+    const isEditing = (editToggle && editToggle.checked) || (editToggleDrawer && editToggleDrawer.checked);
+    if (!isEditing) {
+      const maxWidth = calculateMaxWidth();
+      const renderedHtml = renderSong(transposedLinePairs, maxWidth);
+      preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
+    }
   };
 
   // Desktop transpose controls
@@ -390,10 +406,9 @@ if (songId) {
   const performSave = async () => {
     const plainText = preElement.textContent;
     const updatedTone = tone.textContent.trim();
-    const updatedLetra = parseSong(plainText);
 
     try {
-      await setDoc(docRef, { letra: updatedLetra, tone: updatedTone }, { merge: true });
+      await setDoc(docRef, { letra: plainText, tone: updatedTone }, { merge: true });
       hasUnsavedChanges = false;
       
       // Desliga o modo de edição
