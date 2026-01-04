@@ -8,8 +8,8 @@
 
 /* ============================================
    TIPOGRAFIA - Google Fonts
+   Carregadas via <link> no HTML para melhor performance
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
     /* ============================================
