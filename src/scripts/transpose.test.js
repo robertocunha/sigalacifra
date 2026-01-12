@@ -112,6 +112,15 @@ describe('transposeChord', () => {
       expect(transposeChord('Am7/G', 2)).toBe('Bm7/A');
       expect(transposeChord('G7M/B', 2)).toBe('A7M/C#');
     });
+    
+    it('should handle extension notation after slash (not bass notes)', () => {
+      // These are extensions, not bass notes - they should not be transposed
+      expect(transposeChord('D#7/9M', 2)).toBe('F7/9M');
+      expect(transposeChord('D#7/9+', 2)).toBe('F7/9+');
+      expect(transposeChord('D#7/9-', 2)).toBe('F7/9-');
+      expect(transposeChord('C7/9', 1)).toBe('C#7/9');
+      expect(transposeChord('Am/11', -1)).toBe('Abm/11');
+    });
   });
 
   describe('Full circle transposition', () => {

@@ -43,6 +43,10 @@ describe('isChord', () => {
     expect(isChord('Cdim')).toBe(true);
     expect(isChord('Caug')).toBe(true);
     expect(isChord('C7+')).toBe(true);
+    expect(isChord('G°')).toBe(true);
+    expect(isChord('D#7/9M')).toBe(true);
+    expect(isChord('D#7/9+')).toBe(true);
+    expect(isChord('D#7/9-')).toBe(true);
   });
 
   it('should NOT recognize regular words', () => {

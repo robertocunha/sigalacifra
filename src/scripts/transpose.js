@@ -6,7 +6,7 @@
 /**
  * Transposes a complete chord, preserving extensions and bass notes.
  * 
- * @param {string} chord - The chord to transpose (e.g., "G7M", "D/F#", "Am7")
+ * @param {string} chord - The chord to transpose (e.g., "G7M", "D/F#", "Am7", "D#7/9M")
  * @param {number} semitones - Number of semitones to transpose (positive = up, negative = down)
  * @returns {string} - The transposed chord
  */
@@ -14,17 +14,25 @@ export function transposeChord(chord, semitones) {
   const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   const flatEquivalents = { "A#": "Bb", "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab" };
 
-  const match = chord.match(/^([A-G][#b]?)(.*?)(\/[A-G][#b]?)?$/);
+  // Updated regex to support both bass notes (/F#) and extensions (/9M, /9+, /9-)
+  const match = chord.match(/^([A-G][#b]?)(.*?)(\/([A-G][#b]?|[0-9]+(M|maj|\+|-)?))?$/);
   if (!match) return chord;
 
-  const [, root, extensions = "", slashWithBass = ""] = match;
-  const slash = slashWithBass.charAt(0); // Mantém a barra "/"
-  const bass = slashWithBass.slice(1); // Captura apenas a nota após a barra
-
+  const [, root, extensions = "", slashPart = "", slashContent = ""] = match;
+  
+  // Check if the slash part is a note (needs transposition) or an extension (keep as is)
+  const isNote = /^[A-G][#b]?$/.test(slashContent);
+  
   const transposedRoot = transposeNote(root, semitones, notes, flatEquivalents);
-  const transposedBass = bass ? transposeNote(bass, semitones, notes, flatEquivalents) : "";
-
-  return `${transposedRoot}${extensions}${slash}${transposedBass}`;
+  
+  if (isNote) {
+    // It's a bass note - transpose it
+    const transposedBass = transposeNote(slashContent, semitones, notes, flatEquivalents);
+    return `${transposedRoot}${extensions}/${transposedBass}`;
+  } else {
+    // It's an extension - keep as is
+    return `${transposedRoot}${extensions}${slashPart}`;
+  }
 }
 
 /**

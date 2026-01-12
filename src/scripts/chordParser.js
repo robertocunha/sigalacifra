@@ -9,12 +9,13 @@
  * Valid chord patterns:
  * - Root note: A, B, C, D, E, F, G
  * - Accidentals: # or b
- * - Quality: m (minor), dim, aug
+ * - Quality: m (minor), dim, aug, ° (diminished symbol)
  * - Extensions: 7, 9, 11, 13, 6, 4, 2
  * - Major 7th: M or maj (can come before or after the number, e.g., CM7 or C7M)
  * - Modifiers: sus, add
  * - Parenthetical: (9), (b5), (11), etc.
- * - Bass note: /X where X is another note
+ * - Bass note: /X where X is another note (e.g., G/B)
+ * - Extension notation: /X where X is a numeric extension (e.g., D#7/9M, D#7/9+, D#7/9-)
  * 
  * @param {string} token - The string to check
  * @returns {boolean} - True if it looks like a chord
@@ -27,8 +28,8 @@ function isChord(token) {
   if (!token) return false;
   
   // Chord regex pattern - handles various chord notations
-  // Examples: C, Am, G7, D7M, G7M(9), F#m7, Bb, Csus4, G/B, A7(9), Eb7M(9), CM7, Cmaj7, C7+
-  const chordPattern = /^[A-G][#b]?(m(?!aj)|dim|aug|°|\+)?(sus[24]?)?(add)?(M|maj)?[0-9]*(M|maj|\+)?(\([^)]+\))?([#b][0-9]+)?(\/[A-G][#b]?)?$/;
+  // Examples: C, Am, G7, D7M, G7M(9), F#m7, Bb, Csus4, G/B, A7(9), Eb7M(9), CM7, Cmaj7, C7+, D#7/9M, D#7/9+, D#7/9-, G°
+  const chordPattern = /^[A-G][#b]?(m(?!aj)|dim|aug|°|\+)?(sus[24]?)?(add)?(M|maj)?[0-9]*(M|maj|\+)?(\([^)]+\))?([#b][0-9]+)?(\/([A-G][#b]?|[0-9]+(M|maj|\+|-)?))?$/;
   
   return chordPattern.test(token);
 }
