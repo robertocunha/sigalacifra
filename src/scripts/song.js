@@ -266,8 +266,9 @@ if (songId) {
       normalRenderedContent = preElement.innerHTML;
       
       // Use fixed width for print columns (optimized for A4 paper with 2 columns)
-      // A4 width with 2 columns and margins allows ~110-120 chars per column
-      const printMaxWidth = 115;
+      // With font-size: 0.65rem and monospace font, each column can fit ~35 chars
+      // Using pre (not pre-wrap), we rely entirely on JS line breaks
+      const printMaxWidth = 35;
       
       // Re-render with narrow width
       const renderedHtml = renderSong(currentSongData.linePairs, printMaxWidth);

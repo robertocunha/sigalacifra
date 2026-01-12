@@ -93,10 +93,8 @@
         line-height: 1.5;
         margin: 0.5rem 0 0 0;
         padding: 0;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        overflow: visible;
+        white-space: pre;
+        overflow: hidden;
 
         /* Força ficar junto com cabeçalho */
         page-break-before: avoid !important;
