@@ -62,6 +62,10 @@ export function renderSong(linePairs, maxWidth) {
       // Render each wrapped line
       for (const wrappedLine of wrappedLines) {
         const rendered = renderLine(wrappedLine, true); // Pass true for HTML
+        // Skip completely empty spans (no chords and no lyrics/only whitespace)
+        if (wrappedLine.chords.length === 0 && wrappedLine.lyrics.trim() === '') {
+          continue;
+        }
         renderedLines.push(rendered);
       }
     }
