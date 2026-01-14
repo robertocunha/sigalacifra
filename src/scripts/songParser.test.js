@@ -117,4 +117,49 @@ Em7  F#m7  B7  Em7`;
       }
     ]);
   });
+
+  // Edge cases
+  it('should handle text with emojis and special characters', () => {
+    const text = `C
+🎵 ♪ ♫ ♬ 🎶
+
+G
+Música com símbolos ©®™`;
+    
+    const result = parseSong(text);
+    
+    expect(result).toEqual([
+      {
+        chords: [{ position: 0, chord: 'C' }],
+        lyrics: '🎵 ♪ ♫ ♬ 🎶'
+      },
+      { type: 'empty' },
+      {
+        chords: [{ position: 0, chord: 'G' }],
+        lyrics: 'Música com símbolos ©®™'
+      }
+    ]);
+  });
+
+  it('should handle empty string', () => {
+    const text = '';
+    
+    const result = parseSong(text);
+    
+    // Empty string results in one empty line
+    expect(result).toEqual([{ type: 'empty' }]);
+  });
+
+  it('should handle only empty lines', () => {
+    const text = '\n\n\n';
+    
+    const result = parseSong(text);
+    
+    expect(result).toEqual([
+      { type: 'empty' },
+      { type: 'empty' },
+      { type: 'empty' },
+      { type: 'empty' }
+    ]);
+  });
 });

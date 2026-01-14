@@ -121,4 +121,60 @@ describe('lineWrapper', () => {
       }
     ]);
   });
+
+  // Edge cases
+  it('should handle line with no spaces (cannot wrap gracefully)', () => {
+    const lineData = {
+      chords: [
+        { position: 0, chord: 'Am' },
+        { position: 30, chord: 'Dm' }
+      ],
+      lyrics: 'AmDmGCFBbEbAbDbGbCbFbBbmEbmAbmDbmGbmCbmFbm'
+    };
+    const maxWidth = 20;
+    
+    const result = wrapLine(lineData, maxWidth);
+    
+    // Should return as-is since no space found to break
+    expect(result).toHaveLength(1);
+    expect(result[0].lyrics).toBe('AmDmGCFBbEbAbDbGbCbFbBbmEbmAbmDbmGbmCbmFbm');
+  });
+
+  it('should handle empty lyrics with multiple chords', () => {
+    const lineData = {
+      chords: [
+        { position: 0, chord: 'Am' },
+        { position: 4, chord: 'Dm' },
+        { position: 8, chord: 'G' },
+        { position: 11, chord: 'C' }
+      ],
+      lyrics: ''
+    };
+    const maxWidth = 10;
+    
+    const result = wrapLine(lineData, maxWidth);
+    
+    // Should wrap chord-only line into multiple lines
+    expect(result.length).toBeGreaterThan(1);
+    result.forEach(line => {
+      expect(line.lyrics).toBe('');
+      expect(line.chords.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('should handle lyrics with only whitespace', () => {
+    const lineData = {
+      chords: [],
+      lyrics: '                                        '
+    };
+    const maxWidth = 20;
+    
+    const result = wrapLine(lineData, maxWidth);
+    
+    // Long whitespace may wrap into multiple parts
+    expect(result.length).toBeGreaterThanOrEqual(1);
+    result.forEach(line => {
+      expect(line.chords).toEqual([]);
+    });
+  });
 });
