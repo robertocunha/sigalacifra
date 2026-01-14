@@ -26,9 +26,14 @@ export function renderLine(lineData, html = false) {
     }
     
     // Wrap chord+lyrics pair in span to prevent column/page breaks
-    return `<span class="chord-lyrics-pair">${chordLine}\n${lyrics}</span>`;
+    // Only add \n and lyrics if lyrics is not empty
+    if (lyrics) {
+      return `<span class="chord-lyrics-pair">${chordLine}\n${lyrics}</span>`;
+    } else {
+      return `<span class="chord-lyrics-pair">${chordLine}</span>`;
+    }
   } else {
-    // Plain text version (existing code)
+    // Plain text version
     const chordLineArray = new Array(lyrics.length).fill(' ');
     
     // Place each chord at its position
@@ -40,6 +45,11 @@ export function renderLine(lineData, html = false) {
     
     const chordLine = chordLineArray.join('');
     
-    return chordLine + '\n' + lyrics;
+    // Only add \n and lyrics if lyrics is not empty
+    if (lyrics) {
+      return chordLine + '\n' + lyrics;
+    } else {
+      return chordLine;
+    }
   }
 }
