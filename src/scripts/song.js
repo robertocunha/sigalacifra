@@ -403,9 +403,51 @@ if (songId) {
     }
   });
 
+  // Função para extrair texto plano preservando a estrutura de acordes/letras
+  const extractPlainText = () => {
+    // Cria uma cópia temporária do elemento para processar
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = preElement.innerHTML;
+    
+    // Converte <div> e <br> em quebras de linha ANTES de processar
+    // O contentEditable cria <div> quando você pressiona Enter
+    tempDiv.querySelectorAll('div').forEach(div => {
+      // Adiciona \n antes do conteúdo do div
+      div.insertAdjacentText('beforebegin', '\n');
+      // Substitui o div pelo seu conteúdo
+      div.replaceWith(...div.childNodes);
+    });
+    
+    tempDiv.querySelectorAll('br').forEach(br => {
+      br.replaceWith('\n');
+    });
+    
+    // Remove os wrappers de chord-lyrics-pair mas preserva quebras de linha
+    const pairs = tempDiv.querySelectorAll('.chord-lyrics-pair');
+    pairs.forEach(pair => {
+      const textContent = pair.innerHTML;
+      const textNode = document.createTextNode(textContent.replace(/<b>/g, '').replace(/<\/b>/g, ''));
+      pair.parentNode.replaceChild(textNode, pair);
+    });
+    
+    // Remove todas as tags <b> remanescentes
+    const boldTags = tempDiv.querySelectorAll('b');
+    boldTags.forEach(tag => {
+      tag.replaceWith(tag.textContent);
+    });
+    
+    // Pega o texto preservando quebras de linha
+    let plainText = tempDiv.textContent;
+    
+    // Remove múltiplas linhas vazias consecutivas (mais de 2)
+    plainText = plainText.replace(/\n{3,}/g, '\n\n');
+    
+    return plainText;
+  };
+
   // Função de salvar compartilhada
   const performSave = async () => {
-    const plainText = preElement.textContent;
+    const plainText = extractPlainText();
     const updatedTone = tone.textContent.trim();
 
     try {
