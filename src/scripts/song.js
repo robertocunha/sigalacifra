@@ -378,6 +378,31 @@ if (songId) {
     }
   });
 
+  // Intercepta o evento de colar para forçar texto plano apenas
+  preElement.addEventListener("paste", (e) => {
+    // Previne o comportamento padrão de colar
+    e.preventDefault();
+    
+    // Pega o texto plano do clipboard
+    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    
+    // Insere o texto plano na posição do cursor
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+    
+    selection.deleteFromDocument();
+    const range = selection.getRangeAt(0);
+    range.insertNode(document.createTextNode(text));
+    
+    // Move o cursor para o final do texto inserido
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    
+    // Dispara evento de input para marcar como modificado
+    preElement.dispatchEvent(new Event('input'));
+  });
+
   // Aviso ao tentar sair com edições não salvas
   window.addEventListener("beforeunload", (e) => {
     if (hasUnsavedChanges) {
