@@ -20,35 +20,55 @@ export function renderLine(lineData, html = false) {
       currentPos = position + chord.length;
     }
     
-    // Add remaining spaces to match lyrics length
-    if (currentPos < lyrics.length) {
+    // Add remaining spaces to match lyrics length (only if there are chords)
+    if (chords.length > 0 && currentPos < lyrics.length) {
       chordLine += ' '.repeat(lyrics.length - currentPos);
     }
     
     // Wrap chord+lyrics pair in span to prevent column/page breaks
     // Only add \n and lyrics if lyrics is not empty
     if (lyrics) {
+      // If no chords, don't add empty chord line
+      if (chords.length === 0) {
+        return `<span class="chord-lyrics-pair">${lyrics}</span>`;
+      }
       return `<span class="chord-lyrics-pair">${chordLine}\n${lyrics}</span>`;
     } else {
       return `<span class="chord-lyrics-pair">${chordLine}</span>`;
     }
   } else {
     // Plain text version
-    const chordLineArray = new Array(lyrics.length).fill(' ');
-    
-    // Place each chord at its position
-    for (const { position, chord } of chords) {
-      for (let i = 0; i < chord.length; i++) {
-        chordLineArray[position + i] = chord[i];
-      }
-    }
-    
-    const chordLine = chordLineArray.join('');
-    
     // Only add \n and lyrics if lyrics is not empty
     if (lyrics) {
+      // If no chords, just return lyrics
+      if (chords.length === 0) {
+        return lyrics;
+      }
+      
+      const chordLineArray = new Array(lyrics.length).fill(' ');
+      
+      // Place each chord at its position
+      for (const { position, chord } of chords) {
+        for (let i = 0; i < chord.length; i++) {
+          chordLineArray[position + i] = chord[i];
+        }
+      }
+      
+      const chordLine = chordLineArray.join('');
+      
       return chordLine + '\n' + lyrics;
     } else {
+      // Chord-only line
+      const chordLineArray = new Array(lyrics.length).fill(' ');
+      
+      // Place each chord at its position
+      for (const { position, chord } of chords) {
+        for (let i = 0; i < chord.length; i++) {
+          chordLineArray[position + i] = chord[i];
+        }
+      }
+      
+      const chordLine = chordLineArray.join('');
       return chordLine;
     }
   }
