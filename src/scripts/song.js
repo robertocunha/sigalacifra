@@ -483,6 +483,19 @@ if (songId) {
       syncEditToggle(false);
       preElement.contentEditable = "false";
       
+      // Re-renderiza o conteúdo com formatação de acordes
+      // Atualiza os dados em memória
+      currentSongData.letra = plainText;
+      currentSongData.tone = updatedTone;
+      
+      // Parse e renderiza
+      const linePairs = parseSong(plainText);
+      currentSongData.linePairs = linePairs;
+      
+      const maxWidth = calculateMaxWidth();
+      const renderedHtml = renderSong(linePairs, maxWidth);
+      preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
+      
       // Fecha o drawer se estiver aberto
       closeDrawer();
       
