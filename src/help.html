@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siga La Cifra! | Ajuda</title>
+    
+    <!-- Preconnect para recursos externos críticos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"></noscript>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <a href="index.html" class="navbar-brand p-0 m-0" style="text-decoration: none;">
+                    <picture>
+                        <source srcset="images/logo.webp" type="image/webp">
+                        <img src="images/logo.png" alt="Siga La Cifra!" width="506" height="161">
+                    </picture>
+                </a>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-link" href="index.html">Ativas</a>
+                    <a class="btn btn-link" href="archived.html">Arquivadas</a>
+                    <a class="btn btn-link help-btn active" href="help.html" aria-label="Ajuda">?</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container help-page">
+        <h1 class="my-4">📱 Como Usar o Siga La Cifra!</h1>
+        
+        <section class="help-section">
+            <h2>Gerenciando suas músicas</h2>
+            
+            <h3>Lista de Músicas</h3>
+            
+            <div class="help-image">
+                <img src="images/paginaInicial.png" alt="Tela principal com a lista de músicas ativas" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <ul class="help-list">
+                <li><strong>Ativas/Arquivadas</strong>: Alterne entre as duas abas no cabeçalho para ver músicas ativas ou arquivadas</li>
+                <li><strong>Reordenar</strong>: Arraste músicas pela alça (⋮⋮) para reorganizar a ordem</li>
+                <li><strong>Ativar/Arquivar</strong>: Use o checkbox para mover músicas entre ativas e arquivadas</li>
+                <li><strong>Excluir</strong>: Toque no ícone 🗑️ para deletar permanentemente</li>
+            </ul>
+            
+            <h3>Adicionar Nova Música</h3>
+            
+            <div class="help-image">
+                <img src="images/botaoFlutuante.png" alt="Botão + laranja flutuante" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <p>Toque no botão <strong>+</strong> (laranja) no canto inferior direito.</p>
+            
+            <div class="help-image" style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+                <img src="images/novaCancao01.png" alt="Formulário de criar música - parte 1" style="max-width: 48%; min-width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <img src="images/novaCancao02.png" alt="Formulário de criar música - parte 2" style="max-width: 48%; min-width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <p>Preencha:</p>
+            <ul class="help-list">
+                <li><strong>Título</strong> e <strong>Artista</strong></li>
+                <li><strong>Tom</strong> (ex: D, G#m, F)</li>
+                <li><strong>Letra com cifras</strong>: Cole direto do Cifra Club ou digite manualmente</li>
+            </ul>
+            
+            <p class="help-note">Os acordes serão formatados automaticamente ao salvar.</p>
+        </section>
+        
+        <section class="help-section">
+            <h2>Visualizando uma Música</h2>
+            
+            <div class="help-image">
+                <img src="images/visualizandoMusica.png" alt="Música aberta mostrando letra e cifras" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <p>Toque no título de qualquer música para abri-la.</p>
+            
+            <h3>Controles (menu lateral)</h3>
+            
+            <div class="help-image">
+                <img src="images/controles.png" alt="Botão hambúrguer e menu aberto com os controles" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            
+            <p>Toque no <strong>ícone hambúrguer</strong> (≡) no canto superior esquerdo para abrir os controles:</p>
+            
+            <div class="help-subsection">
+                <h4>Edição:</h4>
+                <ul class="help-list">
+                    <li><strong>Transposição</strong> (− / +): Mude o tom da música</li>
+                    <li><strong>Modo de Edição</strong>: Ative para editar a letra e acordes diretamente</li>
+                    <li><strong>Salvar</strong>: Salve suas alterações</li>
+                </ul>
+            </div>
+            
+            <div class="help-subsection">
+                <h4>Visualização:</h4>
+                <ul class="help-list">
+                    <li><strong>Tamanho da Fonte</strong> (A− / A+): Ajuste o tamanho do texto</li>
+                    <li><strong>Imprimir</strong> 🖨️: Gere um PDF para impressão</li>
+                    <li><strong>Deletar</strong> 🗑️: Remova a música</li>
+                </ul>
+            </div>
+        </section>
+        
+        <div class="help-footer">
+            <a href="index.html" class="btn btn-primary">Voltar para Músicas Ativas</a>
+        </div>
+    </main>
+</body>
+</html>

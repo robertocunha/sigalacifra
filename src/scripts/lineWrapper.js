@@ -68,46 +68,71 @@ export function wrapLine(lineData, maxWidth) {
     return [lineData];
   }
   
-  // Need to wrap - find break point
-  // Look for last space before maxWidth in lyrics
+  // Need to wrap - strategy depends on whether chords or lyrics are wider
   let breakPoint = -1;
-  for (let i = maxWidth; i >= 0; i--) {
-    if (lyrics[i] === ' ') {
-      // Try breaking after the space (i+1)
-      let candidateBreakPoint = i + 1;
+  
+  // If chord line is wider than lyrics, break based on chord positions
+  if (chordLineLength > lyricsLength) {
+    // Find a good break point between chords
+    let bestBreakPoint = -1;
+    for (let i = 0; i < chords.length; i++) {
+      const chord = chords[i];
+      const chordStart = chord.position;
       
-      // Check if this break point would split any chord
-      let wouldSplitChord = false;
-      for (const { position, chord } of chords) {
-        const chordEnd = position + chord.length;
-        // Chord is split if it starts before breakPoint but extends beyond it
-        if (position < candidateBreakPoint && chordEnd > candidateBreakPoint) {
-          wouldSplitChord = true;
-          break;
-        }
+      // Can we break before this chord and fit previous chords in maxWidth?
+      if (chordStart <= maxWidth) {
+        bestBreakPoint = chordStart;
+      } else {
+        break; // Found the break point
       }
-      
-      // If this break point would split a chord, try breaking before the space instead
-      if (wouldSplitChord) {
-        candidateBreakPoint = i;
+    }
+    
+    if (bestBreakPoint > 0) {
+      breakPoint = bestBreakPoint;
+    }
+  }
+  
+  // If we haven't found a break point yet, use lyrics-based breaking
+  if (breakPoint === -1) {
+    // Look for last space before maxWidth in lyrics
+    for (let i = maxWidth; i >= 0; i--) {
+      if (lyrics[i] === ' ') {
+        // Try breaking after the space (i+1)
+        let candidateBreakPoint = i + 1;
         
-        // Check again with the earlier break point
-        wouldSplitChord = false;
+        // Check if this break point would split any chord
+        let wouldSplitChord = false;
         for (const { position, chord } of chords) {
           const chordEnd = position + chord.length;
+          // Chord is split if it starts before breakPoint but extends beyond it
           if (position < candidateBreakPoint && chordEnd > candidateBreakPoint) {
             wouldSplitChord = true;
             break;
           }
         }
+        
+        // If this break point would split a chord, try breaking before the space instead
+        if (wouldSplitChord) {
+          candidateBreakPoint = i;
+          
+          // Check again with the earlier break point
+          wouldSplitChord = false;
+          for (const { position, chord } of chords) {
+            const chordEnd = position + chord.length;
+            if (position < candidateBreakPoint && chordEnd > candidateBreakPoint) {
+              wouldSplitChord = true;
+              break;
+            }
+          }
+        }
+        
+        // If we found a valid break point, use it
+        if (!wouldSplitChord) {
+          breakPoint = candidateBreakPoint;
+          break;
+        }
+        // Otherwise, keep looking for an earlier space
       }
-      
-      // If we found a valid break point, use it
-      if (!wouldSplitChord) {
-        breakPoint = candidateBreakPoint;
-        break;
-      }
-      // Otherwise, keep looking for an earlier space
     }
   }
   
@@ -141,6 +166,18 @@ export function wrapLine(lineData, maxWidth) {
   
   // Recursively wrap the second part if it's still too long
   const wrappedSecondPart = wrapLine(secondPart, maxWidth);
+  
+  // Check if first part also needs wrapping (chords might still be too wide)
+  const firstChordLineLength = firstChords.length > 0 
+    ? Math.max(...firstChords.map(c => c.position + c.chord.length))
+    : 0;
+  const firstMaxLength = Math.max(firstLyrics.length, firstChordLineLength);
+  
+  // Only recursively wrap first part if it's actually different from input (avoid infinite loop)
+  if (firstMaxLength > maxWidth && (firstLyrics !== lyrics || firstChords.length !== chords.length)) {
+    const wrappedFirstPart = wrapLine(firstPart, maxWidth);
+    return [...wrappedFirstPart, ...wrappedSecondPart];
+  }
   
   return [firstPart, ...wrappedSecondPart];
 }

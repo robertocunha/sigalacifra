@@ -60,6 +60,12 @@ module.exports = {
       inject: 'body',
       chunks: ['archived'],
     }),
+    new HtmlWebpackPlugin({
+      template: './src/help.html',
+      filename: 'help.html',
+      inject: 'body',
+      chunks: ['index'], // Reutiliza os estilos do index
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css', // Corrige o conflito gerando nomes diferentes para os arquivos CSS
     }),
