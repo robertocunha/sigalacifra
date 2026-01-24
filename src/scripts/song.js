@@ -352,6 +352,9 @@ if (songId) {
   editToggle.addEventListener("change", () => {
     const isEditing = editToggle.checked;
     preElement.contentEditable = isEditing ? "true" : "false";
+    title.contentEditable = isEditing ? "true" : "false";
+    artist.contentEditable = isEditing ? "true" : "false";
+    tonePrint.contentEditable = isEditing ? "true" : "false";
     syncEditToggle(isEditing);
     
     if (isEditing) {
@@ -363,6 +366,9 @@ if (songId) {
   editToggleDrawer.addEventListener("change", () => {
     const isEditing = editToggleDrawer.checked;
     preElement.contentEditable = isEditing ? "true" : "false";
+    title.contentEditable = isEditing ? "true" : "false";
+    artist.contentEditable = isEditing ? "true" : "false";
+    tonePrint.contentEditable = isEditing ? "true" : "false";
     syncEditToggle(isEditing);
     
     if (isEditing) {
@@ -376,6 +382,15 @@ if (songId) {
     if (editToggle.checked || editToggleDrawer.checked) {
       hasUnsavedChanges = true;
     }
+  });
+
+  // Detecta alterações em título, artista e tom
+  [title, artist, tonePrint].forEach(element => {
+    element.addEventListener("input", () => {
+      if (editToggle.checked || editToggleDrawer.checked) {
+        hasUnsavedChanges = true;
+      }
+    });
   });
 
   // Intercepta o evento de colar para forçar texto plano apenas
@@ -401,6 +416,34 @@ if (songId) {
     
     // Dispara evento de input para marcar como modificado
     preElement.dispatchEvent(new Event('input'));
+  });
+
+  // Intercepta paste em título, artista e tom para forçar texto plano
+  [title, artist, tonePrint].forEach(element => {
+    element.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+      
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+      
+      selection.deleteFromDocument();
+      const range = selection.getRangeAt(0);
+      range.insertNode(document.createTextNode(text));
+      
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      
+      element.dispatchEvent(new Event('input'));
+    });
+
+    // Previne quebras de linha em título, artista e tom
+    element.addEventListener("keydown", (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+      }
+    });
   });
 
   // Aviso ao tentar sair com edições não salvas
@@ -473,19 +516,40 @@ if (songId) {
   // Função de salvar compartilhada
   const performSave = async () => {
     const plainText = extractPlainText();
-    const updatedTone = tone.textContent.trim();
+    const updatedTitle = title.textContent.trim();
+    const updatedArtist = artist.textContent.trim();
+    const updatedTone = tonePrint.textContent.trim();
+
+    // Validação básica
+    if (!updatedTitle || !updatedArtist || !updatedTone) {
+      alert('Título, artista e tom não podem estar vazios.');
+      return;
+    }
 
     try {
-      await setDoc(docRef, { letra: plainText, tone: updatedTone }, { merge: true });
+      await setDoc(docRef, { 
+        letra: plainText, 
+        title: updatedTitle,
+        artist: updatedArtist,
+        tone: updatedTone 
+      }, { merge: true });
       hasUnsavedChanges = false;
       
       // Desliga o modo de edição
       syncEditToggle(false);
       preElement.contentEditable = "false";
+      title.contentEditable = "false";
+      artist.contentEditable = "false";
+      tonePrint.contentEditable = "false";
+      
+      // Sincroniza o tom em todos os lugares imediatamente
+      syncToneDisplay(updatedTone);
       
       // Re-renderiza o conteúdo com formatação de acordes
       // Atualiza os dados em memória
       currentSongData.letra = plainText;
+      currentSongData.title = updatedTitle;
+      currentSongData.artist = updatedArtist;
       currentSongData.tone = updatedTone;
       
       // Parse e renderiza

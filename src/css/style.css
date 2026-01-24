@@ -146,6 +146,34 @@ pre[contenteditable="true"] {
     border-radius: var(--border-radius-sm);
 }
 
+/* Estilos para título, artista e tom quando editáveis */
+#titleId[contenteditable="true"],
+#artistId[contenteditable="true"] {
+    background-color: var(--color-bg-active);
+    border: var(--border-width-medium) solid var(--border-color-accent);
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-2);
+    outline: none;
+}
+
+#tonePrintId[contenteditable="true"] {
+    background-color: var(--color-bg-active);
+    border: var(--border-width-medium) solid var(--border-color-accent);
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-1) var(--space-2);
+    outline: none;
+    display: inline-block;
+    min-width: 2ch;
+}
+
+/* Feedback visual ao passar o mouse sobre elementos editáveis */
+#titleId[contenteditable="true"]:hover,
+#artistId[contenteditable="true"]:hover,
+#tonePrintId[contenteditable="true"]:hover {
+    border-color: var(--color-primary);
+    cursor: text;
+}
+
 b {
     color: var(--color-chord);
     font-weight: var(--font-weight-bold);
