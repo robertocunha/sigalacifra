@@ -448,6 +448,11 @@ textarea::placeholder {
         display: none !important;
     }
     
+    /* Esconder navegação anterior/próxima em mobile (usa swipe) */
+    #songNavigation {
+        display: none !important;
+    }
+    
     /* Adiciona espaço à esquerda do navbar para não sobrepor o logo */
     .navbar .container-fluid {
         padding-left: 75px !important; /* Espaço para o botão hambúrguer */
