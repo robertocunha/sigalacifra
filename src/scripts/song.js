@@ -11,6 +11,7 @@ import { doc, onSnapshot, setDoc, deleteDoc, collection, query, where, orderBy, 
 import { transposeChord } from './transpose.js';
 import { parseSong } from './songParser.js';
 import { renderSong } from './songRenderer.js';
+import 'swiped-events';
 
 // ============================================
 // DRAWER FUNCTIONALITY
@@ -190,6 +191,41 @@ const setupSongNavigation = async (currentSongId, currentActive) => {
       `;
     }
   }
+  
+  // Retorna IDs para uso em swipe navigation
+  return { prevSongId, nextSongId };
+};
+
+// ============================================
+// SWIPE NAVIGATION
+// ============================================
+
+const setupSwipeNavigation = (prevSongId, nextSongId) => {
+  // Função para verificar se swipe está habilitado
+  const canSwipe = () => {
+    const editToggle = document.getElementById('editToggleId');
+    const editToggleDrawer = document.getElementById('editToggleIdDrawer');
+    const drawer = document.getElementById('drawer');
+    
+    const isEditing = (editToggle && editToggle.checked) || (editToggleDrawer && editToggleDrawer.checked);
+    const isDrawerOpen = drawer && drawer.classList.contains('active');
+    
+    return !isEditing && !isDrawerOpen;
+  };
+  
+  // Listener para swipe à esquerda (próxima música)
+  document.addEventListener('swiped-left', (e) => {
+    if (canSwipe() && nextSongId) {
+      window.location.href = `song.html?id=${nextSongId}`;
+    }
+  });
+  
+  // Listener para swipe à direita (música anterior)
+  document.addEventListener('swiped-right', (e) => {
+    if (canSwipe() && prevSongId) {
+      window.location.href = `song.html?id=${prevSongId}`;
+    }
+  });
 };
 
 // ============================================
@@ -328,7 +364,11 @@ if (songId) {
     
     // Configura navegação entre músicas (apenas na primeira vez)
     if (!window.navigationSetup) {
-      setupSongNavigation(songId, songData.active);
+      setupSongNavigation(songId, songData.active).then(navIds => {
+        if (navIds) {
+          setupSwipeNavigation(navIds.prevSongId, navIds.nextSongId);
+        }
+      });
       window.navigationSetup = true;
     }
   };

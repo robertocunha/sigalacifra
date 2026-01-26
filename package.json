@@ -15,7 +15,8 @@
   "description": "",
   "dependencies": {
     "firebase": "^11.0.1",
-    "sortablejs": "^1.15.6"
+    "sortablejs": "^1.15.6",
+    "swiped-events": "^1.2.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
