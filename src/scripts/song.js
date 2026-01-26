@@ -248,6 +248,16 @@ const setupSwipeNavigation = (prevSongId, nextSongId) => {
 };
 
 // ============================================
+// FIX: Reset opacity when page is shown (handles back/forward cache)
+// ============================================
+
+// Garante que a página fique visível ao carregar ou voltar do histórico
+window.addEventListener('pageshow', (event) => {
+  document.body.style.opacity = '1';
+  document.body.style.transition = '';
+});
+
+// ============================================
 // ORIGINAL SONG.JS CODE
 // ============================================
 
