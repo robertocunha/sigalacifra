@@ -1,3 +1,38 @@
+# Músicas para reinserir na seção arquivadas
+
+| #  | Título da Música      |  OK  |
+| -- | --------------------- |------|
+| 1  | Piranha               |  [X] |
+| 2  | Haja Amor             |  [X] |
+| 3  | A Roda                |  [X] |
+| 4  | Tá Rocheda            |  [X] |
+| 5  | Trilhos Urbanos       |  [X] |
+| 6  | Meia Lua Inteira      |  [X] |
+| 7  | W/Brasil              |  [X] |
+| 8  | Eu e Você Sempre      |  [X] |
+| 9  | Banho É Bom           |  [X] |
+| 10 | Lavar As Mãos         |  [X] |
+| 11 | Sufoco                |  [X] |
+| 12 | Que Som É Esse?       |  [X] |
+| 13 | Dengo                 |  [X] |
+| 14 | Mal Acostumado        |  [X] |
+| 15 | Estrela da Paz        |  [X] |
+| 16 | Luz de Tieta          |  [X] |
+| 17 | Amor                  |  [X] |
+| 18 | Anunciação            |  [X] |
+| 19 | Dança da Cordinha     |  [X] |
+| 20 | Vem, Meu Amor         |  [X] |
+| 21 | Caçamba               |  [X] |
+| 22 | São Jorge             |  [X] |
+| 23 | Eva                   |  [X] |
+| 24 | Alô, Paixão           |  [X] |
+| 25 | Beleza Rara           |  [X] |
+| 26 | Sina                  |  [X] |
+| 27 | Sina (Guitarra)       | -[ ] |
+| 28 | Sina (Baixo)          | -[ ] |
+| 29 | Música de Testes 6    | -[ ] |
+| 30 | Teste Trilhos Urbanos | -[ ] |
+
 # Músicas para inserir no sistema
 
 -[X] A NAMORADA	EM
@@ -16,7 +51,7 @@ BAILE DO SIGA
 -[X] MACETANDO **	Dm
 -[X] NAS ÁGUAS (CRIOLO) **	Am  
 
-## Baile do Siga
+## Baile do Siga  
 
         Em7
 Fui num dia no baila do Siga 

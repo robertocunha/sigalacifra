@@ -90,6 +90,12 @@ const fetchArchivedSongs = async () => {
       // Adiciona o evento de clique para redirecionar para song.html com o ID do documento
       const titleCell = row.querySelector('.title-cell');
       titleCell.addEventListener('click', () => {
+        // Salva contexto da lista para navegação anterior/próxima
+        const songIds = currentSongs.map(s => s.id);
+        sessionStorage.setItem('songListContext', JSON.stringify({
+          ids: songIds,
+          active: false
+        }));
         window.location.href = `song.html?id=${docSnap.id}`;
       });
 

@@ -85,16 +85,23 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a href="index.html" class="navbar-brand p-0 m-0" style="text-decoration: none;">
+                <a href="index.html" class="navbar-brand p-0 m-0 me-auto" style="text-decoration: none;">
                     <picture>
                         <source srcset="images/logo.webp" type="image/webp">
                         <img src="images/logo.png" alt="Siga La Cifra!" height="210">
                     </picture>
                 </a>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2" style="margin-left: 2rem;">
                     <a class="btn btn-link" href="index.html">Ativas</a>
                     <a class="btn btn-link" href="archived.html">Arquivadas</a>
                     <a class="btn btn-link help-btn" href="help.html" aria-label="Ajuda">?</a>
+                </div>
+            </div>
+            <!-- Navegação entre músicas -->
+            <div id="songNavigation" class="container-fluid mt-3 pt-3" style="display: none; border-top: 1px solid #dee2e6;">
+                <div class="d-flex justify-content-between align-items-center pb-2">
+                    <div id="prevSongContainer"></div>
+                    <div id="nextSongContainer"></div>
                 </div>
             </div>
         </nav>

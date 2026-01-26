@@ -7,7 +7,7 @@ import '../css/print.css';
 import '../css/style.css';
 
 import { db } from './firebaseConfig.prod.js';
-import { doc, onSnapshot, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc, deleteDoc, collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
 import { transposeChord } from './transpose.js';
 import { parseSong } from './songParser.js';
 import { renderSong } from './songRenderer.js';
@@ -89,6 +89,112 @@ const syncEditToggle = (isChecked) => {
 // Captura o ID da música do parâmetro "id" no URL
 const urlParams = new URLSearchParams(window.location.search);
 const songId = urlParams.get('id');
+
+// ============================================
+// SONG NAVIGATION (PREV/NEXT)
+// ============================================
+
+const setupSongNavigation = async (currentSongId, currentActive) => {
+  const navContainer = document.getElementById('songNavigation');
+  const prevContainer = document.getElementById('prevSongContainer');
+  const nextContainer = document.getElementById('nextSongContainer');
+  
+  if (!navContainer || !prevContainer || !nextContainer) return;
+  
+  let prevSongId = null;
+  let nextSongId = null;
+  
+  // Tenta usar contexto do sessionStorage primeiro
+  const context = sessionStorage.getItem('songListContext');
+  
+  if (context) {
+    try {
+      const { ids, active } = JSON.parse(context);
+      // Só usa o contexto se o estado (ativa/arquivada) bater
+      if (active === currentActive) {
+        const currentIndex = ids.indexOf(currentSongId);
+        if (currentIndex !== -1) {
+          prevSongId = currentIndex > 0 ? ids[currentIndex - 1] : null;
+          nextSongId = currentIndex < ids.length - 1 ? ids[currentIndex + 1] : null;
+        }
+      }
+    } catch (e) {
+      console.error('Erro ao parsear contexto de navegação:', e);
+    }
+  }
+  
+  // Fallback: buscar no Firestore se não tiver contexto ou não encontrou
+  if (prevSongId === null && nextSongId === null) {
+    try {
+      const musicsRef = collection(db, 'musicas');
+      
+      // Busca a música atual para pegar a posição
+      const currentDocRef = doc(db, 'musicas', currentSongId);
+      const currentDoc = await new Promise((resolve) => {
+        const unsubscribe = onSnapshot(currentDocRef, (docSnap) => {
+          unsubscribe();
+          resolve(docSnap);
+        });
+      });
+      
+      if (!currentDoc.exists()) return;
+      const currentPosition = currentDoc.data().position;
+      
+      // Busca música anterior (position < atual, ordenado desc, limit 1)
+      const prevQuery = query(
+        musicsRef,
+        where('active', '==', currentActive),
+        where('position', '<', currentPosition),
+        orderBy('position', 'desc'),
+        limit(1)
+      );
+      const prevSnapshot = await getDocs(prevQuery);
+      if (!prevSnapshot.empty) {
+        prevSongId = prevSnapshot.docs[0].id;
+      }
+      
+      // Busca próxima música (position > atual, ordenado asc, limit 1)
+      const nextQuery = query(
+        musicsRef,
+        where('active', '==', currentActive),
+        where('position', '>', currentPosition),
+        orderBy('position', 'asc'),
+        limit(1)
+      );
+      const nextSnapshot = await getDocs(nextQuery);
+      if (!nextSnapshot.empty) {
+        nextSongId = nextSnapshot.docs[0].id;
+      }
+    } catch (error) {
+      console.error('Erro ao buscar músicas para navegação:', error);
+    }
+  }
+  
+  // Renderiza os botões
+  if (prevSongId || nextSongId) {
+    navContainer.style.display = 'block';
+    
+    if (prevSongId) {
+      prevContainer.innerHTML = `
+        <a href="song.html?id=${prevSongId}" class="btn btn-outline-primary">
+          ← Anterior
+        </a>
+      `;
+    }
+    
+    if (nextSongId) {
+      nextContainer.innerHTML = `
+        <a href="song.html?id=${nextSongId}" class="btn btn-outline-primary">
+          Próxima →
+        </a>
+      `;
+    }
+  }
+};
+
+// ============================================
+// ORIGINAL SONG.JS CODE
+// ============================================
 
 if (songId) {
   const title = document.getElementById("titleId");
@@ -219,6 +325,12 @@ if (songId) {
     preElement.innerHTML = sanitizeRenderedHtml(renderedHtml);
     
     hasUnsavedChanges = false; // Reset ao carregar novos dados
+    
+    // Configura navegação entre músicas (apenas na primeira vez)
+    if (!window.navigationSetup) {
+      setupSongNavigation(songId, songData.active);
+      window.navigationSetup = true;
+    }
   };
 
   // Substitui o getDoc por onSnapshot para receber atualizações em tempo real
