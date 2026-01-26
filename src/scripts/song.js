@@ -95,6 +95,16 @@ const songId = urlParams.get('id');
 // SONG NAVIGATION (PREV/NEXT)
 // ============================================
 
+// Função helper para navegação com fade
+const navigateWithFade = (url) => {
+  document.body.style.transition = 'opacity 0.2s ease-out';
+  document.body.style.opacity = '0';
+  
+  setTimeout(() => {
+    window.location.href = url;
+  }, 200);
+};
+
 const setupSongNavigation = async (currentSongId, currentActive) => {
   const navContainer = document.getElementById('songNavigation');
   const prevContainer = document.getElementById('prevSongContainer');
@@ -177,7 +187,7 @@ const setupSongNavigation = async (currentSongId, currentActive) => {
     
     if (prevSongId) {
       prevContainer.innerHTML = `
-        <a href="song.html?id=${prevSongId}" class="btn btn-outline-primary">
+        <a href="#" class="btn btn-outline-primary" data-song-id="${prevSongId}">
           ← Anterior
         </a>
       `;
@@ -185,11 +195,20 @@ const setupSongNavigation = async (currentSongId, currentActive) => {
     
     if (nextSongId) {
       nextContainer.innerHTML = `
-        <a href="song.html?id=${nextSongId}" class="btn btn-outline-primary">
+        <a href="#" class="btn btn-outline-primary" data-song-id="${nextSongId}">
           Próxima →
         </a>
       `;
     }
+    
+    // Adiciona event listeners nos botões para navegação com fade
+    navContainer.querySelectorAll('a[data-song-id]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const songId = link.getAttribute('data-song-id');
+        navigateWithFade(`song.html?id=${songId}`);
+      });
+    });
   }
   
   // Retorna IDs para uso em swipe navigation
@@ -216,14 +235,14 @@ const setupSwipeNavigation = (prevSongId, nextSongId) => {
   // Listener para swipe à esquerda (próxima música)
   document.addEventListener('swiped-left', (e) => {
     if (canSwipe() && nextSongId) {
-      window.location.href = `song.html?id=${nextSongId}`;
+      navigateWithFade(`song.html?id=${nextSongId}`);
     }
   });
   
   // Listener para swipe à direita (música anterior)
   document.addEventListener('swiped-right', (e) => {
     if (canSwipe() && prevSongId) {
-      window.location.href = `song.html?id=${prevSongId}`;
+      navigateWithFade(`song.html?id=${prevSongId}`);
     }
   });
 };
